@@ -111,7 +111,6 @@ const Login = () => {
     <>
      <Helmet>
         <title>Login</title>
-        <meta name="description" content="Login to See the Orders" />
         <link rel="canonical" href="/login" />
       </Helmet>
    
