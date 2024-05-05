@@ -21,19 +21,19 @@ const homepage = () => {
     <title>The JK products</title>
     <script type="application/ld+json">
       {
-        {
+        `{
           "@context": "https://schema.org",
           "@type": "Organization",
           "url": "https://thejkproducts.com/",
           "name": "The JK Products",
           "logo": "/logo.png",
           "@id": "#b2c-store-org"
-        }
+        }`
       }
     </script>
     <script type="application/ld+json">
     {
-      {
+      `{
         "@context": "https://schema.org",
         "@type": "WebSite",
         "url": "https://www.example.com/",
@@ -52,7 +52,7 @@ const homepage = () => {
           },
           "query-input": "required name=search_term_string"
         }]
-      }
+      }`
     }
     </script>
     <meta
