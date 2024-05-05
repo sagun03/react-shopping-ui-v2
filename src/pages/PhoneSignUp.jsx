@@ -65,7 +65,6 @@ const PhoneSignUp = () => {
     <>
       <Helmet>
         <title>Login</title>
-        <meta name="description" content="Use mobile nummber to login" />
         <link rel="canonical" href="/phonesignup" />
       </Helmet>
 

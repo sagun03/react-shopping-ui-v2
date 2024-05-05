@@ -18,10 +18,46 @@ const homepage = () => {
   return (
     <>
     <Helmet>
-    <title>Homepage</title>
+    <title>The JK products</title>
+    <script type="application/ld+json">
+      {
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "url": "https://thejkproducts.com/",
+          "name": "The JK Products",
+          "logo": "/logo.png",
+          "@id": "#b2c-store-org"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+    {
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://www.example.com/",
+        "potentialAction": [{
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://thejkproducts.com/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        },{
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "android-app://com.example/https/thejkproducts.com/search/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }]
+      }
+    }
+    </script>
     <meta
       name="description"
-      content="Shop for our latest products now."
+      content="One stop shop for all cleaning products"
     />
     <link rel="canonical" href="/" />
     </Helmet>
