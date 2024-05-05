@@ -15,7 +15,6 @@ const Orders = () => {
     <>
      <Helmet>
         <title>Orders</title>
-        <meta name="description" content="Check Orders." />
         <link rel="canonical" href="/orders" />
       </Helmet>
       <Announcement />

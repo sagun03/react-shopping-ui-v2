@@ -120,7 +120,6 @@ const Register = () => {
     <>
      <Helmet>
         <title>Register</title>
-        <meta name="description" content="Register to see the Recent Orders" />
         <link rel="canonical" href="/register" />
       </Helmet>
 

@@ -16,7 +16,7 @@ import Alert from "../components/Alert";
 import { Link } from "react-router-dom";
 import { IconButton, CircularProgress } from "@material-ui/core";
 import BottomNav from "../components/BottomNav";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   margin-top: 75px;
@@ -197,11 +197,6 @@ const Product = () => {
   };
   return (
     <>
-      <Helmet>
-        <title>Product Detail</title>
-        <meta name="description" content="Details of the Selected Product." />
-        <link rel="canonical" href="/product/:id" />
-      </Helmet>
 
       <Container>
         <Announcement />
