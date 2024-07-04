@@ -3,13 +3,13 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Paper,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { useEffect } from "react";
-import HomeIcon from "@material-ui/icons/Home";
-import LineWeightIcon from "@material-ui/icons/LineWeight";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import CallIcon from "@material-ui/icons/Call";
-import ShoppingCartOutlined from "@material-ui/icons/ShoppingCartOutlined";
+import HomeIcon from "@mui/icons-material/Home";
+import LineWeightIcon from "@mui/icons-material/LineWeight";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import CallIcon from "@mui/icons-material/Call";
+import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation, useNavigate } from "react-router";
 import styled from "styled-components";

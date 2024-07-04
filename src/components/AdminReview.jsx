@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Divider,
@@ -6,46 +7,40 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  withStyles,
-} from "@material-ui/core";
-import * as React from "react";
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-const StyledList = withStyles(() => ({
-  root: {
-    width: "100%",
-    border: "2px solid steelblue",
-    height: "180px",
-    overflowY: "scroll",
-    "@media only screen and (max-width: 550px)": {
-      height: "280px",
-    },
+const StyledList = styled(List)(({ theme }) => ({
+  width: "100%",
+  border: "2px solid steelblue",
+  height: "180px",
+  overflowY: "scroll",
+  [theme.breakpoints.down("sm")]: {
+    height: "280px",
   },
-}))(List);
+}));
 
-const StyledListItem = withStyles(() => ({
-  root: {
-    border: "1px solid aliceblue",
-    gap: "3rem",
-    "@media only screen and (max-width: 550px)": {
-      gap: "2rem",
-    },
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  border: "1px solid aliceblue",
+  gap: "3rem",
+  [theme.breakpoints.down("sm")]: {
+    gap: "2rem",
   },
-}))(ListItem);
+}));
 
 const AdminReview = ({ products, order, updateOrderStatus }) => {
-
   return (
     <React.Fragment>
-      <Typography variant="h9" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom>
         Date: {order?.date}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Order summary 
+        Order summary
       </Typography>
-      <Typography variant="h7" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom>
         User Id: {order?.userId}
       </Typography>
-      <Typography variant="h7" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom>
         Name and Phone: {order?.name || 'n/a'} {order?.phoneNumber || "n/a"}
       </Typography>
       <StyledList disablePadding>
@@ -79,11 +74,10 @@ const AdminReview = ({ products, order, updateOrderStatus }) => {
             Order Status:
           </Typography>
           <Typography gutterBottom>{order?.status || 'Pending'}</Typography>
-          {/* <Typography gutterBottom>{order?.address}</Typography> */}
           <div style={{ display: 'flex', gap: ".5rem", flexDirection: "column"}}>
-          <Button variant="contained" disabled={order?.status === "Pending"}  color="primary" onClick={() => updateOrderStatus(order?.id,  "Confirmed")} > Change status to Pending </Button>
-          <Button variant="contained" disabled={order?.status === "Confirmed"}  color="primary" onClick={() => updateOrderStatus(order?.id,  "Confirmed")} > Change status to Confirmed </Button>
-          <Button variant="contained"  disabled={order?.status === "Delivered"} color="primary" onClick={() => updateOrderStatus(order?.id, "Delivered")} > Change status to Delivered </Button>
+            <Button variant="contained" disabled={order?.status === "Pending"} color="primary" onClick={() => updateOrderStatus(order?.id,  "Pending")}>Change status to Pending</Button>
+            <Button variant="contained" disabled={order?.status === "Confirmed"} color="primary" onClick={() => updateOrderStatus(order?.id,  "Confirmed")}>Change status to Confirmed</Button>
+            <Button variant="contained" disabled={order?.status === "Delivered"} color="primary" onClick={() => updateOrderStatus(order?.id, "Delivered")}>Change status to Delivered</Button>
           </div>
         </Grid>
       </Grid>

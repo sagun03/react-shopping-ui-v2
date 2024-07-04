@@ -3,7 +3,7 @@ import jk from "./images/jk.jpeg";
 import { mobile } from "../responsive";
 import { useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
-import { FormHelperText } from "@material-ui/core";
+import { FormHelperText } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 

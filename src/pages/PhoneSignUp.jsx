@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Wrapper, Title, Form, Button } from "./Register";

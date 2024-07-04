@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import { useEffect } from "react";
 import { db } from "../firebase";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { useCallback } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
@@ -85,7 +85,7 @@ const Admin = () => {
   }, [ordersCollectionRef]);
 
   useEffect(() => {
-    if (!Boolean(userOrders)) {
+    if (!userOrders) {
       getOrders();
     }
   }, [userOrders, getOrders]);
