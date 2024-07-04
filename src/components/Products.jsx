@@ -29,6 +29,8 @@ import {
 import { useEffect } from "react";
 import productBackground from "../pages/images/productBackground.jpg";
 import { FilterListOutlined } from "@mui/icons-material";
+import { useProducts } from "../hooks/useProducts";
+import { useProductContext } from "../context/ProductContext";
 
 const Container = styled.div`
   display: flex;
@@ -220,34 +222,25 @@ const ListMenu = [
 ];
 
 const Products = () => {
-  // const [products, setProducts] = useState([]);
   // const productCollectionRef = collection(db, "product");
   const [productImageData, setProductImageData] = useState(popularProducts);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = useState("All");
   const [priceSelect, setPriceSelect] = useState("default");
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-
+  const { data: productsData, isLoading, error } = useProducts();
+  const { setProductsData, products } = useProductContext();
+console.log("products inside Product page", products)
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
-  // const getProducts = useCallback(async () => {
-  //   try {
-  //     const data = await getDocs(productCollectionRef);
-  //     setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [productCollectionRef]);
-  // useEffect(() => {
-  //   if (false) getProducts();
-  // }, [getProducts]);
+    if (productsData?.length > 0) {
+      setProductsData(productsData);
+    }
+  }, [productsData, setProductsData]);
+ 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const [serachParam] = useSearchParams();
 
   const handleClick = (event) => {
@@ -416,7 +409,7 @@ const Products = () => {
             </Menu>
           </ProductMenuListMobile>
           <ProductImageContainer >
-            {loading ? (
+            {isLoading ? (
               <CircularContainer>
                 <CircularProgress />
               </CircularContainer>

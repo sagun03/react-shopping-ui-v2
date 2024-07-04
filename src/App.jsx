@@ -13,6 +13,9 @@ import { CircularProgress } from "@mui/material";
 import ProductSearch from "./pages/ProductSearch";
 import Admin from "./pages/Admin";
 import Product from "./pages/Product";
+import { ProductProvider } from "./context/ProductContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 // const Product = React.lazy(() => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => resolve(import("./pages/Product")), 1000);
@@ -23,11 +26,13 @@ const Home = React.lazy(() => {
     setTimeout(() => resolve(import("./pages/Homepage")), 1000);
   });
 });
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <UserAuthContextProvider>
+        <ProductProvider>
         <Router>
           <Routes>
             <Route
@@ -83,8 +88,9 @@ const App = () => {
             <Route path="/admin" element={<Admin />} />
           </Routes>
         </Router>
+        </ProductProvider>
       </UserAuthContextProvider>
-    </>
+    </QueryClientProvider>
   );
 };
 

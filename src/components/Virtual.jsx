@@ -132,7 +132,7 @@ const Virtual = () => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0)">
+        <g clipPath="url(#clip0)">
           <path
             d="M1198 43.1753C1403.45 43.1753 1600 73.398 1600 73.398V0H0.00012207V50.3484C0.00012207 50.3484 225.015 100 477.6 100C756.866 100 883.158 43.1753 1198 43.1753Z"
             fill="#ffff"

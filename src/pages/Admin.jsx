@@ -85,7 +85,7 @@ const Admin = () => {
   }, [ordersCollectionRef]);
 
   useEffect(() => {
-    if (!Boolean(userOrders)) {
+    if (!userOrders) {
       getOrders();
     }
   }, [userOrders, getOrders]);
