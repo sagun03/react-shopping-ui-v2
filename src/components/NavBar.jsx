@@ -1,6 +1,4 @@
-import React from "react";
-import styled from "styled-components";
-import { ShoppingCartOutlined } from "@material-ui/icons";
+import React, { useEffect, useState } from "react";
 import {
   Backdrop,
   Badge,
@@ -9,177 +7,122 @@ import {
   ListItemText,
   Menu,
   SwipeableDrawer,
-  withStyles,
-} from "@material-ui/core";
-import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
+} from "@mui/material";
+import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { auth } from "../firebase";
-import { useState } from "react";
-import HomeIcon from "@material-ui/icons/Home";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useUserAuth } from "../context/UserAuthContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
-import PersonIcon from "@material-ui/icons/Person";
-import ReorderIcon from "@material-ui/icons/Reorder";
+import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 
-const Container = styled.div`
-  height: 55px;
-  overflow: hidden;
-  background-color: white;
-  position: fixed;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  top: 0px;
-  width: 100%;
-  z-index: 1299;
-  ${mobile({ top: "0px" })}
-  ${mobileSuperSmall({ top: "0px" })}
-`;
+const Container = styled('div')(({ theme }) => ({
+  height: "55px",
+  overflow: "hidden",
+  backgroundColor: "white",
+  position: "fixed",
+  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+  top: "0px",
+  width: "100%",
+  zIndex: 1299,
+  ...mobile({ top: "0px" }),
+  ...mobileSuperSmall({ top: "0px" }),
+}));
 
-const Wrapper = styled.div`
-  padding: 10px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  ${ScreenWith670px({
+const Wrapper = styled('div')(({ theme }) => ({
+  padding: "10px 0px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-around",
+  width: "100%",
+  ...ScreenWith670px({
     justifyContent: "space-between",
     width: "95%",
     padding: "10px 10px",
-  })}
-`;
+  }),
+}));
 
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
+const Left = styled('div')(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "1rem",
+}));
 
-const Center = styled.div`
-  text-align: center;
-`;
+const Center = styled('div')(({ theme }) => ({
+  textAlign: "center",
+}));
 
-const Logo = styled.h1`
-  font-weight: 400;
-
-  ${ScreenWith670px({
+const Logo = styled('h1')(({ theme }) => ({
+  fontWeight: 400,
+  ...ScreenWith670px({
     fontSize: "1.5rem",
-  })} ${mobile({ display: "none" })};
-`;
+  }),
+  ...mobile({ display: "none" }),
+}));
 
-const Logo2 = styled.div`
-  display: none;
-  font-weight: 400;
-
-  ${mobile({
+const Logo2 = styled('div')(({ theme }) => ({
+  display: "none",
+  fontWeight: 400,
+  ...mobile({
     display: "flex",
     height: "38px",
     marginRight: "0px",
-  })}
-`;
+  }),
+}));
 
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`;
+const Right = styled('div')(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "1rem",
+}));
 
-const MenuItem = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+const MenuItem = styled('div')(({ theme }) => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" }),
+}));
 
-  ${mobile({ fontSize: "12px" })}
-`;
+const MenuItem2 = styled('div')(({ theme }) => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" }),
+  ...ScreenWith670px({ display: "none" }),
+}));
 
-const MenuItem2 = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+const MenuItemMyUser = styled('div')(({ theme }) => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" }),
+  ...ScreenWith670px({ display: "none" }),
+}));
 
-  ${mobile({ fontSize: "12px" })}
-  ${ScreenWith670px({ display: "none" })}
-`;
-
-const MenuItemMyUser = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-
-  ${mobile({ fontSize: "12px" })}
-  ${ScreenWith670px({ display: "none" })}
-`;
-
-const MenuItemMyUser2 = styled.div`
-  font-size: 14px;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-
-  ${mobile({ fontSize: "12px" })}
-  ${ScreenWith670px({ display: "flex" })}
-`;
-
-const StyledMenu = withStyles({
-  paper: {
-    background: "#2979ff",
-    color: "white",
-    marginTop: "10px",
-    "&:hover": {
-      background: "teal",
-    },
-  },
-})((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "center",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "center",
-    }}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles(() => ({
-  root: {
-    "&:focus": {
-      backgroundColor: "blue",
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: "white",
-      },
-    },
-  },
-}))(MenuItem);
-const StyledListIcon = withStyles(() => ({
-  root: {
-    display: "flex",
-    justifyContent: "center",
-    color: "white !important",
-  },
-}))(ListItemIcon);
-const StyledListText = withStyles(() => ({
-  root: {
-    marginRight: "18px",
-  },
-}))(ListItemText);
+const MenuItemMyUser2 = styled('div')(({ theme }) => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "none",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" }),
+  ...ScreenWith670px({ display: "flex" }),
+}));
 
 const NavBar = () => {
   const [user, setUser] = useState({});
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
   const [loading, setLoading] = useState(false);
+  const { quantity } = useSelector((state) => state.cart);
+  const [anchor, setAnchor] = useState(false);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -195,6 +138,7 @@ const NavBar = () => {
       }
     });
   }, []);
+
   const onClickHandler = async (e) => {
     try {
       setAnchorEl(null);
@@ -211,15 +155,14 @@ const NavBar = () => {
       setError(true);
     }
   };
-  const { quantity } = useSelector((state) => state.cart);
-  const [anchor, setAnchor] = useState(false);
+
   const toggleDrawer = (open) => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
-    setAnchor(open)
+    setAnchor(open);
   };
+
   return (
     <Container>
       <Wrapper>
@@ -231,7 +174,7 @@ const NavBar = () => {
             <MenuItem2>
               <Link to="/">
                 <HomeIcon />
-              </Link>{" "}
+              </Link>
             </MenuItem2>
           )}
           {user.accessToken && (
@@ -244,7 +187,6 @@ const NavBar = () => {
           <Center>
             <Logo>JK Total Washing Solutions</Logo>
             <Logo2>
-              {" "}
               <img src={Logos} alt="logo" />
             </Logo2>
           </Center>
@@ -259,30 +201,34 @@ const NavBar = () => {
               </MenuItemMyUser>
               <MenuItemMyUser2 onClick={handleClick}>
                 <PersonIcon />
-                {/* {(user?.displayName?.toUpperCase() ||
-                  user?.email?.slice(0, 5)?.toUpperCase() ||
-                  user?.phoneNumber)} */}
               </MenuItemMyUser2>
-              <StyledMenu
+              <Menu
                 id="customized-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                PaperProps={{
+                  sx: {
+                    backgroundColor: "#2979ff",
+                    color: "white",
+                    marginTop: "10px",
+                    "&:hover": {
+                      backgroundColor: "teal",
+                    },
+                  },
+                }}
               >
-                <StyledMenuItem onClick={onClickHandler}>
-                  <StyledListIcon>
+                <MenuItem onClick={onClickHandler}>
+                  <ListItemIcon sx={{ color: "white" }}>
                     <ExitToAppIcon fontSize="small" />
-                  </StyledListIcon>
-                  <StyledListText primary="Logout" />
-                </StyledMenuItem>
-              </StyledMenu>
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" sx={{ marginRight: "18px" }} />
+                </MenuItem>
+              </Menu>
             </>
           ) : (
             <>
-              {/* <Link to="/register">
-              <MenuItem>REGISTER</MenuItem>
-            </Link> */}
               <Link to="/login">
                 <MenuItem>SIGN IN</MenuItem>
               </Link>
@@ -293,7 +239,7 @@ const NavBar = () => {
               <Badge
                 badgeContent={quantity}
                 color="primary"
-                style={{ marginRight: "10px" }}
+                sx={{ marginRight: "10px" }}
               >
                 <ShoppingCartOutlined />
               </Badge>
@@ -313,13 +259,13 @@ const NavBar = () => {
         <CircularProgress color="primary" />
       </Backdrop>
       <SwipeableDrawer
-            open={anchor}
-            anchor="left"
-            onClose={toggleDrawer(false)}
-            onOpen={toggleDrawer(true)}
-          >
-            <div>Hello</div>
-          </SwipeableDrawer>
+        open={anchor}
+        anchor="left"
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        <div>Hello</div>
+      </SwipeableDrawer>
     </Container>
   );
 };

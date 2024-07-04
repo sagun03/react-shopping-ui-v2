@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { mobile, ScreenWith960px } from "../responsive";
 import { useSelector } from "react-redux";
-import WhatsAppIcon from "@material-ui/icons/WhatsApp";
-import { Button } from "@material-ui/core";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import LocationDialogBox from "./LocationDialogBox";
 

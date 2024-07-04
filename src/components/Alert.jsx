@@ -1,6 +1,6 @@
 import React from "react";
-import MuiAlert from "@material-ui/lab/Alert";
-import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@mui/lab/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const CustomAlert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

@@ -1,4 +1,4 @@
-import { Add, Remove } from "@material-ui/icons";
+import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import addToCart from "./images/addToCart.png";
 import { Link } from "react-router-dom";
 import OrderSummary from "../components/OrderSummary";
-import { IconButton } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
 

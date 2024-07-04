@@ -9,7 +9,7 @@ import "./App.css";
 import PhoneSignUp from "./pages/PhoneSignUp";
 import Orders from "./pages/Orders";
 import Checkout from "./pages/Checkout";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import ProductSearch from "./pages/ProductSearch";
 import Admin from "./pages/Admin";
 import Product from "./pages/Product";

@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { popularProducts } from "../utils/data";
 import Product from "./Product";
 // import Plane from "../pages/images/plane.png";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   mobile,
   mobileS,
@@ -15,21 +14,21 @@ import {
 } from "../responsive";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   CircularProgress,
   Divider,
   InputAdornment,
   Select,
   TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 // import { db } from "../firebase";
 // import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
 import productBackground from "../pages/images/productBackground.jpg";
-import { FilterListOutlined } from "@material-ui/icons";
+import { FilterListOutlined } from "@mui/icons-material";
 
 const Container = styled.div`
   display: flex;
@@ -224,7 +223,6 @@ const Products = () => {
   // const [products, setProducts] = useState([]);
   // const productCollectionRef = collection(db, "product");
   const [productImageData, setProductImageData] = useState(popularProducts);
-  const [parent] = useAutoAnimate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = useState("All");
   const [priceSelect, setPriceSelect] = useState("default");
@@ -364,7 +362,7 @@ const Products = () => {
       </ProductHeader>
       <Container>
         <ProductsWrapper>
-          <ProductMenuList ref={parent}>
+          <ProductMenuList >
             <>
               <ProductMenu title="category">
                 Category <Divider style={{ marginTop: "1rem" }} />
@@ -417,7 +415,7 @@ const Products = () => {
               ))}
             </Menu>
           </ProductMenuListMobile>
-          <ProductImageContainer ref={parent}>
+          <ProductImageContainer >
             {loading ? (
               <CircularContainer>
                 <CircularProgress />

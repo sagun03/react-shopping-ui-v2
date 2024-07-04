@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import Review from "./Review";
 import { mobile } from "../responsive";
 

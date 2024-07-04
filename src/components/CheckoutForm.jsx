@@ -5,7 +5,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import { mobile, ScreenWith670px } from "../responsive";

@@ -1,4 +1,4 @@
-import { MailOutline, Phone, Room, WhatsApp } from "@material-ui/icons";
+import { MailOutline, Phone, Room, WhatsApp } from "@mui/icons-material";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";

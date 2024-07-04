@@ -1,4 +1,4 @@
-import { SearchOutlined, ShoppingCartOutlined } from "@material-ui/icons";
+import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import styled from "styled-components";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import { addProducts } from "../redux/cartRedux";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import Alert from "./Alert";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 const Info = styled.div`
   opacity: 0;

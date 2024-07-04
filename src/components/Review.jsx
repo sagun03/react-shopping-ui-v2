@@ -5,31 +5,27 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  withStyles,
-} from "@material-ui/core";
+  styled,
+} from "@mui/material";
 import * as React from "react";
 
-const StyledList = withStyles(() => ({
-  root: {
-    width: "100%",
-    border: "2px solid steelblue",
-    height: "180px",
-    overflowY: "scroll",
-    "@media only screen and (max-width: 550px)": {
-      height: "280px",
-    },
+const StyledList = styled(List)(({ theme }) => ({
+  width: "100%",
+  border: "2px solid steelblue",
+  height: "180px",
+  overflowY: "scroll",
+  "@media only screen and (max-width: 550px)": {
+    height: "280px",
   },
-}))(List);
+}));
 
-const StyledListItem = withStyles(() => ({
-  root: {
-    border: "1px solid aliceblue",
-    gap: "3rem",
-    "@media only screen and (max-width: 550px)": {
-      gap: "2rem",
-    },
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  border: "1px solid aliceblue",
+  gap: "3rem",
+  "@media only screen and (max-width: 550px)": {
+    gap: "2rem",
   },
-}))(ListItem);
+}));
 
 const Review = ({ products, order }) => {
   return (
