@@ -12,7 +12,7 @@ import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Per
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { auth } from "../firebase";
+// import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
@@ -115,7 +115,9 @@ const MenuItemMyUser2 = styled('div')(({ theme }) => ({
 }));
 
 const NavBar = () => {
+  const userAuth = useUserAuth();
   const [user, setUser] = useState({});
+  const [login, setLogin] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
@@ -132,12 +134,14 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-  }, []);
+    console.log(userAuth.user);
+    if(userAuth.user) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+    setUser(userAuth.user);
+  }, [userAuth.user]);
 
   const onClickHandler = async (e) => {
     try {
@@ -170,14 +174,14 @@ const NavBar = () => {
           <MenuItemMyUser2 onClick={toggleDrawer(true)}>
             <ReorderIcon />
           </MenuItemMyUser2>
-          {user.accessToken && (
+          {login && (
             <MenuItem2>
               <Link to="/">
                 <HomeIcon />
               </Link>
             </MenuItem2>
           )}
-          {user.accessToken && (
+          {login && (
             <MenuItem2>
               <Link to="/orders">My Orders</Link>
             </MenuItem2>
@@ -192,7 +196,7 @@ const NavBar = () => {
           </Center>
         </Link>
         <Right>
-          {user.accessToken ? (
+          {login ? (
             <>
               <MenuItemMyUser onClick={handleClick}>
                 {(user?.displayName?.slice(0, 5)?.toUpperCase() ||

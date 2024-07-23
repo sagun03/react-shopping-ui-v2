@@ -91,7 +91,11 @@ const Login = () => {
     try {
       e.preventDefault();
       const { email = "", password = "" } = userInfo;
-      await login(email, password);
+      try {
+        login(email, password);
+      } catch (err) {
+        setError(err.message);
+      }
       navigate("/");
     } catch (err) {
       setUserInfo({});
@@ -109,7 +113,7 @@ const Login = () => {
   };
   return (
     <>
-     <Helmet>
+      <Helmet>
         <title>Login</title>
         <link rel="canonical" href="/login" />
       </Helmet>
