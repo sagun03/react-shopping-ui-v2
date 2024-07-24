@@ -1,52 +1,65 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { RecaptchaVerifier, onAuthStateChanged } from "firebase/auth";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from "firebase/auth";
+  useLogOut,
+  useLoginGoogle,
+  useLoginPhone,
+  useLoginEP,
+  useSignUp
+} from "../hooks/useAuthFirebase";
 import { auth } from "../firebase";
+
 
 const userAuthContext = createContext();
 
 export const UserAuthContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
-  const signUp = (email, password) =>
-    createUserWithEmailAndPassword(auth, email, password);
+  const { mutate: createUser  } = useSignUp();
+  const { mutate: loginEP } = useLoginEP();
+  const { mutate: signOut } = useLogOut();
+  const { mutate: googleLogin } = useLoginGoogle();
+  const { mutate: loginPhone } = useLoginPhone();
 
-  const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const signUp = (email, password) =>{
+    createUser({ email, password });
+  }
+
+  const login = (email, password) => {
+    loginEP({email, password});
+  }
 
   const logOut = () => {
     console.log("inside logout");
-    signOut(auth);
+    signOut();
   };
 
   const googleSignIn = () => {
-    const googleAuthProvider = new GoogleAuthProvider();
-    return signInWithPopup(auth, googleAuthProvider);
+    googleLogin();
   };
 
   const setUpRecaptcha = (number) => {
     const recaptcha = new RecaptchaVerifier("recaptcha-container", {}, auth);
     recaptcha.render();
-    return signInWithPhoneNumber(auth, number, recaptcha);
+    return loginPhone(number, recaptcha);
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      const userData = currentUser?.providerData;
-      setUser(userData);
+      // check if token is present in local storage
+      if(localStorage.getItem('token') && localStorage.getItem('token') !== "undefined") {
+        // if token is present then set the user
+        setUser(currentUser)
+      } else {
+        // if token is not present then set the user to null
+        setUser(null)
+      }
     });
-
     return () => {
       unsubscribe();
     };
   }, []);
+
+
   return (
     <userAuthContext.Provider
       value={{
@@ -57,10 +70,10 @@ export const UserAuthContextProvider = ({ children }) => {
         setUpRecaptcha,
         user,
         signOut,
-        auth,
+        auth
       }}
     >
-      {children}
+        {children}
     </userAuthContext.Provider>
   );
 };

@@ -3,7 +3,6 @@ import React, { Suspense } from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import { UserAuthContextProvider } from "./context/UserAuthContext";
 import Cart from "./pages/Cart";
 import "./App.css";
 import PhoneSignUp from "./pages/PhoneSignUp";
@@ -15,7 +14,7 @@ import Admin from "./pages/Admin";
 import Product from "./pages/Product";
 import { ProductProvider } from "./context/ProductContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { UserAuthContextProvider } from "./context/UserAuthContext";
 // const Product = React.lazy(() => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => resolve(import("./pages/Product")), 1000);
