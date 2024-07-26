@@ -7,10 +7,12 @@ import { useContext } from 'react';
 
 export const useLogin = () => {
     return useMutation({
-    mutationFn: (userData) => login(userData),
+    mutationFn: (userData) => {
+      localStorage.setItem('token', userData.IDtoken);
+      return login(userData);
+    },
     onSuccess: (data) => {
       console.log(data);
-      localStorage.setItem('token', data.data.accessToken);
     },
     onError: (error) => {
       console.log(error);
@@ -20,9 +22,12 @@ export const useLogin = () => {
 
 export const useRegister = () => {
   return useMutation({
-    mutationFn: (userData) => register(userData),
+    mutationFn: (userData) => {
+      localStorage.setItem('token', userData.IDtoken);
+      return register(userData);
+    },
     onSuccess: (data) => {
-      localStorage.setItem('token', data.data.accessToken);
+       console.log(data);
     },
     onError: (error) => {
       console.log(error);
@@ -32,9 +37,12 @@ export const useRegister = () => {
 
 export const useSignOut = () => {
   return useMutation({
-    mutationFn: (uid) => logout(uid),
+    mutationFn: (uid) => {
+      localStorage.removeItem('token');
+      return logout(uid);
+    },
     onSuccess: () => {
-      console.log("inside logout, auth server ");
+      console.log('Logged out');
     },
     onError: (error) => {
       console.log(error);

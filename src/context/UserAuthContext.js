@@ -48,7 +48,8 @@ export const UserAuthContextProvider = ({ children }) => {
       // check if token is present in local storage
       if(localStorage.getItem('token') && localStorage.getItem('token') !== "undefined") {
         // if token is present then set the user
-        setUser(currentUser)
+        setUser(currentUser);
+        console.log(currentUser);
       } else {
         // if token is not present then set the user to null
         setUser(null)
@@ -57,7 +58,7 @@ export const UserAuthContextProvider = ({ children }) => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  });
 
 
   return (

@@ -134,7 +134,6 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    console.log(userAuth.user);
     if(userAuth.user) {
       setLogin(true);
     } else {
