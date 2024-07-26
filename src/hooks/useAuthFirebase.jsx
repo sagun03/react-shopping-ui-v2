@@ -30,7 +30,7 @@ export const useSignUp = () => {
     onSuccess: (data) => {
       // Success actions
       register(extractUserData(data.user));
-      console.log(data);
+
     },
     onError: (error) => {
       // Error actions
@@ -47,7 +47,6 @@ export const useLoginEP = () => {
     onSuccess: (data) => {
       // Success actions
       login(extractUserData(data.user));
-      console.log(data);
     },
     onError: (error) => {
       // Error actions
@@ -63,7 +62,6 @@ export const useLoginGoogle = () => {
     onSuccess: (data) => {
       // Success actions
       login(extractUserData(data.user));
-      console.log(data);
       return data;
     },
     onError: (error) => {
@@ -80,7 +78,6 @@ export const useLoginPhone = () => {
     onSuccess: (data) => {
       // Success actions
       login(extractUserData(data.user));
-      console.log(data);
     },
     onError: (error) => {
       // Error actions
@@ -93,12 +90,12 @@ export const useLogOut = () => {
   const { mutate: logout } = useSignOut();
   return useMutation(
     {
-      mutationFn: () => signOut(auth),
+      mutationFn: () => {
+        localStorage.removeItem("token");
+        return signOut(auth)},
       onSuccess: (data) => {
         // Success actions
-        localStorage.removeItem('token');
         logout(data.user);
-        console.log(data);
       },
       onError: (error) => {
         // Error actions
