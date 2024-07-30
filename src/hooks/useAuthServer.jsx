@@ -1,16 +1,10 @@
 // queries for accessing user endpoints
 import { useMutation } from '@tanstack/react-query';
 import { login, register, logout } from '../services/authServices';
-import { useContext } from 'react';
-
-
 
 export const useLogin = () => {
     return useMutation({
-    mutationFn: (userData) => {
-      localStorage.setItem('token', userData.IDtoken);
-      return login(userData);
-    },
+    mutationFn: (userData) => login(userData),
     onSuccess: (data) => {
       console.log(data);
     },
@@ -22,10 +16,7 @@ export const useLogin = () => {
 
 export const useRegister = () => {
   return useMutation({
-    mutationFn: (userData) => {
-      localStorage.setItem('token', userData.IDtoken);
-      return register(userData);
-    },
+    mutationFn: (userData) => register(userData),
     onSuccess: (data) => {
        console.log(data);
     },
@@ -37,10 +28,7 @@ export const useRegister = () => {
 
 export const useSignOut = () => {
   return useMutation({
-    mutationFn: (uid) => {
-      localStorage.removeItem('token');
-      return logout(uid);
-    },
+    mutationFn: (uid) => logout(uid),
     onSuccess: () => {
       console.log('Logged out');
     },

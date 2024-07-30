@@ -15,6 +15,7 @@ import Product from "./pages/Product";
 import { ProductProvider } from "./context/ProductContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { UserContextProvider } from "./context/UserContext";
 // const Product = React.lazy(() => {
 //   return new Promise((resolve) => {
 //     setTimeout(() => resolve(import("./pages/Product")), 1000);
@@ -30,65 +31,67 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserAuthContextProvider>
-        <ProductProvider>
-        <Router>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        display: "block",
-                        position: "absolute",
-                        top: "50%",
-                        left: "45%",
-                      }}
-                    >
-                      <CircularProgress />
-                    </div>
-                  }
-                >
-                  <Home />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/product/:id"
-              element={
-                // <Suspense
-                //   fallback={
-                //     <div
-                //       style={{
-                //         display: "block",
-                //         position: "absolute",
-                //         top: "50%",
-                //         left: "50%",
-                //       }}
-                //     >
-                //       <CircularProgress />
-                //     </div>
-                //   }
-                // >
-                //   <Product />
-                // </Suspense>
-                <Product />
-              }
-            />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/phonesignup" element={<PhoneSignUp />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/products" element={<ProductSearch />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-        </Router>
-        </ProductProvider>
-      </UserAuthContextProvider>
+      <UserContextProvider>
+        <UserAuthContextProvider>
+          <ProductProvider>
+          <Router>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Suspense
+                    fallback={
+                      <div
+                        style={{
+                          display: "block",
+                          position: "absolute",
+                          top: "50%",
+                          left: "45%",
+                        }}
+                      >
+                        <CircularProgress />
+                      </div>
+                    }
+                  >
+                    <Home />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/product/:id"
+                element={
+                  // <Suspense
+                  //   fallback={
+                  //     <div
+                  //       style={{
+                  //         display: "block",
+                  //         position: "absolute",
+                  //         top: "50%",
+                  //         left: "50%",
+                  //       }}
+                  //     >
+                  //       <CircularProgress />
+                  //     </div>
+                  //   }
+                  // >
+                  //   <Product />
+                  // </Suspense>
+                  <Product />
+                }
+              />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/phonesignup" element={<PhoneSignUp />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/products" element={<ProductSearch />} />
+              <Route path="/admin" element={<Admin />} />
+            </Routes>
+          </Router>
+          </ProductProvider>
+        </UserAuthContextProvider>
+      </UserContextProvider>
     </QueryClientProvider>
   );
 };

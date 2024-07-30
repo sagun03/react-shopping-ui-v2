@@ -26,7 +26,7 @@ const PhoneSignUp = () => {
   const [confirmObj, setConfirmObj] = useState({});
   const { setUpRecaptcha } = useUserAuth();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const getOtp = async (e) => {
     e.preventDefault();
     if (number === "" || number === undefined) {

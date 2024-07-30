@@ -1,20 +1,18 @@
 import apiClient from "../api/client";
 
 export const login = async (userData) => {
-  const { email, uid, RFtoken, IDtoken, role } = userData;
+  const { email, IDtoken, role } = userData;
   try {
     const response = await apiClient.request({
       method: 'POST',
       url: '/user/login',
       data: {
-        uid: uid,
         role: role,
         email: email
       },
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${IDtoken}`,
-        'RefreshToken': `Bearer ${RFtoken}`
+        'Authorization': `Bearer ${IDtoken}`
       }
     });
     return response;
@@ -25,20 +23,18 @@ export const login = async (userData) => {
 };
 
 export const register = async (userData) => {
-  const { email, uid, RFtoken, IDtoken, role } = userData;
+  const { email, IDtoken, role } = userData;
   try {
     const response = await apiClient.request({
       method: 'POST',
       url: '/user/register',
       data: {
-        uid: uid,
         role: role,
         email: email
       },
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${IDtoken}`,
-        'RefreshToken': `Bearer ${RFtoken}`
+        'Authorization': `Bearer ${IDtoken}`
       }
     });
     return response;

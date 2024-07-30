@@ -17,8 +17,6 @@ import {
 
 const extractUserData = (user) => ({
   email: user.email ? user.email : (user.phoneNumber ? user.phoneNumber : undefined),
-  uid: user.uid,
-  RFtoken: user.refreshToken,
   IDtoken: user.accessToken,
   role: "user"
 });
@@ -30,7 +28,6 @@ export const useSignUp = () => {
     onSuccess: (data) => {
       // Success actions
       register(extractUserData(data.user));
-
     },
     onError: (error) => {
       // Error actions
@@ -62,7 +59,7 @@ export const useLoginGoogle = () => {
     onSuccess: (data) => {
       // Success actions
       login(extractUserData(data.user));
-      return data;
+      console.log(data);
     },
     onError: (error) => {
       // Error actions
@@ -90,9 +87,7 @@ export const useLogOut = () => {
   const { mutate: logout } = useSignOut();
   return useMutation(
     {
-      mutationFn: () => {
-        localStorage.removeItem("token");
-        return signOut(auth)},
+      mutationFn: () => signOut(auth),
       onSuccess: (data) => {
         // Success actions
         logout(data.user);

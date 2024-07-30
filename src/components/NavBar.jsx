@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Backdrop,
   Badge,
@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
+import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
@@ -115,9 +116,7 @@ const MenuItemMyUser2 = styled('div')(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const userAuth = useUserAuth();
-  const [user, setUser] = useState({});
-  const [login, setLogin] = useState(false);
+  const user = useUserContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
@@ -132,15 +131,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    if(userAuth.user) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-    setUser(userAuth.user);
-  }, [userAuth.user]);
 
   const onClickHandler = async (e) => {
     try {
@@ -173,14 +163,14 @@ const NavBar = () => {
           <MenuItemMyUser2 onClick={toggleDrawer(true)}>
             <ReorderIcon />
           </MenuItemMyUser2>
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/">
                 <HomeIcon />
               </Link>
             </MenuItem2>
           )}
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/orders">My Orders</Link>
             </MenuItem2>
@@ -195,7 +185,7 @@ const NavBar = () => {
           </Center>
         </Link>
         <Right>
-          {login ? (
+          {user ? (
             <>
               <MenuItemMyUser onClick={handleClick}>
                 {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
