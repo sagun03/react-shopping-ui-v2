@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Divider,
   Grid,
@@ -5,26 +6,26 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
 import * as React from "react";
 
-const StyledList = styled(List)(({ theme }) => ({
+const StyledList = styled(List)(() => ({
   width: "100%",
   border: "2px solid steelblue",
   height: "180px",
   overflowY: "scroll",
   "@media only screen and (max-width: 550px)": {
-    height: "280px",
-  },
+    height: "280px"
+  }
 }));
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
+const StyledListItem = styled(ListItem)(() => ({
   border: "1px solid aliceblue",
   gap: "3rem",
   "@media only screen and (max-width: 550px)": {
-    gap: "2rem",
-  },
+    gap: "2rem"
+  }
 }));
 
 const Review = ({ products, order }) => {
@@ -66,7 +67,7 @@ const Review = ({ products, order }) => {
           <Typography variant="h6" gutterBottom style={{ marginTop: "20px" }}>
             Order Status:
           </Typography>
-          <Typography gutterBottom>{order?.status || 'Pending'}</Typography>
+          <Typography gutterBottom>{order?.status || "Pending"}</Typography>
           {/* <Typography gutterBottom>{order?.address}</Typography> */}
         </Grid>
       </Grid>

@@ -1,9 +1,8 @@
-import React from "react";
-import NavBar from "../components/NavBar";
-import Products from "../components/Products";
-import Announcement from "../components/Announcement";
-import BottomNav from "../components/BottomNav";
-import { Helmet } from "react-helmet-async";
+import NavBar from "../components/NavBar"
+import Products from "../components/Products"
+import Announcement from "../components/Announcement"
+import BottomNav from "../components/BottomNav"
+import { Helmet } from "react-helmet-async"
 
 const ProductSearch = () => {
   return (
@@ -18,7 +17,7 @@ const ProductSearch = () => {
       <Products />
       <BottomNav />
     </>
-  );
-};
+  )
+}
 
-export default ProductSearch;
+export default ProductSearch

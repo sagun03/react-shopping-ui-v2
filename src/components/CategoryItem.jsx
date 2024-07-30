@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +7,7 @@ import {
   ScreenWith1200px,
   ScreenWith1470px,
   ScreenWith670px,
-  mobileSuperSmall,
+  mobileSuperSmall
 } from "../responsive";
 
 const InfoContainer = styled.div`
@@ -91,7 +92,7 @@ const CategoryItem = ({ img, title, detail, price, id, defaultSize }) => {
         </Info>
         <Price>Rs. {price[defaultSize]}</Price>
         <Price2
-        >  
+        >
           Rs. {price[defaultSize] - price[defaultSize] * 0.05}
         </Price2>
         <Link to={`/product/${id}`}>

@@ -2,7 +2,7 @@ import {
   Badge,
   BottomNavigation,
   BottomNavigationAction,
-  Paper,
+  Paper
 } from "@mui/material";
 import React, { useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
@@ -34,7 +34,7 @@ const bottomNavigationValues = {
   0: "/",
   1: "/products",
   2: "/orders",
-  3: "/cart",
+  3: "/cart"
 };
 const BottomNav = () => {
   const { user } = useUserAuth();

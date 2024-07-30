@@ -42,11 +42,11 @@ const Categories = () => {
             to={{
               // transform: "translateY(0)",
               opacity: 1,
-              transitionDelay: "0.3s",
+              transitionDelay: "0.3s"
             }}
             from={{
               "-webkit-animation-duration": "1s",
-              opacity: 0,
+              opacity: 0
             }}
             transition="all 1s ease 0s"
           >
@@ -60,7 +60,7 @@ const Categories = () => {
           // slidesPerView={3}
           autoplay={{
             delay: 0,
-            disableOnInteraction: false,
+            disableOnInteraction: false
           }}
           speed={6000}
           spaceBetween={40}
@@ -70,18 +70,18 @@ const Categories = () => {
           modules={[Navigation, Pagination, Autoplay]}
           breakpoints={{
             1600: {
-              slidesPerView: 3.5,
+              slidesPerView: 3.5
             },
             990: {
-              slidesPerView: 3,
+              slidesPerView: 3
             },
             550: {
-              slidesPerView: 2,
+              slidesPerView: 2
             },
             0: {
               slidesPerView: 1,
-              pagination: true,
-            },
+              pagination: true
+            }
           }}
           className="mySwiper1"
         >

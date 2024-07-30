@@ -5,16 +5,15 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import { mobile, tablet, ScreenWith670px } from "../responsive";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addProducts } from "../redux/cartRedux";
-import { useState } from "react";
 import { useLocation } from "react-router";
 import { getProductById } from "../utils/helper";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "../components/Alert";
 import { Link } from "react-router-dom";
-import { IconButton, CircularProgress } from "@mui/material";
+import { IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 // import { Helmet } from "react-helmet-async";
 
@@ -128,16 +127,16 @@ const Button = styled.button`
     background-color: #f8f4f4;
   }
 `;
-const CircularContainer = styled.div`
-  display: block;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  ${mobile({
-    top: "40%",
-    left: "46.5%",
-  })}
-`;
+// const CircularContainer = styled.div`
+//   display: block;
+//   position: absolute;
+//   top: 40%;
+//   left: 50%;
+//   ${mobile({
+//     top: "40%",
+//     left: "46.5%"
+//   })}
+// `;
 
 const Product = () => {
   const [product, setProduct] = useState({});
@@ -147,20 +146,11 @@ const Product = () => {
   const [size, setSize] = useState("");
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window?.scrollTo(0, 0);
   }, []);
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
-
-  // useEffect(() => {
-  //   setPrice(getPrice(size));
-  // }, [size]);
 
   useEffect(() => {
     if (id) {
@@ -182,7 +172,7 @@ const Product = () => {
         size,
         price: product?.price[size] - product?.price[size] * 0.05,
         productId: uuidv4(),
-        originalPrice: product?.price[size],
+        originalPrice: product?.price[size]
       })
     );
     setOpenAlert(true);
@@ -197,77 +187,67 @@ const Product = () => {
   };
   return (
     <>
-
       <Container>
         <Announcement />
         <NavBar />
         <Wrapper>
-          {loading ? (
-            <CircularContainer>
-              <CircularProgress />
-            </CircularContainer>
-          ) : (
-            <>
-              {" "}
-              <ImgContainer>
-                {size && <Image src={product?.img[size]} />}
-              </ImgContainer>
-              <InfoContainer>
-                <Title>{product?.title}</Title>
-                {product?.productDescription?.map((desc) => (
-                  <Desc>{desc}</Desc>
-                ))}
-                {size && (
-                  <>
-                    <Price>Rs. {product?.price[size]} </Price>{" "}
-                    <span
-                      style={{
-                        fontWeight: "100",
-                        fontSize: "40px",
-                        marginLeft: "10px",
-                      }}
-                    >
-                      Rs.{" "}
-                      {(
-                        product?.price[size] -
-                        product?.price[size] * 0.05 +
-                        0.0
-                      ).toFixed(2)}
-                    </span>
-                  </>
-                )}
-                <FilterContainer>
-                  <Filter>
-                    <FilterTitle>Size</FilterTitle>
-                    <FilterSize
-                      value={size}
-                      onChange={(e) => setSize(e.target.value)}
-                    >
-                      {product?.size &&
-                        product?.size?.map((s) => (
-                          <FilterSizeOption>{s}</FilterSizeOption>
-                        ))}
-                    </FilterSize>
-                  </Filter>
-                </FilterContainer>
-                <AddContainer>
-                  <AmountContainer>
-                    <IconButton disabled={quantity === 1}>
-                      <Remove onClick={() => handleQuantity("dec")} />
-                    </IconButton>
-                    <Amount>{quantity}</Amount>
-                    <IconButton>
-                      <Add onClick={() => handleQuantity("add")} />
-                    </IconButton>
-                  </AmountContainer>
-                  <Button onClick={() => handleClick()}>ADD TO CART</Button>
-                  <Link to="/cart">
-                    <Button>GO TO CART</Button>
-                  </Link>
-                </AddContainer>
-              </InfoContainer>
-            </>
-          )}
+          <ImgContainer>
+            {size && <Image src={product?.img[size]} />}
+          </ImgContainer>
+          <InfoContainer>
+            <Title>{product?.title}</Title>
+            {product?.productDescription?.map((desc, index) => (
+              <Desc key={index}>{desc}</Desc>
+            ))}
+            {size && (
+              <>
+                <Price>Rs. {product?.price[size]} </Price>{" "}
+                <span
+                  style={{
+                    fontWeight: "100",
+                    fontSize: "40px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Rs.
+                  {(
+                    product?.price[size] -
+                    product?.price[size] * 0.05 +
+                    0.0
+                  ).toFixed(2)}
+                </span>
+              </>
+            )}
+            <FilterContainer>
+              <Filter>
+                <FilterTitle>Size</FilterTitle>
+                <FilterSize
+                  value={size}
+                  onChange={(e) => setSize(e.target.value)}
+                >
+                  {product?.size &&
+                    product?.size?.map((s, index) => (
+                      <FilterSizeOption key={index}>{s}</FilterSizeOption>
+                    ))}
+                </FilterSize>
+              </Filter>
+            </FilterContainer>
+            <AddContainer>
+              <AmountContainer>
+                <IconButton disabled={quantity === 1}>
+                  <Remove onClick={() => handleQuantity("dec")} />
+                </IconButton>
+                <Amount>{quantity}</Amount>
+                <IconButton>
+                  <Add onClick={() => handleQuantity("add")} />
+                </IconButton>
+              </AmountContainer>
+              <Button onClick={() => handleClick()}>ADD TO CART</Button>
+              <Link to="/cart">
+                <Button>GO TO CART</Button>
+              </Link>
+            </AddContainer>
+          </InfoContainer>
         </Wrapper>
         <NewsLetter />
         <Footer />

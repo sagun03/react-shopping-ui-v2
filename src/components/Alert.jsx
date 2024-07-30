@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import MuiAlert from "@mui/lab/Alert";
 import Snackbar from "@mui/material/Snackbar";

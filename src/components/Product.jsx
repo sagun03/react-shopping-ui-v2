@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ScreenWith670px, mobile } from "../responsive";
 import { useDispatch } from "react-redux";
 import { addProducts } from "../redux/cartRedux";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
 import Alert from "./Alert";
 import { Button } from "@mui/material";
 
@@ -33,7 +33,7 @@ const WrapperContainer = styled.div`
   overflow: visible;
   ${ScreenWith670px({
     margin: 0,
-    height: "25rem",
+    height: "25rem"
   })}
 `;
 
@@ -105,7 +105,7 @@ const CustomButton = styled(Button)`
     font-size: 11px;
     border-radius: 15px;
     ${mobile({
-      fontSize: "13px",
+      fontSize: "13px"
     })}
   }
   &:hover {
@@ -115,7 +115,7 @@ const CustomButton = styled(Button)`
     transform: scale(1.1);
   }
 `;
-const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
+const Product = ({ img, id, title, price, defaultSize, ...rest }) => {
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -128,12 +128,12 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
         size: defaultSize,
         quantity: 1,
         id,
-        price: price[defaultSize] -  price[defaultSize] * 0.05,
+        price: price[defaultSize] - price[defaultSize] * 0.05,
         productId: uuidv4(),
         originalPrice: price[defaultSize]
       })
     );
-    setOpenAlert(true);
+    // setOpenAlert(true);
   };
   return (
     <WrapperContainer>
@@ -157,7 +157,7 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
             marginTop: "5px",
             fontSize: "1rem",
             alignItems: "center",
-            fontWeight: 500,
+            fontWeight: 500
           }}
         >
           {title}{" "}
@@ -166,7 +166,7 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
           style={{
             marginTop: "3px",
             fontSize: "0.9rem",
-            fontWeight: 400,
+            fontWeight: 400
           }}
         >
           ({defaultSize}){" "}
@@ -178,7 +178,7 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
             fontSize: "1rem",
             marginTop: "10px",
             fontWeight: 500,
-            alignItems: "center",
+            alignItems: "center"
           }}
         >
           <span
@@ -189,7 +189,7 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
               display: "flex",
               alignItems: "center",
               marginRight: "5px",
-              color: "#615F5F",
+              color: "#615F5F"
             }}
           >
             {" "}
@@ -202,7 +202,7 @@ const Product = ({ img, id, title, size, price, defaultSize, ...rest }) => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "center"
         }}
       >
         <CustomButton variant="outlined" color="primary" onClick={handleClick}>

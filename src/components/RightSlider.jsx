@@ -7,7 +7,7 @@ import {
   ScreenWith1470px,
   ScreenWith1670px,
   ScreenWith670px,
-  ScreenWith960px,
+  ScreenWith960px
 } from "../responsive";
 import HandWash from "./../pages/images/hw.png";
 import FloorCleaner from "./../pages/images/fc.png";
@@ -128,16 +128,16 @@ const RightSlider = () => {
           to={{
             opacity: 1,
             scale: "1",
-            transitionDelay: "0s",
+            transitionDelay: "0s"
           }}
           from={{
             "-webkit-animation-duration": "1s",
             scale: "0",
-            opacity: 0,
+            opacity: 0
           }}
           transition="all 1s ease 0s"
         >
-          <Link to={`/products?name=handWash&title=Hand Wash`}>
+          <Link to={"/products?name=handWash&title=Hand Wash"}>
             <Slide bg={"fcf1ed"}>
               <InfoContainer>
                 <Title>{"Premium Liquid Soap"}</Title>
@@ -157,16 +157,16 @@ const RightSlider = () => {
           to={{
             opacity: 1,
             scale: "1",
-            transitionDelay: "0.1s",
+            transitionDelay: "0.1s"
           }}
           from={{
             "-webkit-animation-duration": "1s",
             scale: "0",
-            opacity: 0,
+            opacity: 0
           }}
           transition="all 1s ease 0s"
         >
-          <Link to={`/products?name=floorCleaner&title=Floor Cleaner`}>
+          <Link to={"/products?name=floorCleaner&title=Floor Cleaner"}>
             <Slide fc={true} bg={"F7F7F7"}>
               <ImgContainer fc={true}>
                 <Image fc={true} src={FloorCleaner} />

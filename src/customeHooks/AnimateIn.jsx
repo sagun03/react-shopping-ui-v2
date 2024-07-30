@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import useElementOnScreen from "./Observer";
 
@@ -14,11 +15,11 @@ const AnimateIn = ({ from, to, children, transition }) => {
         onScreen
           ? {
               ...to,
-              transition,
+              transition
             }
           : {
               ...from,
-              transition,
+              transition
             }
       }
     >
@@ -61,5 +62,5 @@ const ScaleIn = ({ children }) => (
 export const Animate = {
   FadeIn,
   FadeUp,
-  ScaleIn,
+  ScaleIn
 };

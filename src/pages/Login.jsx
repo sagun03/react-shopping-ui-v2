@@ -117,7 +117,6 @@ const Login = () => {
         <title>Login</title>
         <link rel="canonical" href="/login" />
       </Helmet>
-   
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
