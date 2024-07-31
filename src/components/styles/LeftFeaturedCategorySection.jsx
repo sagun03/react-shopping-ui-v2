@@ -1,16 +1,11 @@
-import styled, { keyframes } from "styled-components";
-import React from "react";
-import { SlidesItems } from "../utils/data";
 import {
   mobile,
   ScreenWith1080px,
   ScreenWith1200px,
   ScreenWith670px,
   ScreenWith960px
-} from "../responsive";
-import { Link } from "react-router-dom";
-import AnimateIn from "../customeHooks/AnimateIn";
-// import { Animate } from "../customeHooks/AnimateIn";
+} from "../../responsive";
+import styled, { keyframes } from "styled-components";
 
 const Container = styled.div`
   width: 100%;
@@ -20,7 +15,7 @@ const Container = styled.div`
   overflow: visible;
 `;
 
-const Slide = styled.div`
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -155,75 +150,4 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
-const Slider = () => {
-  return (
-    <Container>
-      {SlidesItems.map(({ bg, img, title, desc }, index) => (
-        <>
-          {index === 0 ? (
-            <Slide bg={bg}>
-              <ImgContainer>
-                <Image src={img} />
-              </ImgContainer>
-              <InfoContainer>
-                <AnimateIn
-                  to={{
-                    transform: "translateY(0)",
-                    opacity: 1,
-                    transitionDelay: "0.2s"
-                  }}
-                  from={{
-                    "-webkit-animation-duration": "1s",
-                    transform: "translateY(-30px)",
-                    opacity: 0
-                  }}
-                  transition="all 1s ease 0s"
-                >
-                  <Title>{title}</Title>
-                </AnimateIn>
-                <AnimateIn
-                  to={{
-                    transform: "translateY(0)",
-                    opacity: 1,
-                    transitionDelay: "0.3s"
-                  }}
-                  from={{
-                    "-webkit-animation-duration": "1s",
-                    transform: "translateY(-30px)",
-                    opacity: 0
-                  }}
-                  transition="all 1s ease 0s"
-                >
-                  <Desc>{desc}</Desc>
-                </AnimateIn>
-                <AnimateIn
-                  to={{
-                    transform: "translateY(0)",
-                    opacity: 1,
-                    transitionDelay: "0.5s"
-                  }}
-                  from={{
-                    "-webkit-animation-duration": "1s",
-                    transform: "translateY(-30px)",
-                    opacity: 0
-                  }}
-                  transition="all 1s ease 0s"
-                >
-                  <Link to={`/products?name=detergent&title=${title}`}>
-                    <ButtonContainer>
-                      <Button>SHOP NOW</Button>
-                    </ButtonContainer>
-                  </Link>
-                </AnimateIn>
-              </InfoContainer>
-            </Slide>
-          ) : (
-            <></>
-          )}
-        </>
-      ))}
-    </Container>
-  );
-};
-
-export default Slider;
+export { Container, ImgContainer, Image, InfoContainer, Wrapper, Title, Desc, Button, ButtonContainer };

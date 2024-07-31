@@ -80,7 +80,7 @@ const ProductsRange = () => {
     }
     setSelectedCategory(title);
     handleMenuClose();
-  }, [products]);
+  }, [products, searchParams]);
 
   useEffect(() => {
     const param = searchParams.get("name");
@@ -117,6 +117,8 @@ const ProductsRange = () => {
   }, [searchTerm, products]);
 
   const sortedProducts = useMemo(() => filteredProducts.slice().sort(sortProducts), [filteredProducts, sortProducts]);
+  const flattenProducts = flattenProductSizes(sortedProducts);
+  console.log("sortedProducts", sortedProducts);
   return (
     <>
       <Wrapper>
@@ -126,7 +128,7 @@ const ProductsRange = () => {
         <ProductHeaderContainer>
           <ProductHeaderContent>
             <ProductHeaderCount>
-              Browse Products ({filteredProducts.length})
+              Browse Products ({flattenProducts.length})
             </ProductHeaderCount>
             <ProductHeaderLeft>
               <ProductHeaderLeftContent>
@@ -218,7 +220,7 @@ const ProductsRange = () => {
             </Menu>
           </ProductMenuListMobile>
           <ProductImageContainer>
-            {flattenProductSizes(sortedProducts).map((product) => (
+            {flattenProducts.map((product) => (
               <ProductImageWrapper key={uuidv4()}>
                 <ProductRangeCard {...product} />
               </ProductImageWrapper>
