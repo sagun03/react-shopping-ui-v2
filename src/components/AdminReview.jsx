@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import {
   Button,
@@ -6,7 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
+  Typography
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -16,16 +17,16 @@ const StyledList = styled(List)(({ theme }) => ({
   height: "180px",
   overflowY: "scroll",
   [theme.breakpoints.down("sm")]: {
-    height: "280px",
-  },
+    height: "280px"
+  }
 }));
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
   border: "1px solid aliceblue",
   gap: "3rem",
   [theme.breakpoints.down("sm")]: {
-    gap: "2rem",
-  },
+    gap: "2rem"
+  }
 }));
 
 const AdminReview = ({ products, order, updateOrderStatus }) => {
@@ -41,7 +42,7 @@ const AdminReview = ({ products, order, updateOrderStatus }) => {
         User Id: {order?.userId}
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        Name and Phone: {order?.name || 'n/a'} {order?.phoneNumber || "n/a"}
+        Name and Phone: {order?.name || "n/a"} {order?.phoneNumber || "n/a"}
       </Typography>
       <StyledList disablePadding>
         {products.map((product, index) => (
@@ -73,10 +74,10 @@ const AdminReview = ({ products, order, updateOrderStatus }) => {
           <Typography variant="h6" gutterBottom style={{ marginTop: "20px" }}>
             Order Status:
           </Typography>
-          <Typography gutterBottom>{order?.status || 'Pending'}</Typography>
-          <div style={{ display: 'flex', gap: ".5rem", flexDirection: "column"}}>
-            <Button variant="contained" disabled={order?.status === "Pending"} color="primary" onClick={() => updateOrderStatus(order?.id,  "Pending")}>Change status to Pending</Button>
-            <Button variant="contained" disabled={order?.status === "Confirmed"} color="primary" onClick={() => updateOrderStatus(order?.id,  "Confirmed")}>Change status to Confirmed</Button>
+          <Typography gutterBottom>{order?.status || "Pending"}</Typography>
+          <div style={{ display: "flex", gap: ".5rem", flexDirection: "column" }}>
+            <Button variant="contained" disabled={order?.status === "Pending"} color="primary" onClick={() => updateOrderStatus(order?.id, "Pending")}>Change status to Pending</Button>
+            <Button variant="contained" disabled={order?.status === "Confirmed"} color="primary" onClick={() => updateOrderStatus(order?.id, "Confirmed")}>Change status to Confirmed</Button>
             <Button variant="contained" disabled={order?.status === "Delivered"} color="primary" onClick={() => updateOrderStatus(order?.id, "Delivered")}>Change status to Delivered</Button>
           </div>
         </Grid>

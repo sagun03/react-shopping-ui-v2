@@ -13,14 +13,14 @@ const Summary = styled.div`
   padding: 20px;
   height: fit-content;
   ${mobile({
-    marginTop: "2rem",
+    marginTop: "2rem"
   })}
 `;
 
 const SummaryTitle = styled.h1`
   font-weight: 200;
   ${ScreenWith960px({
-    fontSize: "1.5rem",
+    fontSize: "1.5rem"
   })}
 `;
 
@@ -32,7 +32,7 @@ const SummaryItem = styled.div`
   font-size: ${(props) => props.type === "total" && "24px"};
 
   ${ScreenWith960px({
-    fontSize: (props) => (props.type === "total" ? "1.25rem" : "1rem"),
+    fontSize: (props) => (props.type === "total" ? "1.25rem" : "1rem")
   })}
 `;
 

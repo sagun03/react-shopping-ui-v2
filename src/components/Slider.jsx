@@ -6,7 +6,7 @@ import {
   ScreenWith1080px,
   ScreenWith1200px,
   ScreenWith670px,
-  ScreenWith960px,
+  ScreenWith960px
 } from "../responsive";
 import { Link } from "react-router-dom";
 import AnimateIn from "../customeHooks/AnimateIn";
@@ -158,7 +158,7 @@ const ButtonContainer = styled.div`
 const Slider = () => {
   return (
     <Container>
-      {SlidesItems.map(({ bg, img, title, desc, id }, index) => (
+      {SlidesItems.map(({ bg, img, title, desc }, index) => (
         <>
           {index === 0 ? (
             <Slide bg={bg}>
@@ -170,12 +170,12 @@ const Slider = () => {
                   to={{
                     transform: "translateY(0)",
                     opacity: 1,
-                    transitionDelay: "0.2s",
+                    transitionDelay: "0.2s"
                   }}
                   from={{
                     "-webkit-animation-duration": "1s",
                     transform: "translateY(-30px)",
-                    opacity: 0,
+                    opacity: 0
                   }}
                   transition="all 1s ease 0s"
                 >
@@ -185,12 +185,12 @@ const Slider = () => {
                   to={{
                     transform: "translateY(0)",
                     opacity: 1,
-                    transitionDelay: "0.3s",
+                    transitionDelay: "0.3s"
                   }}
                   from={{
                     "-webkit-animation-duration": "1s",
                     transform: "translateY(-30px)",
-                    opacity: 0,
+                    opacity: 0
                   }}
                   transition="all 1s ease 0s"
                 >
@@ -200,12 +200,12 @@ const Slider = () => {
                   to={{
                     transform: "translateY(0)",
                     opacity: 1,
-                    transitionDelay: "0.5s",
+                    transitionDelay: "0.5s"
                   }}
                   from={{
                     "-webkit-animation-duration": "1s",
                     transform: "translateY(-30px)",
-                    opacity: 0,
+                    opacity: 0
                   }}
                   transition="all 1s ease 0s"
                 >

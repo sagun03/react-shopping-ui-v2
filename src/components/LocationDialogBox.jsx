@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -6,11 +7,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { CustomButton } from "./OrderSummary";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { useUserAuth } from "../context/UserAuthContext";
-import { useDispatch } from "react-redux";
 import { clearCart } from "../redux/cartRedux";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -26,27 +26,26 @@ const LocationDialogBox = ({ open, setOpen }) => {
     setOpen(false);
   };
   const { user } = useUserAuth();
-const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart);
 
   const push = async () => {
-    if (Boolean(user)) {
-     await addDoc(ordersCollectionRef, {
-      date: new Date().toLocaleDateString("en-GB"),
-      name: user[0]?.displayName || "", 
-      userId: user[0]?.uid || "",
-      emailId: user[0]?.email ||"", 
-      phoneNumber: user[0]?.phoneNumber ||"",
-      status: 'Pending',
-      products: cart?.products?.map((item) => ({ title: item?.title, quantity: item?.quantity, size: item?.size, price: item?.price})) || [],
-      total:  cart?.total < 200
-      ? cart?.total
-      : cart?.total -
+    if (user) {
+      await addDoc(ordersCollectionRef, {
+        date: new Date().toLocaleDateString("en-GB"),
+        name: user[0]?.displayName || "",
+        userId: user[0]?.uid || "",
+        emailId: user[0]?.email || "",
+        phoneNumber: user[0]?.phoneNumber || "",
+        status: "Pending",
+        products: cart?.products?.map((item) => ({ title: item?.title, quantity: item?.quantity, size: item?.size, price: item?.price })) || [],
+        total: cart?.total < 200
+          ? cart?.total
+          : cart?.total -
         ((20 / 100) * cart?.total + 0.0).toFixed(2)
       });
     }
-
-}
-const navigate = useNavigate();
+  }
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     await push()
@@ -81,7 +80,7 @@ const navigate = useNavigate();
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Right now, we're operating exclusive in Dhampur dist. Bijnor
+            Right now, we`&apos;`re operating exclusive in Dhampur dist. Bijnor
             UP (Pin code: 246761)
           </DialogContentText>
         </DialogContent>
@@ -90,7 +89,7 @@ const navigate = useNavigate();
             style={{
               display: "flex",
               justifyContent: "flex-end",
-              gap: "20px",
+              gap: "20px"
             }}
           >
             <Button onClick={handleClose} color="primary">
@@ -112,7 +111,7 @@ const navigate = useNavigate();
                       ? cart?.total
                       : cart?.total -
                         ((20 / 100) * cart?.total + 0.0).toFixed(2)
-                  } ${cart?.total > 200 ? `, with discount of 20%` : ""}
+                  } ${cart?.total > 200 ? ", with discount of 20%" : ""}
                   `
                 )}`}
                 rel="noreferrer"

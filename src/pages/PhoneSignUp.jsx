@@ -5,14 +5,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormHelperText,
+  FormHelperText
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Wrapper, Title, Form, Button } from "./Register";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { useState } from "react";
 import { Link } from "./Login";
 import { useUserAuth } from "../context/UserAuthContext";
 import OTPInput from "react-otp-input";

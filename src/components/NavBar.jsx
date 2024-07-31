@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Backdrop,
   Badge,
-  CircularProgress,
   ListItemIcon,
   ListItemText,
   Menu,
-  SwipeableDrawer,
+  SwipeableDrawer
 } from "@mui/material";
 import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -17,8 +16,9 @@ import { useUserAuth } from "../context/UserAuthContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
+import Loader from "./Loader";
 
-const Container = styled('div')(({ theme }) => ({
+const Container = styled("div")(() => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -28,10 +28,10 @@ const Container = styled('div')(({ theme }) => ({
   width: "100%",
   zIndex: 1299,
   ...mobile({ top: "0px" }),
-  ...mobileSuperSmall({ top: "0px" }),
+  ...mobileSuperSmall({ top: "0px" })
 }));
 
-const Wrapper = styled('div')(({ theme }) => ({
+const Wrapper = styled("div")(() => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -40,78 +40,78 @@ const Wrapper = styled('div')(({ theme }) => ({
   ...ScreenWith670px({
     justifyContent: "space-between",
     width: "95%",
-    padding: "10px 10px",
-  }),
+    padding: "10px 10px"
+  })
 }));
 
-const Left = styled('div')(({ theme }) => ({
+const Left = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
-  gap: "1rem",
+  gap: "1rem"
 }));
 
-const Center = styled('div')(({ theme }) => ({
-  textAlign: "center",
+const Center = styled("div")(() => ({
+  textAlign: "center"
 }));
 
-const Logo = styled('h1')(({ theme }) => ({
+const Logo = styled("h1")(() => ({
   fontWeight: 400,
   ...ScreenWith670px({
-    fontSize: "1.5rem",
+    fontSize: "1.5rem"
   }),
-  ...mobile({ display: "none" }),
+  ...mobile({ display: "none" })
 }));
 
-const Logo2 = styled('div')(({ theme }) => ({
+const Logo2 = styled("div")(() => ({
   display: "none",
   fontWeight: 400,
   ...mobile({
     display: "flex",
     height: "38px",
-    marginRight: "0px",
-  }),
+    marginRight: "0px"
+  })
 }));
 
-const Right = styled('div')(({ theme }) => ({
+const Right = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "1rem",
+  gap: "1rem"
 }));
 
-const MenuItem = styled('div')(({ theme }) => ({
+const MenuItem = styled("div")(() => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" })
+}));
+
+const MenuItem2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
+  ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItem2 = styled('div')(({ theme }) => ({
+const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "none" }),
+  ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser = styled('div')(({ theme }) => ({
-  fontSize: "14px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "none" }),
-}));
-
-const MenuItemMyUser2 = styled('div')(({ theme }) => ({
+const MenuItemMyUser2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "none",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "flex" }),
+  ...ScreenWith670px({ display: "flex" })
 }));
 
 const NavBar = () => {
@@ -134,7 +134,7 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    if(userAuth.user) {
+    if (userAuth.user) {
       setLogin(true);
     } else {
       setLogin(false);
@@ -160,7 +160,7 @@ const NavBar = () => {
   };
 
   const toggleDrawer = (open) => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return;
     }
     setAnchor(open);
@@ -217,9 +217,9 @@ const NavBar = () => {
                     color: "white",
                     marginTop: "10px",
                     "&:hover": {
-                      backgroundColor: "teal",
-                    },
-                  },
+                      backgroundColor: "teal"
+                    }
+                  }
                 }}
               >
                 <MenuItem onClick={onClickHandler}>
@@ -259,7 +259,7 @@ const NavBar = () => {
         />
       )}
       <Backdrop open={loading} onClick={() => setLoading(false)}>
-        <CircularProgress color="primary" />
+        <Loader />
       </Backdrop>
       <SwipeableDrawer
         open={anchor}

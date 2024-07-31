@@ -8,7 +8,7 @@ import {
   mobile,
   ScreenWith670px,
   ScreenWith960px,
-  mobileS,
+  mobileS
 } from "../responsive";
 
 const VirtualContainer = styled.div`
@@ -24,11 +24,11 @@ const VirtualContainer = styled.div`
     justifyContent: "center",
     margin: "2rem 0",
     padding: "1rem",
-    textAlign: "center",
+    textAlign: "center"
   })}
   ${mobile({
     margin: "3rem 0",
-    padding: "4rem 2rem 3rem",
+    padding: "4rem 2rem 3rem"
   })}
 `;
 const LeftWrapper = styled.div`
@@ -60,7 +60,7 @@ const LeftBuyNow = styled.span`
   ${mobile({
     fontSize: "28px",
     fontWeight: "400",
-    paddingTop: "2rem",
+    paddingTop: "2rem"
   })}
 `;
 const Image = styled.img`
@@ -72,7 +72,7 @@ const Image = styled.img`
   ${ScreenWith960px({
     width: "2rem",
     bottom: "1.8rem",
-    left: "8.9rem",
+    left: "8.9rem"
   })}
 `;
 
@@ -81,17 +81,17 @@ const ImageContainer = styled.div`
   width: 30rem;
 
   ${ScreenWith960px({
-    margin: "2rem auto 4rem",
+    margin: "2rem auto 4rem"
   })}
 
   ${ScreenWith670px({
-    width: "25rem",
+    width: "25rem"
   })}
   ${mobile({
-    width: "20rem",
+    width: "20rem"
   })}
   ${mobileS({
-    width: "18rem",
+    width: "18rem"
   })}
 `;
 

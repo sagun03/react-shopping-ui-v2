@@ -4,9 +4,8 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import { mobile, ScreenWith670px, ScreenWith960px } from "../responsive";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { addProduct, removeProducts } from "../redux/cartRedux";
 import { v4 as uuidv4 } from "uuid";
 import addToCart from "./images/addToCart.png";
@@ -82,7 +81,7 @@ const ProductDetail = styled.div`
   ${mobile({
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   })}
 `;
 
@@ -174,7 +173,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window?.scrollTo(0, 0);
   }, []);
 
   const handleClick = (type, item, id = "") => {
@@ -183,7 +182,7 @@ const Cart = () => {
     } else {
       dispatch(
         addProduct({
-          productId: id,
+          productId: id
         })
       );
     }
@@ -198,13 +197,15 @@ const Cart = () => {
         <Announcement />
         <NavBar />
         <Wrapper>
-          {cart?.products.length === 0 ? (
+          {cart?.products.length === 0
+            ? (
             <Link to="/">
               <Title>Click Here to Add Product</Title>
             </Link>
-          ) : (
+              )
+            : (
             <Title>YOUR BAG</Title>
-          )}
+              )}
           {cart?.products.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />

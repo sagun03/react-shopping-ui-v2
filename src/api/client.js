@@ -1,12 +1,12 @@
 // src/api/apiClient.js
-import axios from 'axios';
+import axios from "axios"
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
-  },
-});
+    "Content-Type": "application/json"
+  }
+})
 
 // apiClient.interceptors.request.use(
 //   config => {
@@ -20,4 +20,4 @@ const apiClient = axios.create({
 //   error => Promise.reject(error)
 // );
 
-export default apiClient;
+export default apiClient

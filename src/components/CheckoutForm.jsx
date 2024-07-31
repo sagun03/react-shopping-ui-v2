@@ -4,7 +4,7 @@ import {
   Step,
   StepLabel,
   Stepper,
-  Typography,
+  Typography
 } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
@@ -110,7 +110,7 @@ const CheckoutForm = () => {
             sx={{
               display: "flex",
               justifyContent: "flex-end",
-              margin: "20px 0px",
+              margin: "20px 0px"
             }}
           >
             {activeStep !== 0 && (

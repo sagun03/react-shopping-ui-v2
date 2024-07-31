@@ -1,39 +1,35 @@
 import React from "react";
 // import Announcement from "../components/Announcement";
-import Categories from "../components/Categories";
+import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
 // import Products from "../components/Products";
-import SliderContainer from "../components/SliderContainer";
+import FeaturedCategories from "../components/FeaturedCategories";
 import Virtual from "../components/Virtual";
 import Crousel from "../components/Crousel";
 import SimpleMap from "../components/Map";
 import Announcement from "../components/Announcement";
 import BottomNav from "../components/BottomNav";
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from "react-helmet-async";
 
-const homepage = () => {
-
+const Homepage = () => {
   return (
     <>
-    <Helmet>
-    <title>The JK products</title>
-    <script type="application/ld+json">
-      {
-        `{
+      <Helmet>
+        <title>The JK products</title>
+        <script type="application/ld+json">
+          {`{
           "@context": "https://schema.org",
           "@type": "Organization",
           "url": "https://thejkproducts.com/",
           "name": "The JK Products",
           "logo": "/logo.png",
           "@id": "#b2c-store-org"
-        }`
-      }
-    </script>
-    <script type="application/ld+json">
-    {
-      `{
+        }`}
+        </script>
+        <script type="application/ld+json">
+          {`{
         "@context": "https://schema.org",
         "@type": "WebSite",
         "url": "https://www.example.com/",
@@ -52,32 +48,28 @@ const homepage = () => {
           },
           "query-input": "required name=search_term_string"
         }]
-      }`
-    }
-    </script>
-    <meta
-      name="description"
-      content="One stop shop for all cleaning products"
-    />
-    <link rel="canonical" href="/" />
-    </Helmet>
-    <div style={{ overflow: 'auto'}}>
-      <NavBar />
-      <Announcement />
-      <div>
-        {" "}
+      }`}
+        </script>
+        <meta
+          name="description"
+          content="One stop shop for all cleaning products"
+        />
+        <link rel="canonical" href="/" />
+      </Helmet>
+      <div style={{ overflow: "auto" }}>
+        <NavBar />
+        <Announcement />
         <Crousel />
-        <SliderContainer />
-        <Categories />
+        <FeaturedCategories />
+        <PopularProducts />
         <Virtual />
         <SimpleMap />
         <NewsLetter />
         <Footer />
+        <BottomNav />
       </div>
-      <BottomNav />
-    </div>
     </>
   );
 };
 
-export default homepage;
+export default Homepage;

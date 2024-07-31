@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import jk from "./images/jk.jpeg";
-import { mobile } from "../responsive";
-import { useState } from "react";
-import { useUserAuth } from "../context/UserAuthContext";
-import { FormHelperText } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import styled from "styled-components"
+import jk from "./images/jk.jpeg"
+import { mobile } from "../responsive"
+import { useState } from "react"
+import { useUserAuth } from "../context/UserAuthContext"
+import { FormHelperText } from "@mui/material"
+import { Link as RouterLink, useNavigate } from "react-router-dom"
+import { Helmet } from "react-helmet-async"
 
 export const Container = styled.div`
   width: 100vw;
@@ -19,7 +19,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 export const Wrapper = styled.div`
   width: 30%;
@@ -30,12 +30,12 @@ export const Wrapper = styled.div`
   padding: 20px;
   background-color: white;
   ${mobile({ width: "75%" })}
-`;
+`
 
 export const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
-`;
+`
 
 export const Form = styled.form`
   display: flex;
@@ -44,26 +44,26 @@ export const Form = styled.form`
   gap: 1rem;
   justify-content: center;
   align-items: center;
-`;
+`
 
 export const WrapperContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`;
+`
 
 const Input = styled.input`
   flex: 1;
   min-width: 40%;
   margin: 20px 10px 0px 0px;
   padding: 10px;
-`;
+`
 
 const Agreement = styled.span`
   font-size: 12px;
   margin: 20px 0px 5px;
-`;
+`
 
 export const Button = styled.button`
   border: none;
@@ -71,51 +71,51 @@ export const Button = styled.button`
   background-color: teal;
   color: white;
   cursor: pointer;
-`;
+`
 export const Link = styled.a`
   margin: 10px 0px;
   font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
-`;
+`
 
 const Register = () => {
-  const [userInfo, setUserInfo] = useState({});
-  const [error, setError] = useState("");
-  const { signUp } = useUserAuth();
-  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({})
+  const [error, setError] = useState("")
+  const { signUp } = useUserAuth()
+  const navigate = useNavigate()
 
   const isValidEmail = (email) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
+    return /\S+@\S+\.\S+/.test(email)
+  }
   const handleOnChange = (key, value) => {
-    setError("");
+    setError("")
     if (key === "email" && !isValidEmail(value)) {
-      setError("Email is invalid");
+      setError("Email is invalid")
     } else {
-      setError("");
+      setError("")
     }
-    setUserInfo((state) => ({ ...state, [key]: value }));
-  };
+    setUserInfo((state) => ({ ...state, [key]: value }))
+  }
   const handleSubmit = async (e) => {
     try {
-      e.preventDefault();
-      const { email = "", password = "", confirmPassword = "" } = userInfo;
+      e.preventDefault()
+      const { email = "", password = "", confirmPassword = "" } = userInfo
       if (password !== confirmPassword) {
-        setError("Password doesn't match");
-        return;
+        setError("Password doesn't match")
+        return
       }
       if (error) {
-        alert("please resolve error first");
-        return;
+        alert("please resolve error first")
+        return
       }
-      await signUp(email, password);
-      navigate("/");
+      await signUp(email, password)
+      navigate("/")
     } catch (err) {
-      setUserInfo({});
-      setError(err.message);
+      setUserInfo({})
+      setError(err.message)
     }
-  };
+  }
   return (
     <>
      <Helmet>
@@ -164,7 +164,7 @@ const Register = () => {
       </Wrapper>
     </Container>
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

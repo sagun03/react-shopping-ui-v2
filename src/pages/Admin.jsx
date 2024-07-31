@@ -1,14 +1,11 @@
-import React from "react";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
-import { useEffect } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { db } from "../firebase";
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
-import { useCallback } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import { mobile } from "../responsive";
 import AdminReview from "../components/AdminReview";
@@ -34,7 +31,7 @@ const Wrapper = styled.div`
   // grid-template-columns: 25% auto;
   ${mobile({
     flexDirection: "column",
-    margin: "30px 5px 10px",
+    margin: "30px 5px 10px"
   })}
 `;
 
@@ -60,7 +57,7 @@ const OrderWrapper = styled.div`
   padding: 20px;
   background: #e2eaff;
   ${mobile({
-    height: "450px",
+    height: "450px"
   })}
 `;
 const Admin = () => {
@@ -69,7 +66,7 @@ const Admin = () => {
   const { user } = useUserAuth();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window?.scrollTo(0, 0);
   }, []);
   const [userOrders, setUserOrders] = useState(undefined);
   const [updateOrders, setUpdateOrders] = useState(undefined);
@@ -120,7 +117,7 @@ const Admin = () => {
               style={{
                 flexBasis: "80%",
                 justifyContent: "center",
-                display: "flex",
+                display: "flex"
               }}
             >
               Please Enter Id of user:
@@ -156,9 +153,9 @@ const Admin = () => {
                 ))}{" "}
               </Wrapper>
             </>
-          ) : (
+              ) : (
             <Wrapper>No orders with given userd!</Wrapper>
-          )}
+              )}
         </>
       ) : (
         <Title>You do not have access to this page</Title>

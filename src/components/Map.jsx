@@ -17,7 +17,7 @@ const Image = styled.img`
   }
   cursor: pointer;
   ${mobile({
-    width: "300px",
+    width: "300px"
   })}
 `;
 const Heading = styled.h1`

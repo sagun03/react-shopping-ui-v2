@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
-import { useEffect } from "react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -23,7 +22,7 @@ const Slide = styled.div`
   height: inherit;
 
   ${tablet({
-    flexDirection: "column",
+    flexDirection: "column"
   })}
 `;
 
@@ -39,7 +38,7 @@ const ImgContainer = styled.div`
   opacity: 0;
   overflow: hidden;
   ${tablet({
-    width: "100%",
+    width: "100%"
   })}
 `;
 
@@ -47,7 +46,7 @@ const Image = styled.img`
   height: 100%;
   object-fit: fill;
   ${tablet({
-    width: "100%",
+    width: "100%"
   })}
 `;
 
@@ -57,11 +56,11 @@ const InfoContainer = styled.div`
 
   ${ScreenWith1080px({
     padding: "30px",
-    flex: "0.9",
+    flex: "0.9"
   })}
   ${ScreenWith960px({
     padding: "20px",
-    flex: "0.9",
+    flex: "0.9"
   })}
   ${tablet({
     display: "flex",
@@ -69,7 +68,7 @@ const InfoContainer = styled.div`
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
-    padding: "30px",
+    padding: "30px"
   })}
 `;
 
@@ -82,13 +81,13 @@ const Title = styled.h1`
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith1080px({
-    fontSize: "45px",
+    fontSize: "45px"
   })}
   ${ScreenWith960px({
-    fontSize: "40px",
+    fontSize: "40px"
   })}
   ${tablet({
-    fontSize: "45px",
+    fontSize: "45px"
   })}
 `;
 
@@ -103,10 +102,10 @@ const Desc = styled.p`
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith960px({
-    fontSize: "15px",
+    fontSize: "15px"
   })}
   ${tablet({
-    fontSize: "20px",
+    fontSize: "20px"
   })}
 `;
 
@@ -122,29 +121,29 @@ const Button = styled.button`
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith960px({
-    fontSize: "15px",
+    fontSize: "15px"
   })}
   ${tablet({
     textAlign: "center",
-    fontSize: "20px",
+    fontSize: "20px"
   })}
 `;
 
 const Crousel = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window?.scrollTo(0, 0);
   }, []);
   return (
     <Container>
       <Swiper
         effect={"fade"}
         pagination={{
-          clickable: true,
+          clickable: true
         }}
         speed={1000}
         autoplay={{
           delay: 3500,
-          disableOnInteraction: false,
+          disableOnInteraction: false
         }}
         loop={true}
         modules={[Autoplay]}

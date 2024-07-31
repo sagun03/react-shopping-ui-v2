@@ -4,7 +4,7 @@ import {
   FormControlLabel,
   TextField,
   Grid,
-  Typography,
+  Typography
 } from "@mui/material";
 const PaymentForm = () => {
   return (

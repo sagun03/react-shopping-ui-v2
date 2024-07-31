@@ -1,13 +1,11 @@
 import { collection, getDocs } from "firebase/firestore";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
-import { CircularProgress } from "@mui/material";
 import Review from "./Review";
 import { mobile } from "../responsive";
+import Loader from "./Loader";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -25,7 +23,7 @@ const Wrapper = styled.div`
   // grid-template-columns: 25% auto;
   ${mobile({
     flexDirection: "column",
-    margin: "30px 5px 10px",
+    margin: "30px 5px 10px"
   })}
 `;
 
@@ -39,7 +37,7 @@ const OrderWrapper = styled.div`
   padding: 20px;
   background: #e2eaff;
   ${mobile({
-    height: "450px",
+    height: "450px"
   })}
 `;
 const Title = styled.h1`
@@ -54,7 +52,7 @@ const OrdersComponent = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window?.scrollTo(0, 0);
   }, []);
 
   const [userOrders, setUserOrders] = useState(undefined);
@@ -73,7 +71,7 @@ const OrdersComponent = () => {
     }
   }, [ordersCollectionRef, user]);
   useEffect(() => {
-    if (!Boolean(userOrders)) {
+    if (!userOrders) {
       getOrders();
     }
   });
@@ -98,7 +96,7 @@ const OrdersComponent = () => {
         ))}
       {loading && (
         <Wrapper>
-          <CircularProgress />
+          <Loader />
         </Wrapper>
       )}
     </>

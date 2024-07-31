@@ -1,5 +1,6 @@
-import React from "react";
-import MuiAlert from "@mui/lab/Alert";
+/* eslint-disable react/prop-types */
+import React, { useRef } from "react";
+import { Alert as MuiAlert } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 
 const CustomAlert = (props) => {
@@ -7,6 +8,8 @@ const CustomAlert = (props) => {
 };
 
 const Alert = ({ type, message, open, setOpen }) => {
+  const snackbarRef = useRef(null);
+
   const getAlert = (type, message) => {
     // eslint-disable-next-line default-case
     switch (type) {
@@ -44,7 +47,7 @@ const Alert = ({ type, message, open, setOpen }) => {
     setOpen(false);
   };
   return (
-    <Snackbar open={open} onClose={handleClose} autoHideDuration={3000}>
+    <Snackbar open={open} onClose={handleClose} autoHideDuration={3000} ref={snackbarRef}>
       {getAlert(type, message)}
     </Snackbar>
   );

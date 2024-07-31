@@ -6,7 +6,7 @@ import {
   ScreenWith1200px,
   ScreenWith1470px,
   ScreenWith1670px,
-  ScreenWith960px,
+  ScreenWith960px
 } from "../responsive";
 import RightSlider from "./RightSlider";
 import Slider from "./Slider";
@@ -61,7 +61,7 @@ const EffectCardHeading = styled.div`
   margin: 6rem 0rem 0rem;
 `;
 
-const SliderContainer = () => {
+const FeaturedCategories = () => {
   return (
     <>
       <HeadingContainer>
@@ -79,4 +79,4 @@ const SliderContainer = () => {
   );
 };
 
-export default SliderContainer;
+export default FeaturedCategories;

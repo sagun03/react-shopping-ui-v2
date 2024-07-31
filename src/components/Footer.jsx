@@ -105,7 +105,7 @@ const Footer = () => {
           <SocialIcon color="25D366">
             <a
               href={`https://wa.me/919560363492?text=${encodeURIComponent(
-                `Hi I Visited your side`
+                "Hi I Visited your side"
               )}`}
             >
               <WhatsApp />
