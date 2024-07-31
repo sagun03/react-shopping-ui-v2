@@ -21,3 +21,19 @@ const config = {
 export const getPrice = (size) => {
   return config[size]
 }
+
+export const flattenProductSizes = products =>
+  products.flatMap(product =>
+    product.sizes.map(size => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      categoryId: product.categoryId,
+      category: product.category,
+      size: size.size,
+      price: size.price,
+      images: size.images,
+      inStock: size.inStock,
+      reviews: product.reviews
+    }))
+  );

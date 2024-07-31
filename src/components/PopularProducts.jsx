@@ -1,7 +1,4 @@
 import React from "react";
-import styled from "styled-components";
-import { categories } from "../utils/data";
-import CategoryItem from "./CategoryItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import "./styles.css";
@@ -9,38 +6,21 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import AnimateIn from "../customeHooks/AnimateIn";
+import { Container, HeadingContainer, EffectCardHeading } from "./styles/PopularProduct";
+import { useDataContext } from "../context/DataContext";
+import PopularProductItem from "./PopularProductItem";
 
-const Container = styled.div`
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding-bottom: 3rem;
-  margin-bottom: 2rem;
-`;
+const PopularProducts = () => {
+  const { products } = useDataContext();
+  const popularProducts = products.slice(0, 5);
+  console.log("products", popularProducts)
 
-const HeadingContainer = styled.div`
-  text-align: center;
-`;
-
-const EffectCardHeading = styled.div`
-  padding: 5px 10px;
-  color: #333;
-  font-family: Roboto;
-  font-size: 48px;
-  font-weight: 400;
-  margin: 0rem 0rem 4rem;
-`;
-
-const Categories = () => {
   return (
     <>
       <Container>
         <HeadingContainer>
           <AnimateIn
             to={{
-              // transform: "translateY(0)",
               opacity: 1,
               transitionDelay: "0.3s"
             }}
@@ -85,31 +65,15 @@ const Categories = () => {
           }}
           className="mySwiper1"
         >
-          {categories.map((item, index) => (
+          {popularProducts.map((item, index) => (
             <SwiperSlide key={item.id}>
-              <CategoryItem {...item} key={index} />
+              <PopularProductItem {...item} key={index} />
             </SwiperSlide>
           ))}
         </Swiper>
-        {/* <HeadingContainer>
-          <EffectCardHeading>Flip The Cards</EffectCardHeading>
-        </HeadingContainer>
-        <Swiper
-          effect={"cards"}
-          grabCursor={true}
-          modules={[EffectCards]}
-          centeredSlides={true}
-          className="mySwiperCards"
-        >
-          {categories.map((item, index) => (
-            <SwiperSlide>
-              <CategoryItem {...item} key={index} />
-            </SwiperSlide>
-          ))}
-        </Swiper> */}
       </Container>
     </>
   );
 };
 
-export default Categories;
+export default PopularProducts;

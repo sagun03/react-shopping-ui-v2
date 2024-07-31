@@ -5,10 +5,10 @@ import {
   mobileSuperSmall,
   ScreenWith670px,
   ScreenWith960px
-} from "../responsive"
+} from "../../responsive"
 import styled from "styled-components"
 import Button from "@mui/material/Button"
-import productBackground from "../pages/images/productBackground.jpg"
+import productBackground from "../../pages/images/productBackground.jpg"
 
 const Container = styled.div`
   display: flex;

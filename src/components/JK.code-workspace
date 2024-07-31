@@ -1,13 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "../.."
-		},
-		{
-			"path": "../../../Projects_/node-shopping-ui"
-		},
-		{
-			"path": "../../../Projects_/sleekart"
-		}
-	]
+    "folders": [
+        {
+            "path": "../.."
+        },
+        {
+            "path": "../../../Projects_/node-shopping-ui"
+        }
+    ]
 }

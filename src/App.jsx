@@ -15,11 +15,6 @@ import { DataProvider } from "./context/DataContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import Loader from "./components/Loader";
-// const Product = React.lazy(() => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => resolve(import("./pages/Product")), 1000);
-//   });
-// });
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
 
@@ -45,22 +40,6 @@ const App = () => {
               <Route
                 path="/product/:id"
                 element={
-                  // <Suspense
-                  //   fallback={
-                  //     <div
-                  //       style={{
-                  //         display: "block",
-                  //         position: "absolute",
-                  //         top: "50%",
-                  //         left: "50%",
-                  //       }}
-                  //     >
-                  //       <Loader />
-                  //     </div>
-                  //   }
-                  // >
-                  //   <Product />
-                  // </Suspense>
                   <Product />
                 }
               />

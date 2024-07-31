@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar"
-import Products from "../components/Products"
+import ProductsRange from "../components/ProductsRange"
 import Announcement from "../components/Announcement"
 import BottomNav from "../components/BottomNav"
 import { Helmet } from "react-helmet-async"
@@ -14,7 +14,7 @@ const ProductSearch = () => {
       </Helmet>
       <NavBar />
       <Announcement />
-      <Products />
+      <ProductsRange />
       <BottomNav />
     </>
   )

@@ -1,14 +1,11 @@
-/* eslint-disable react/prop-types */
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
 import {
   mobileS,
   ScreenWith1200px,
   ScreenWith1470px,
   ScreenWith670px,
   mobileSuperSmall
-} from "../responsive";
+} from "../../responsive";
+import styled from "styled-components";
 
 const InfoContainer = styled.div`
   display: flex;
@@ -82,26 +79,4 @@ const Button = styled.button`
   }
 `;
 
-const CategoryItem = ({ img, title, detail, price, id, defaultSize }) => {
-  return (
-    <>
-      <InfoContainer>
-        <Info>
-          <Title>{title}</Title>
-          <Detail>{detail}</Detail>
-        </Info>
-        <Price>Rs. {price[defaultSize]}</Price>
-        <Price2
-        >
-          Rs. {price[defaultSize] - price[defaultSize] * 0.05}
-        </Price2>
-        <Link to={`/product/${id}`}>
-          <Button>Shop Now</Button>
-        </Link>
-      </InfoContainer>
-      <Image src={img[defaultSize]} />
-    </>
-  );
-};
-
-export default CategoryItem;
+export { InfoContainer, Image, Info, Title, Detail, Price, Price2, Button };

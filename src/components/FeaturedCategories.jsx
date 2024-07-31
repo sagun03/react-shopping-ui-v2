@@ -61,7 +61,7 @@ const EffectCardHeading = styled.div`
   margin: 6rem 0rem 0rem;
 `;
 
-const SliderContainer = () => {
+const FeaturedCategories = () => {
   return (
     <>
       <HeadingContainer>
@@ -79,4 +79,4 @@ const SliderContainer = () => {
   );
 };
 
-export default SliderContainer;
+export default FeaturedCategories;

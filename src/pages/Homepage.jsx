@@ -1,11 +1,11 @@
 import React from "react";
 // import Announcement from "../components/Announcement";
-import Categories from "../components/Categories";
+import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
 // import Products from "../components/Products";
-import SliderContainer from "../components/SliderContainer";
+import FeaturedCategories from "../components/FeaturedCategories";
 import Virtual from "../components/Virtual";
 import Crousel from "../components/Crousel";
 import SimpleMap from "../components/Map";
@@ -60,8 +60,8 @@ const Homepage = () => {
         <NavBar />
         <Announcement />
         <Crousel />
-        <SliderContainer />
-        <Categories />
+        <FeaturedCategories />
+        <PopularProducts />
         <Virtual />
         <SimpleMap />
         <NewsLetter />

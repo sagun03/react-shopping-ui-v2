@@ -1,23 +1,20 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react"
-import { popularProducts } from "../utils/data"
-import Product from "./Product"
-// import Plane from "../pages/images/plane.png";
-import SearchIcon from "@mui/icons-material/Search"
-import { v4 as uuidv4 } from "uuid"
-import { useSearchParams } from "react-router-dom"
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useDataContext } from "../context/DataContext";
+import ProductRangeCard from "./ProductRangeCard";
+import SearchIcon from "@mui/icons-material/Search";
+import { v4 as uuidv4 } from "uuid";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   Divider,
   InputAdornment,
   Select,
   TextField
-} from "@mui/material"
-// import { db } from "../firebase";
-// import { collection, getDocs } from "firebase/firestore";
-import { FilterListOutlined } from "@mui/icons-material"
+} from "@mui/material";
+import { FilterListOutlined } from "@mui/icons-material";
 import {
   Container,
   Heading,
@@ -37,84 +34,89 @@ import {
   HeaderLeftSearch,
   Wrapper,
   CustomButton
-} from "./styles/Products"
+} from "./styles/Products";
+import { flattenProductSizes } from "../utils/helper";
 
-const ListMenu = [
+const CATEGORY_MENU = [
   { id: 1, title: "All", name: "" },
   { id: 2, title: "Liquid Detergent", name: "detergent" },
   { id: 3, title: "Hand Wash", name: "handWash" },
   { id: 4, title: "Floor Cleaner", name: "floorCleaner" },
   { id: 6, title: "Dish Washer", name: "dishWasher" },
   { id: 7, title: "Toilet Cleaner", name: "toiletCleaner" },
-  { id: 7, title: "Glass Cleaner", name: "colin" }
-]
+  { id: 8, title: "Glass Cleaner", name: "colin" }
+];
 
-const Products = () => {
-  const [productImageData, setProductImageData] = useState(popularProducts)
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [selected, setSelected] = useState("All")
-  const [priceSelect, setPriceSelect] = useState("default")
-  const [search, setSearch] = useState("")
+const ProductsRange = () => {
+  const { products } = useDataContext();
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortOrder, setSortOrder] = useState("default");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    window?.scrollTo(0, 0)
-  }, [])
+    window?.scrollTo(0, 0);
+  }, []);
 
-  const [serachParam] = useSearchParams()
+  const [searchParams] = useSearchParams();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-  const filterData = (name = "", title) => {
-    if (name) {
-      setSearch("")
-      const filterData = popularProducts.filter(({ type }) => type === name)
-      setProductImageData(filterData)
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const filterProducts = useCallback((category = "", title) => {
+    if (category) {
+      setSearchTerm("");
+      const filtered = products.filter(({ category: productCategory }) => productCategory === category);
+      console.log("filtered", filtered, category);
+      setFilteredProducts(filtered);
     } else {
-      setProductImageData(popularProducts)
+      setFilteredProducts(products);
     }
-    setSelected(title)
-    handleClose()
-  }
+    setSelectedCategory(title);
+    handleMenuClose();
+  }, [products]);
+
   useEffect(() => {
-    const param = serachParam.get("name")
-    const paramTitle = serachParam.get("title")
+    const param = searchParams.get("name");
+    const paramTitle = searchParams.get("title");
 
     if (param) {
-      filterData(param)
-      setSelected(paramTitle)
+      filterProducts(param, paramTitle);
     }
-  }, [serachParam])
+  }, [searchParams, filterProducts]);
 
-  const sortCallBack = (first, second) => {
-    if (priceSelect === "priceLowToHigh") {
-      return first?.price - second?.price
-    } else if (priceSelect === "priceHighToLow") {
-      return second?.price - first?.price
+  const sortProducts = useCallback((a, b) => {
+    if (sortOrder === "priceLowToHigh") {
+      return a.sizes[0].price - b.sizes[0].price;
+    } else if (sortOrder === "priceHighToLow") {
+      return b.sizes[0].price - a.sizes[0].price;
     }
-  }
+    return 0;
+  }, [sortOrder]);
+
+  const handleSearchChange = useCallback((e) => {
+    setSearchTerm(e.target.value);
+  }, []);
 
   useEffect(() => {
-    if (search) {
-      setSelected("All")
-      const filterBySearch = popularProducts.filter((item) =>
-        item.title.toLowerCase().includes(search?.toLowerCase() || "")
-      )
-      setProductImageData(filterBySearch)
+    if (searchTerm) {
+      setSelectedCategory("All");
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
     }
-  }, [search])
-  const items = productImageData
-    .slice()
-    .sort(sortCallBack)
-    .map((product) => (
-      <ProductImageWrapper key={uuidv4()}>
-        <Product {...product} key={uuidv4()} />
-      </ProductImageWrapper>
-    ))
+  }, [searchTerm, products]);
+
+  const sortedProducts = useMemo(() => filteredProducts.slice().sort(sortProducts), [filteredProducts, sortProducts]);
   return (
     <>
       <Wrapper>
@@ -124,7 +126,7 @@ const Products = () => {
         <ProductHeaderContainer>
           <ProductHeaderContent>
             <ProductHeaderCount>
-              Browse Products ({productImageData?.length})
+              Browse Products ({filteredProducts.length})
             </ProductHeaderCount>
             <ProductHeaderLeft>
               <ProductHeaderLeftContent>
@@ -132,8 +134,8 @@ const Products = () => {
                   <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
-                    value={priceSelect}
-                    onChange={(event) => setPriceSelect(event.target.value)}
+                    value={sortOrder}
+                    onChange={(event) => setSortOrder(event.target.value)}
                     style={{ minWidth: "8rem" }}
                   >
                     <MenuItem value={"default"}>Default</MenuItem>
@@ -149,7 +151,7 @@ const Products = () => {
                   <TextField
                     placeholder="Search"
                     variant="outlined"
-                    value={search}
+                    value={searchTerm}
                     InputProps={{
                       style: { height: "2rem" },
                       startAdornment: (
@@ -158,7 +160,7 @@ const Products = () => {
                         </InputAdornment>
                       )
                     }}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={handleSearchChange}
                   />
                 </HeaderLeftSearch>
               </ProductHeaderLeftContent>
@@ -168,17 +170,17 @@ const Products = () => {
       </ProductHeader>
       <Container>
         <ProductsWrapper>
-          <ProductMenuList >
+          <ProductMenuList>
             <>
               <ProductMenu title="category">
                 Category <Divider style={{ marginTop: "1rem" }} />
               </ProductMenu>
             </>
-            {ListMenu.map(({ id, title, name }) => (
+            {CATEGORY_MENU.map(({ id, title, name }) => (
               <ProductMenu
-                selected={selected === title}
+                selected={selectedCategory === title}
                 key={id}
-                onClick={() => filterData(name, title)}
+                onClick={() => filterProducts(name, title)}
               >
                 {title}
               </ProductMenu>
@@ -189,9 +191,9 @@ const Products = () => {
               variant="outlined"
               color="inherit"
               startIcon={<FilterListOutlined />}
-              onClick={handleClick}
+              onClick={handleMenuClick}
             >
-              {selected}
+              {selectedCategory}
             </CustomButton>
             <Menu
               id="simple-menu"
@@ -199,35 +201,33 @@ const Products = () => {
               keepMounted
               color="inherit"
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={handleMenuClose}
               variant={"selectedMenu"}
             >
-              {ListMenu.map(({ id, title, name }) => (
-                <>
+              {CATEGORY_MENU.map(({ id, title, name }) => (
+                <React.Fragment key={id}>
                   {id !== 1 && <Divider />}
                   <MenuItem
-                    key={id}
-                    // style={{
-                    //   fontFamily: "Roboto",
-                    //   fontSize: "28px",
-                    //   fontWeight: "400",
-                    // }}
-                    selected={selected === title}
-                    onClick={() => filterData(name, title)}
+                    selected={selectedCategory === title}
+                    onClick={() => filterProducts(name, title)}
                   >
                     {title}
                   </MenuItem>
-                </>
+                </React.Fragment>
               ))}
             </Menu>
           </ProductMenuListMobile>
-          <ProductImageContainer >
-            {items}
+          <ProductImageContainer>
+            {flattenProductSizes(sortedProducts).map((product) => (
+              <ProductImageWrapper key={uuidv4()}>
+                <ProductRangeCard {...product} />
+              </ProductImageWrapper>
+            ))}
           </ProductImageContainer>
         </ProductsWrapper>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Products
+export default ProductsRange;
