@@ -3,7 +3,7 @@ import { mobile, ScreenWith960px } from "../responsive";
 import { useSelector } from "react-redux";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import LocationDialogBox from "./LocationDialogBox";
 
 const Summary = styled.div`
@@ -47,15 +47,25 @@ export const CustomButton = styled(Button)`
 `;
 
 const OrderSummary = () => {
-  const [open, setOpen] = useState(false);
-
   const cart = useSelector((state) => state.cart);
+  const [open, setOpen] = useState(false);
+  const subtotal = useMemo(() => {
+    return cart?.total;
+  }, [cart?.total]);
+  const getCartTotal = useMemo(() => {
+    let total = subtotal;
+    if (subtotal > 200) {
+      total = subtotal - ((20 / 100) * subtotal);
+    }
+    return Math.round(total);
+  }, [subtotal]);
+
   return (
     <Summary>
       <SummaryTitle>ORDER SUMMARY</SummaryTitle>
       <SummaryItem>
         <SummaryItemText>Subtotal</SummaryItemText>
-        <SummaryItemPrice>Rs. {(cart?.total + 0.0).toFixed(2)}</SummaryItemPrice>
+        <SummaryItemPrice>Rs. {subtotal.toFixed(2)}</SummaryItemPrice>
       </SummaryItem>
       {/* <SummaryItem>
         <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -67,21 +77,18 @@ const OrderSummary = () => {
           <SummaryItemPrice>Rs. -10</SummaryItemPrice>
         </SummaryItem>
       )} */}
-      {cart?.total > 200 && (
+      {subtotal > 200 && (
         <SummaryItem>
           <SummaryItemText>Extra Discount 20%</SummaryItemText>
           <SummaryItemPrice>
-            Rs. {((20 / 100) * cart?.total + 0.0).toFixed(2)}
+            Rs. {Math.round((20 / 100) * subtotal)}
           </SummaryItemPrice>
         </SummaryItem>
       )}
       <SummaryItem type="total">
         <SummaryItemText>Total</SummaryItemText>
         <SummaryItemPrice>
-          Rs.{" "}
-          {cart?.total < 200
-            ? cart?.total
-            : (cart?.total - ((20 / 100) * cart?.total + 0.0).toFixed(2) + 0.0).toFixed(2)}
+          Rs. {getCartTotal}
         </SummaryItemPrice>
       </SummaryItem>
       {/* <a
