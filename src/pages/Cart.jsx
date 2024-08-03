@@ -232,8 +232,6 @@ const Cart = () => {
         })
       };
     }
-    console.log(sampleCartData, "sampleCartData", singleNull, id)
-
     if (singleNull) {
       deleteProductCart({ CartID: sampleCartData?.CartID, productId: id })
       singleNull = false
