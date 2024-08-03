@@ -14,6 +14,7 @@ import Product from "./pages/Product";
 import { DataProvider } from "./context/DataContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { CartProvider } from "./context/cartContext";
 import Loader from "./components/Loader";
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
@@ -22,8 +23,9 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <UserAuthContextProvider>
-        <DataProvider>
-          <Router>
+      <DataProvider>
+        <CartProvider>
+                    <Router>
             <Routes>
               <Route
                 path="/"
@@ -40,6 +42,22 @@ const App = () => {
               <Route
                 path="/product/:id"
                 element={
+                  // <Suspense
+                  //   fallback={
+                  //     <div
+                  //       style={{
+                  //         display: "block",
+                  //         position: "absolute",
+                  //         top: "50%",
+                  //         left: "50%",
+                  //       }}
+                  //     >
+                  //       <Loader />
+                  //     </div>
+                  //   }
+                  // >
+                  //   <Product />
+                  // </Suspense>
                   <Product />
                 }
               />
@@ -53,6 +71,8 @@ const App = () => {
               <Route path="/admin" element={<Admin />} />
             </Routes>
           </Router>
+          </CartProvider>
+
         </DataProvider>
       </UserAuthContextProvider>
     </QueryClientProvider>

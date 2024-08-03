@@ -17,6 +17,8 @@ import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 import Loader from "./Loader";
+import { useCartContext } from "../context/cartContext";
+import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 
 const Container = styled("div")(() => ({
   height: "55px",
@@ -122,8 +124,10 @@ const NavBar = () => {
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
   const [loading, setLoading] = useState(false);
-  const { quantity } = useSelector((state) => state.cart);
+  // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
+  const { cartData, setCartData } = useCartContext();
+  const [quantity, setQuantity] = useState(0)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -141,9 +145,17 @@ const NavBar = () => {
     }
     setUser(userAuth.user);
   }, [userAuth.user]);
+  const dataFetched = useFetchCartData(userAuth.user);
+  useEffect(() => {
+    if (dataFetched && userAuth.user) {
+      setCartData(dataFetched);
+      setQuantity(cartData?.totalQuantity)
+    }
+  }, [cartData, dataFetched, userAuth.user, setCartData]);
 
   const onClickHandler = async (e) => {
     try {
+      setCartData(null)
       setAnchorEl(null);
       setLoading(true);
       e.preventDefault();

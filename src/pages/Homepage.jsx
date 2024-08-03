@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import Announcement from "../components/Announcement";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
@@ -11,9 +11,27 @@ import Crousel from "../components/Crousel";
 import SimpleMap from "../components/Map";
 import Announcement from "../components/Announcement";
 import BottomNav from "../components/BottomNav";
-import { Helmet } from "react-helmet-async";
-
+import { Helmet } from "react-helmet-async"
+import { useCartContext } from "../context/cartContext";
+import { useCart } from "../hooks/useCart";
+import { useUserAuth } from "../context/UserAuthContext";
+import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 const Homepage = () => {
+  const userAuth = useUserAuth();
+  const { setCartData, cartData } = useCartContext();
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setUser(userAuth.user || {});
+  }, [userAuth.user]);
+
+  const dataFetched = useFetchCartData(userAuth.user);
+
+  useEffect(() => {
+    if (cartData.length === 0 && dataFetched && userAuth.user) {
+      setCartData(dataFetched);
+    }
+  }, [cartData, dataFetched, userAuth.user, setCartData]);
   return (
     <>
       <Helmet>
@@ -70,6 +88,5 @@ const Homepage = () => {
       </div>
     </>
   );
-};
-
+}
 export default Homepage;

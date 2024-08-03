@@ -1,32 +1,42 @@
 /* eslint-disable react/prop-types */
 import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addProducts } from "../redux/cartRedux";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "./Alert";
 import { WrapperContainer, Container, Image, Info, Icon, Content, CustomButton } from "./styles/ProductRangeCard";
+import { useUserAuth } from "../context/UserAuthContext";
+import { useCreateCart } from "../hooks/useCart";
 
 const ProductRangeCard = ({ name, id, size, price, images }) => {
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
+  const userAuth = useUserAuth();
+  const [user, setUser] = useState({});
+  const { mutate: createCart } = useCreateCart();
+  useEffect(() => {
+    setUser(userAuth.user || {});
+  }, [userAuth.user]);
 
   const handleClick = () => {
-    dispatch(
-      addProducts({
-        name,
-        id,
-        size,
-        quantity: 1,
-        price: price - price * 0.05,
-        productId: uuidv4(),
-        originalPrice: price,
-        image: images[0]
-      })
-    );
-    // TODO: snackbar issue
-    // setOpenAlert(true);
+    console.log(name, id, size, price, images)
+
+    const productObject = {
+      userId: user?.uid,
+      Products: [{
+        productID: id,
+        Quantity: 1,
+        unitPrice: price,
+        size: size
+      }]
+    }
+    const onSuccessCallback = () => {
+      window.location.reload();
+      console.log("Additional actions after cart creation");
+    };
+    createCart({ cartDetails: productObject, onSuccessCallback })
   };
 
   return (
