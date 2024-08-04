@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Backdrop,
   Badge,
+  CircularProgress,
   ListItemIcon,
   ListItemText,
   Menu,
-  SwipeableDrawer
+  SwipeableDrawer,
 } from "@mui/material";
 import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -13,12 +14,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
+import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
-import Loader from "./Loader";
 
-const Container = styled("div")(() => ({
+const Container = styled('div')(({ theme }) => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -28,10 +29,10 @@ const Container = styled("div")(() => ({
   width: "100%",
   zIndex: 1299,
   ...mobile({ top: "0px" }),
-  ...mobileSuperSmall({ top: "0px" })
+  ...mobileSuperSmall({ top: "0px" }),
 }));
 
-const Wrapper = styled("div")(() => ({
+const Wrapper = styled('div')(({ theme }) => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -40,84 +41,82 @@ const Wrapper = styled("div")(() => ({
   ...ScreenWith670px({
     justifyContent: "space-between",
     width: "95%",
-    padding: "10px 10px"
-  })
+    padding: "10px 10px",
+  }),
 }));
 
-const Left = styled("div")(() => ({
+const Left = styled('div')(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: "1rem"
+  gap: "1rem",
 }));
 
-const Center = styled("div")(() => ({
-  textAlign: "center"
+const Center = styled('div')(({ theme }) => ({
+  textAlign: "center",
 }));
 
-const Logo = styled("h1")(() => ({
+const Logo = styled('h1')(({ theme }) => ({
   fontWeight: 400,
   ...ScreenWith670px({
-    fontSize: "1.5rem"
+    fontSize: "1.5rem",
   }),
-  ...mobile({ display: "none" })
+  ...mobile({ display: "none" }),
 }));
 
-const Logo2 = styled("div")(() => ({
+const Logo2 = styled('div')(({ theme }) => ({
   display: "none",
   fontWeight: 400,
   ...mobile({
     display: "flex",
     height: "38px",
-    marginRight: "0px"
-  })
+    marginRight: "0px",
+  }),
 }));
 
-const Right = styled("div")(() => ({
+const Right = styled('div')(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "1rem"
+  gap: "1rem",
 }));
 
-const MenuItem = styled("div")(() => ({
-  fontSize: "14px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  ...mobile({ fontSize: "12px" })
-}));
-
-const MenuItem2 = styled("div")(() => ({
+const MenuItem = styled('div')(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser = styled("div")(() => ({
+const MenuItem2 = styled('div')(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "none" })
+  ...ScreenWith670px({ display: "none" }),
 }));
 
-const MenuItemMyUser2 = styled("div")(() => ({
+const MenuItemMyUser = styled('div')(({ theme }) => ({
+  fontSize: "14px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  ...mobile({ fontSize: "12px" }),
+  ...ScreenWith670px({ display: "none" }),
+}));
+
+const MenuItemMyUser2 = styled('div')(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "none",
   alignItems: "center",
   ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "flex" })
+  ...ScreenWith670px({ display: "flex" }),
 }));
 
 const NavBar = () => {
-  const userAuth = useUserAuth();
-  const [user, setUser] = useState({});
-  const [login, setLogin] = useState(false);
+  const user = useUserContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
@@ -132,15 +131,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    if (userAuth.user) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-    setUser(userAuth.user);
-  }, [userAuth.user]);
 
   const onClickHandler = async (e) => {
     try {
@@ -160,7 +150,7 @@ const NavBar = () => {
   };
 
   const toggleDrawer = (open) => (event) => {
-    if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
     setAnchor(open);
@@ -173,14 +163,14 @@ const NavBar = () => {
           <MenuItemMyUser2 onClick={toggleDrawer(true)}>
             <ReorderIcon />
           </MenuItemMyUser2>
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/">
                 <HomeIcon />
               </Link>
             </MenuItem2>
           )}
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/orders">My Orders</Link>
             </MenuItem2>
@@ -195,7 +185,7 @@ const NavBar = () => {
           </Center>
         </Link>
         <Right>
-          {login ? (
+          {user ? (
             <>
               <MenuItemMyUser onClick={handleClick}>
                 {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
@@ -217,9 +207,9 @@ const NavBar = () => {
                     color: "white",
                     marginTop: "10px",
                     "&:hover": {
-                      backgroundColor: "teal"
-                    }
-                  }
+                      backgroundColor: "teal",
+                    },
+                  },
                 }}
               >
                 <MenuItem onClick={onClickHandler}>
@@ -259,7 +249,7 @@ const NavBar = () => {
         />
       )}
       <Backdrop open={loading} onClick={() => setLoading(false)}>
-        <Loader />
+        <CircularProgress color="primary" />
       </Backdrop>
       <SwipeableDrawer
         open={anchor}
