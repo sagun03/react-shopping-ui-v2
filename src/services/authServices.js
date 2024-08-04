@@ -1,62 +1,54 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import apiClient from "../api/client"
+import apiClient from "../api/client";
 
 export const login = async (userData) => {
-  const { email, uid, RFtoken, IDtoken, role } = userData
+  const { email, IDtoken, role } = userData;
   try {
     const response = await apiClient.request({
-      method: "POST",
-      url: "/user/login",
+      method: 'POST',
+      url: '/user/login',
       data: {
-        uid,
-        role,
-        email
+        role: role,
+        email: email
       },
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${IDtoken}`,
-        RefreshToken: `Bearer ${RFtoken}`
-      }
-    })
-    return response
-  } catch (error) {
-    console.error("Error during login request:", error)
-    throw error
-  }
-}
-
-export const register = async (userData) => {
-  const { email, uid, RFtoken, IDtoken, role } = userData;
-  try {
-    const response = await apiClient.request({
-      method: "POST",
-      url: "/user/register",
-      data: {
-        uid,
-        role,
-        email
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${IDtoken}`,
-        RefreshToken: `Bearer ${RFtoken}`
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${IDtoken}`
       }
     });
     return response;
   } catch (error) {
-    console.error("Error during login request:", error);
+    console.error('Error during login request:', error);
+    throw error;
+  }
+};
+
+export const register = async (userData) => {
+  const { email, IDtoken, role } = userData;
+  try {
+    const response = await apiClient.request({
+      method: 'POST',
+      url: '/user/register',
+      data: {
+        role: role,
+        email: email
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${IDtoken}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error during login request:', error);
     throw error;
   }
 };
 
 export const logout = async (uid) => {
   const response = await apiClient.request({
-    method: "POST",
-    url: "/user/logout",
-    data: { uid }
-  })
-  return response
-}
-
-// nbxyz4500@gmail.com
-// nitin123
+    method: 'POST',
+    url: '/user/logout',
+    data: {uid}
+  });
+  return response;
+};

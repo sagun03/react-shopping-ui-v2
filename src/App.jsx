@@ -14,6 +14,7 @@ import Product from "./pages/Product";
 import { DataProvider } from "./context/DataContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { UserContextProvider } from "./context/UserContext";
 import Loader from "./components/Loader";
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
@@ -21,40 +22,42 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserAuthContextProvider>
-        <DataProvider>
-          <Router>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Suspense
-                    fallback={
-                      <Loader />
-                    }
-                  >
-                    <Home />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/product/:id"
-                element={
-                  <Product />
-                }
-              />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/phonesignup" element={<PhoneSignUp />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/products" element={<ProductSearch />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </Router>
-        </DataProvider>
-      </UserAuthContextProvider>
+      <UserContextProvider>
+        <UserAuthContextProvider>
+          <DataProvider>
+            <Router>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Suspense
+                      fallback={
+                        <Loader />
+                      }
+                    >
+                      <Home />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <Product />
+                  }
+                />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/phonesignup" element={<PhoneSignUp />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/products" element={<ProductSearch />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </Router>
+          </DataProvider>
+        </UserAuthContextProvider>
+      </UserContextProvider>
     </QueryClientProvider>
   );
 };
