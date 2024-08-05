@@ -76,17 +76,12 @@ const Product = () => {
       userId: user?.uid,
       Products: [{
         productID: product?.id,
-        Quantity: quantity,
+        quantity: quantity,
         unitPrice: selectedSize?.price,
         size: size
       }]
     }
-
-    const onSuccessCallback = () => {
-      console.log("Additional actions after cart creation");
-      window.location.reload();
-    };
-    createCart({ cartDetails: productObject, onSuccessCallback })
+    createCart({ cartDetails: productObject, userID: user?.uid })
     console.log(productObject, "productObject")
     // setOpenAlert(true);
   };

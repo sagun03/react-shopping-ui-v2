@@ -13,7 +13,7 @@ import Admin from "./pages/Admin";
 import Product from "./pages/Product";
 import { DataProvider } from "./context/DataContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { useUserAuthContextProvider } from "./context/UserAuthContext";
 import { CartProvider } from "./context/cartContext";
 import { UserContextProvider } from "./context/UserContext";
 import Loader from "./components/Loader";
@@ -24,7 +24,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
-        <UserAuthContextProvider>
+        <useUserAuthContextProvider>
           <DataProvider>
           <CartProvider>
             <Router>
@@ -59,7 +59,7 @@ const App = () => {
             </Router>
             </CartProvider>
           </DataProvider>
-        </UserAuthContextProvider>
+        </useUserAuthContextProvider>
       </UserContextProvider>
     </QueryClientProvider>
   );

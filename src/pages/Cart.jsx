@@ -233,22 +233,22 @@ const Cart = () => {
       };
     }
     if (singleNull) {
-      deleteProductCart({ CartID: sampleCartData?.CartID, productId: id })
+      deleteProductCart({ CartID: sampleCartData?.CartID, productId: id, userID: user?.uid })
       singleNull = false
     } else {
       if (sampleCartData?.products?.length === 0) {
-        deleteCart({ CartID: sampleCartData?.CartID });
+        deleteCart({ CartID: sampleCartData?.CartID, userID: user?.uid });
       } else {
         const createdObjectForCart = {
           userId: cartData?.userId,
           Products: sampleCartData.products.map(value => ({
             productID: value?.productDetails?.id,
-            Quantity: value.quantity,
+            quantity: value.quantity,
             unitPrice: value?.productDetails?.sizes[0]?.price,
             size: value?.productDetails?.sizes[0]?.size
           }))
         };
-        updateCart({ CartID: sampleCartData?.CartID, cartDetails: createdObjectForCart });
+        updateCart({ CartID: sampleCartData?.CartID, cartDetails: createdObjectForCart, userID: user?.uid });
       }
     }
   };

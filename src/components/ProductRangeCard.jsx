@@ -21,13 +21,13 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
   }, [userAuth.user]);
 
   const handleClick = () => {
-    console.log(name, id, size, price, images)
+    console.log(name, id, size, price, images, user)
 
     const productObject = {
       userId: user?.uid,
       Products: [{
         productID: id,
-        Quantity: 1,
+        quantity: 1,
         unitPrice: price,
         size: size
       }]
@@ -36,7 +36,7 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
       window.location.reload();
       console.log("Additional actions after cart creation");
     };
-    createCart({ cartDetails: productObject, onSuccessCallback })
+    createCart({ cartDetails: productObject, userID: user?.uid })
   };
 
   return (
