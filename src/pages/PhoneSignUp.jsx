@@ -5,13 +5,14 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormHelperText
+  FormHelperText,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Container, Wrapper, Title, Form, Button } from "./Register";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { useState } from "react";
 import { Link } from "./Login";
 import { useUserAuth } from "../context/UserAuthContext";
 import OTPInput from "react-otp-input";
@@ -25,7 +26,7 @@ const PhoneSignUp = () => {
   const [confirmObj, setConfirmObj] = useState({});
   const { setUpRecaptcha } = useUserAuth();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const getOtp = async (e) => {
     e.preventDefault();
     if (number === "" || number === undefined) {

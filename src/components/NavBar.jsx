@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Backdrop,
   Badge,
+  CircularProgress,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -13,14 +14,16 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
+import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
+
 import Loader from "./Loader";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 
-const Container = styled("div")(() => ({
+const Container = styled("div")(({ theme }) => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -33,7 +36,7 @@ const Container = styled("div")(() => ({
   ...mobileSuperSmall({ top: "0px" })
 }));
 
-const Wrapper = styled("div")(() => ({
+const Wrapper = styled("div")(({ theme }) => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -46,17 +49,17 @@ const Wrapper = styled("div")(() => ({
   })
 }));
 
-const Left = styled("div")(() => ({
+const Left = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "1rem"
 }));
 
-const Center = styled("div")(() => ({
+const Center = styled("div")(({ theme }) => ({
   textAlign: "center"
 }));
 
-const Logo = styled("h1")(() => ({
+const Logo = styled("h1")(({ theme }) => ({
   fontWeight: 400,
   ...ScreenWith670px({
     fontSize: "1.5rem"
@@ -64,7 +67,7 @@ const Logo = styled("h1")(() => ({
   ...mobile({ display: "none" })
 }));
 
-const Logo2 = styled("div")(() => ({
+const Logo2 = styled("div")(({ theme }) => ({
   display: "none",
   fontWeight: 400,
   ...mobile({
@@ -74,14 +77,14 @@ const Logo2 = styled("div")(() => ({
   })
 }));
 
-const Right = styled("div")(() => ({
+const Right = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: "1rem"
 }));
 
-const MenuItem = styled("div")(() => ({
+const MenuItem = styled("div")(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -89,7 +92,7 @@ const MenuItem = styled("div")(() => ({
   ...mobile({ fontSize: "12px" })
 }));
 
-const MenuItem2 = styled("div")(() => ({
+const MenuItem2 = styled("div")(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -98,7 +101,7 @@ const MenuItem2 = styled("div")(() => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser = styled("div")(() => ({
+const MenuItemMyUser = styled("div")(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -107,7 +110,7 @@ const MenuItemMyUser = styled("div")(() => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser2 = styled("div")(() => ({
+const MenuItemMyUser2 = styled("div")(({ theme }) => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "none",
@@ -117,9 +120,8 @@ const MenuItemMyUser2 = styled("div")(() => ({
 }));
 
 const NavBar = () => {
-  const userAuth = useUserAuth();
-  const [user, setUser] = useState({});
-  const [login, setLogin] = useState(false);
+  const user = useUserContext();
+  const userAuth = useUserAuth()
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
@@ -128,6 +130,8 @@ const NavBar = () => {
   const [anchor, setAnchor] = useState(false);
   const { cartData, setCartData } = useCartContext();
   const [quantity, setQuantity] = useState(0)
+  const [login, setLogin] = useState(false)
+  const [users, setUser] = useState({})
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -152,7 +156,6 @@ const NavBar = () => {
       setQuantity(cartData?.totalQuantity)
     }
   }, [cartData, dataFetched, userAuth.user, setCartData]);
-
   const onClickHandler = async (e) => {
     try {
       setCartData(null)
@@ -185,14 +188,14 @@ const NavBar = () => {
           <MenuItemMyUser2 onClick={toggleDrawer(true)}>
             <ReorderIcon />
           </MenuItemMyUser2>
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/">
                 <HomeIcon />
               </Link>
             </MenuItem2>
           )}
-          {login && (
+          {user && (
             <MenuItem2>
               <Link to="/orders">My Orders</Link>
             </MenuItem2>
@@ -207,7 +210,7 @@ const NavBar = () => {
           </Center>
         </Link>
         <Right>
-          {login ? (
+          {user ? (
             <>
               <MenuItemMyUser onClick={handleClick}>
                 {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
@@ -271,7 +274,7 @@ const NavBar = () => {
         />
       )}
       <Backdrop open={loading} onClick={() => setLoading(false)}>
-        <Loader />
+        <CircularProgress color="primary" />
       </Backdrop>
       <SwipeableDrawer
         open={anchor}
