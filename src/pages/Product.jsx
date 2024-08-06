@@ -32,6 +32,8 @@ import {
   Amount,
   Button
 } from "../components/styles/Product";
+import { useCreateCart } from "../hooks/useCart";
+import { useUserAuth } from "../context/UserAuthContext";
 
 const Product = () => {
   const [product, setProduct] = useState({});
@@ -42,10 +44,16 @@ const Product = () => {
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
   const { products } = useDataContext();
-
+  const userAuth = useUserAuth();
+  const [user, setUser] = useState({});
+  const { mutate: createCart } = useCreateCart();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    setUser(userAuth.user || {});
+  }, [userAuth.user]);
 
   useEffect(() => {
     if (id) {
@@ -62,17 +70,19 @@ const Product = () => {
 
   const handleClick = () => {
     const selectedSize = product.sizes.find(s => s.size === size);
-    dispatch(
-      addProducts({
-        ...product,
-        quantity,
-        img: selectedSize?.images[0],
-        size,
-        price: selectedSize?.price - selectedSize?.price * 0.05,
-        productId: uuidv4(),
-        originalPrice: selectedSize?.price
-      })
-    );
+
+    console.log(product, "productttt")
+    const productObject = {
+      userId: user?.uid,
+      Products: [{
+        productID: product?.id,
+        quantity: quantity,
+        unitPrice: selectedSize?.price,
+        size: size
+      }]
+    }
+    createCart({ cartDetails: productObject, userID: user?.uid })
+    console.log(productObject, "productObject")
     // setOpenAlert(true);
   };
 

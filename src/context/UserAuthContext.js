@@ -8,23 +8,21 @@ import {
   useSignUp
 } from "../hooks/useAuthFirebase";
 import { auth } from "../firebase";
-
-
 const userAuthContext = createContext();
 
-export const UserAuthContextProvider = ({ children }) => {
-  const { mutate: createUser  } = useSignUp();
+export const useUserAuthContextProvider = ({ children }) => {
+  const { mutate: createUser } = useSignUp();
   const { mutate: loginEP } = useLoginEP();
   const { mutate: signOut } = useLogOut();
   const { mutate: googleLogin } = useLoginGoogle();
   const { mutate: loginPhone } = useLoginPhone();
 
-  const signUp = (email, password) =>{
+  const signUp = (email, password) => {
     createUser({ email, password });
   }
 
   const login = (email, password) => {
-    loginEP({email, password});
+    loginEP({ email, password });
   }
 
   const logOut = () => {

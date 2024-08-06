@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import { mobile, ScreenWith670px, ScreenWith960px } from "../responsive";
 import { useSelector, useDispatch } from "react-redux";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { addProduct, removeProducts } from "../redux/cartRedux";
 import { v4 as uuidv4 } from "uuid";
 import addToCart from "./images/addToCart.png";
@@ -14,6 +14,10 @@ import OrderSummary from "../components/OrderSummary";
 import { IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
+import { useUserAuth } from "../context/UserAuthContext";
+import { useCartContext } from "../context/cartContext";
+import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
+import { useUpdateCart, useDeleteCart, useDeleteProuctCart } from "../hooks/useCart";
 
 const Container = styled.div``;
 
@@ -52,6 +56,7 @@ const TopButton = styled.button`
 const TopTexts = styled.div`
   ${mobile({ display: "none" })}
 `;
+
 const TopText = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -79,10 +84,10 @@ const ProductDetail = styled.div`
   flex: 2;
   display: flex;
   ${mobile({
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  })}
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center"
+})}
 `;
 
 const Image = styled.img`
@@ -101,8 +106,6 @@ const Details = styled.div`
 `;
 
 const ProductName = styled.span``;
-
-// const ProductId = styled.span``;
 
 const ProductSize = styled.span``;
 
@@ -145,6 +148,7 @@ const ProductPrice = styled.div`
   ${ScreenWith960px({ fontSize: "26px" })}
   ${ScreenWith670px({ fontSize: "24px" })}
 `;
+
 const ProductPrice2 = styled.div`
   font-size: 30px;
   font-weight: 200;
@@ -171,22 +175,91 @@ const CartImage = styled.img`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const userAuth = useUserAuth();
+  const [user, setUser] = useState({});
+  const { cartData, setCartData } = useCartContext();
+  const [data, setData] = useState({});
+  const [size, setSize] = useState("");
+  const [singleNull, setSingleNull] = useState(false)
+
+  const { mutate: updateCart } = useUpdateCart();
+  const { mutate: deleteCart } = useDeleteCart();
+  const { mutate: deleteProductCart } = useDeleteProuctCart()
+
+  useEffect(() => {
+    setUser(userAuth.user || {});
+  }, [userAuth.user]);
+
+  const dataFetched = useFetchCartData(userAuth.user);
+
+  useEffect(() => {
+    if (dataFetched && userAuth.user) {
+      setCartData(dataFetched);
+      setData(dataFetched);
+    }
+  }, [cartData, dataFetched, userAuth.user, setCartData]);
 
   useEffect(() => {
     window?.scrollTo(0, 0);
   }, []);
 
   const handleClick = (type, item, id = "") => {
+    let sampleCartData;
+    let singleNull = false
     if (type === "dec") {
-      dispatch(removeProducts({ id }));
+      sampleCartData = {
+        ...data,
+        products: data.products
+          .map(value => {
+            if (value?.productDetails?.id === id && value.quantity > 1 && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
+              return { ...value, quantity: value.quantity - 1 };
+            } else if (value?.productDetails?.id === id && value.quantity === 1) {
+              singleNull = !singleNull
+              return null;
+            }
+            return value;
+          })
+          .filter(value => value !== null)
+      };
     } else {
-      dispatch(
-        addProduct({
-          productId: id
+      sampleCartData = {
+        ...data,
+        products: data.products.map(value => {
+          if (value?.productDetails?.id === id && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
+            return { ...value, quantity: value.quantity + 1 };
+          }
+          return value;
         })
-      );
+      };
+    }
+    if (singleNull) {
+      deleteProductCart({ CartID: sampleCartData?.CartID, productId: id, userID: user?.uid })
+      singleNull = false
+    } else {
+      if (sampleCartData?.products?.length === 0) {
+        deleteCart({ CartID: sampleCartData?.CartID, userID: user?.uid });
+      } else {
+        const createdObjectForCart = {
+          userId: cartData?.userId,
+          Products: sampleCartData.products.map(value => ({
+            productID: value?.productDetails?.id,
+            quantity: value.quantity,
+            unitPrice: value?.productDetails?.sizes[0]?.price,
+            size: value?.productDetails?.sizes[0]?.size
+          }))
+        };
+        updateCart({ CartID: sampleCartData?.CartID, cartDetails: createdObjectForCart, userID: user?.uid });
+      }
     }
   };
+
+  const truncateDescription = (description, maxLength) => {
+    if (description.length <= maxLength) {
+      return description;
+    }
+    return description.substring(0, maxLength) + "...";
+  };
+
   return (
     <>
       <Helmet>
@@ -197,47 +270,40 @@ const Cart = () => {
         <Announcement />
         <NavBar />
         <Wrapper>
-          {cart?.products.length === 0
-            ? (
+          {!dataFetched || data.length === 0 || dataFetched?.products.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Product</Title>
             </Link>
-              )
-            : (
+          ) : (
             <Title>YOUR BAG</Title>
-              )}
-          {cart?.products.length === 0 ? (
+          )}
+          {!dataFetched || data.length === 0 || dataFetched?.products.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
           ) : (
             <>
-              {" "}
               <Top>
                 <Link to="/products">
-                  {" "}
                   <TopButton>CONTINUE SHOPPING</TopButton>
                 </Link>
                 <TopTexts>
                   <TopText>Shopping Bag({cart?.quantity})</TopText>
                 </TopTexts>
-                {/* <Link to="/checkout">
-                <TopButton type="filled">CHECKOUT NOW</TopButton>
-              </Link> */}
               </Top>
               <Bottom>
                 <Info>
-                  {cart.products?.map((item) => (
+                  {data?.products?.map((item) => (
                     <Fragment key={uuidv4()}>
                       <Product>
                         <ProductDetail>
-                          <Image src={item?.img} />
+                          <Image src={item?.productDetails?.sizes[0]?.images[0]} />
                           <Details>
                             <ProductName>
-                              <b>Product:</b> {item?.title}
+                              <b>Product:</b> {item?.productDetails?.name}
                             </ProductName>
                             <ProductSize>
-                              <b>Size:</b> {item?.size}
+                              <b>Description:</b> {truncateDescription(item?.productDetails?.description, 100)}
                             </ProductSize>
                           </Details>
                         </ProductDetail>
@@ -246,7 +312,7 @@ const Cart = () => {
                             <IconButton>
                               <Remove
                                 onClick={() =>
-                                  handleClick("dec", item, item.productId)
+                                  handleClick("dec", item, item.productDetails?.id)
                                 }
                               />
                             </IconButton>
@@ -254,17 +320,17 @@ const Cart = () => {
                             <IconButton>
                               <Add
                                 onClick={() =>
-                                  handleClick("add", item, item.productId)
+                                  handleClick("add", item, item.productDetails?.id)
                                 }
                               />
                             </IconButton>
                           </ProductAmountContainer>
                           <ProductPrice>
-                            Rs. {item?.originalPrice * item?.quantity}
+                            Rs. {item?.productDetails?.sizes[0]?.price * item?.quantity}
                           </ProductPrice>
                           <ProductPrice2>
                             Rs.{" "}
-                            {(item?.price * item?.quantity + 0.0).toFixed(2)}
+                            {(item?.productDetails?.sizes[0]?.price * item?.quantity + 0.0).toFixed(2)}
                           </ProductPrice2>
                         </PriceDetail>
                       </Product>
@@ -273,13 +339,13 @@ const Cart = () => {
                   ))}
                 </Info>
                 <OrderSummary />
-              </Bottom>{" "}
+              </Bottom>
             </>
           )}
         </Wrapper>
         <Footer />
-        <BottomNav />
       </Container>
+      <BottomNav />
     </>
   );
 };
