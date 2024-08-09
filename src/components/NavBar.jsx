@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
@@ -18,8 +17,6 @@ import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
-
-import Loader from "./Loader";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 
@@ -120,7 +117,7 @@ const MenuItemMyUser2 = styled("div")(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const user = useUserContext();
+  const { user } = useUserContext();
   const userAuth = useUserAuth()
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
@@ -130,8 +127,6 @@ const NavBar = () => {
   const [anchor, setAnchor] = useState(false);
   const { cartData, setCartData } = useCartContext();
   const [quantity, setQuantity] = useState(0)
-  const [login, setLogin] = useState(false)
-  const [users, setUser] = useState({})
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -140,15 +135,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    if (userAuth.user) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-    setUser(userAuth.user);
-  }, [userAuth.user]);
   const dataFetched = useFetchCartData(userAuth.user);
   useEffect(() => {
     if (dataFetched && userAuth.user) {

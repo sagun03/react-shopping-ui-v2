@@ -2,11 +2,12 @@ import styled from "styled-components";
 import jk from "./images/jk.jpeg";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { mobile } from "../responsive";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
 import { FormHelperText } from "@mui/material";
 import GoogleButton from "react-google-button";
 import { Helmet } from "react-helmet-async";
+import { useUserContext } from "../context/UserContext";
 
 const Container = styled.div`
   width: 100vw;
@@ -79,38 +80,32 @@ const Agreement = styled.span`
 `;
 
 const Login = () => {
-  const [userInfo, setUserInfo] = useState({});
-  const [error, setError] = useState("");
+  const { user, error: loginError, setError: setLoginError } = useUserContext();
   const { login, googleSignIn } = useUserAuth();
+  const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
   const handleOnChange = (key, value) => {
     setUserInfo((state) => ({ ...state, [key]: value }));
-    setError("");
   };
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const { email = "", password = "" } = userInfo;
-      try {
-        login(email, password);
-      } catch (err) {
-        setError(err.message);
-      }
-      navigate("/");
-    } catch (err) {
-      setUserInfo({});
-      setError(err.message);
-    }
+    e.preventDefault();
+    const { email = "", password = "" } = userInfo;
+    login(email, password);
   };
-  const handleGoogleSignIn = async (e) => {
-    try {
-      e.preventDefault();
-      await googleSignIn();
-      navigate("/");
-    } catch (err) {
-      setError(err.message);
-    }
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    googleSignIn();
+    navigate("/");
   };
+
+  useEffect(() => { setLoginError(null) }, []);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user])
+
   return (
     <>
       <Helmet>
@@ -120,9 +115,9 @@ const Login = () => {
     <Container>
       <Wrapper>
         <Title>SIGN IN</Title>
-        {error && (
+        {loginError && (
           <Title>
-            <FormHelperText error={true}>{error}</FormHelperText>
+            <FormHelperText error={true}>{loginError}</FormHelperText>
           </Title>
         )}
         <Form onSubmit={handleSubmit}>

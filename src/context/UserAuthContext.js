@@ -8,9 +8,11 @@ import {
   useSignUp
 } from "../hooks/useAuthFirebase";
 import { auth } from "../firebase";
+import PropTypes from "prop-types";
+
 const userAuthContext = createContext();
 
-export const useUserAuthContextProvider = ({ children }) => {
+export const UserAuthContextProvider = ({ children }) => {
   const { mutate: createUser } = useSignUp();
   const { mutate: loginEP } = useLoginEP();
   const { mutate: signOut } = useLogOut();
@@ -55,6 +57,11 @@ export const useUserAuthContextProvider = ({ children }) => {
         {children}
     </userAuthContext.Provider>
   );
+};
+
+// prop validation
+UserAuthContextProvider.propTypes = {
+  children: PropTypes.node.isRequired
 };
 
 export const useUserAuth = () => {
