@@ -28,7 +28,7 @@ const Homepage = () => {
   const dataFetched = useFetchCartData(userAuth.user);
 
   useEffect(() => {
-    if (cartData.length === 0 && dataFetched && userAuth.user) {
+    if (cartData && cartData.length === 0 && dataFetched && userAuth.user) {
       setCartData(dataFetched);
     }
   }, [cartData, dataFetched, userAuth.user, setCartData]);
