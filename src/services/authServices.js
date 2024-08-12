@@ -7,8 +7,8 @@ export const login = async (userData) => {
       method: "POST",
       url: "/user/login",
       data: {
-        role: role,
-        email: email
+        role,
+        email
       },
       headers: {
         "Content-Type": "application/json",
@@ -29,8 +29,8 @@ export const register = async (userData) => {
       method: "POST",
       url: "/user/register",
       data: {
-        role: role,
-        email: email
+        role,
+        email
       },
       headers: {
         "Content-Type": "application/json",

@@ -12,8 +12,19 @@ import PopularProductItem from "./PopularProductItem";
 
 const PopularProducts = () => {
   const { products } = useDataContext();
-  const popularProducts = products.slice(0, 5);
-  console.log("products", popularProducts)
+
+  const popularProducts = products
+    .filter((item) => item.isPopular === true)
+    .flatMap((item) =>
+      item.sizes
+        .filter((size) => size.isPopular)
+        .map((popularSize) => ({
+          ...popularSize,
+          productId: item.id,
+          productName: item.name,
+          productDescription: item.description
+        }))
+    );
 
   return (
     <>
@@ -35,16 +46,14 @@ const PopularProducts = () => {
         </HeadingContainer>
         <Swiper
           effect={"fade"}
-          // centeredSlides={false}
           loopFillGroupWithBlank={true}
-          // slidesPerView={3}
           autoplay={{
             delay: 0,
             disableOnInteraction: false
           }}
           speed={6000}
           spaceBetween={40}
-          slicePerView={1}
+          slidesPerView={1}
           navigation={false}
           loop={true}
           modules={[Navigation, Pagination, Autoplay]}
@@ -66,8 +75,8 @@ const PopularProducts = () => {
           className="mySwiper1"
         >
           {popularProducts.map((item, index) => (
-            <SwiperSlide key={item.id}>
-              <PopularProductItem {...item} key={index} />
+            <SwiperSlide key={index}>
+              <PopularProductItem {...item} />
             </SwiperSlide>
           ))}
         </Swiper>

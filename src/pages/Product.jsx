@@ -76,9 +76,9 @@ const Product = () => {
       userId: user?.uid,
       Products: [{
         productID: product?.id,
-        quantity: quantity,
+        quantity,
         unitPrice: selectedSize?.price,
-        size: size
+        size
       }]
     }
     createCart({ cartDetails: productObject, userID: user?.uid })
