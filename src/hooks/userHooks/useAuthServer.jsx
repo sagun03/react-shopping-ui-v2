@@ -1,7 +1,7 @@
 // queries for accessing user endpoints
 import { useMutation } from "@tanstack/react-query";
-import { login, register, logout } from "../services/authServices";
-import { useUserContext } from "../context/UserContext";
+import { login, register, logout } from "../../services/authServices";
+import { useUserContext } from "../../context/UserContext";
 
 export const useLogin = () => {
   const { setError } = useUserContext();

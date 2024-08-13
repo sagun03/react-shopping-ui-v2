@@ -6,7 +6,7 @@ import {
   useLoginPhone,
   useLoginEP,
   useSignUp
-} from "../hooks/useAuthFirebase";
+} from "../hooks/userHooks/useAuthFirebase";
 import { auth } from "../firebase";
 import PropTypes from "prop-types";
 

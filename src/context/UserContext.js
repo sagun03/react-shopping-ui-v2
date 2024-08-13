@@ -13,25 +13,17 @@ export const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("current user", currentUser);
       if (currentUser) {
         setUser(currentUser);
         // set interval to refresh token
         var refreshInterval = setInterval(() => {
-          currentUser.getIdToken(true).then((idToken) => {
-            console.log("idToken", idToken);
-            console.log("current user", currentUser);
-          }).catch((error) => {
+          currentUser.getIdToken(true).catch((error) => {
             console.log("error while refreshing token", error);
           });
         }, 60000)
-      } else {
-        setUser(null);
-        // clear interval
-        clearInterval(refreshInterval);
       }
-    });
-
+    }
+    );
     return () => {
       unsubscribe();
     }
