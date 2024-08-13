@@ -13,16 +13,21 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation, useNavigate } from "react-router";
 import styled from "styled-components";
+import { styled as MuiStyled } from "@mui/system";
 import { ScreenWith670px } from "../responsive";
 import { useSelector } from "react-redux";
 
 const PaperUi = styled(Paper)`
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  width: 95%;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
   z-index: 1300;
   display: none;
+  border-radius: 10px !important;
+  border: none !important;
+  background: none !important;
   ${ScreenWith670px({ display: "block" })}
 `;
 
@@ -36,6 +41,7 @@ const bottomNavigationValues = {
   2: "/orders",
   3: "/cart"
 };
+
 const BottomNav = () => {
   const { user } = useUserAuth();
   const [value, setValue] = React.useState(0);
@@ -56,6 +62,14 @@ const BottomNav = () => {
       <BottomNavigation
         showLabels
         value={value}
+        sx={{
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "10px !important",
+          backgroundColor: "rgba(255, 255, 255, 0.3) !important",
+          backdropFilter: "blur(40px)"
+        }}
         onChange={(event, newValue) => {
           navigate(bottomNavigationValues[newValue]);
           if (newValue === value) {
@@ -94,7 +108,6 @@ const BottomNav = () => {
           }
         />
         <a href="tel:+918755447070">
-          {" "}
           <BottomNavigationActionUi
             label="Call Us"
             icon={<CallIcon />}
