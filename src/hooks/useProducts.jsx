@@ -24,8 +24,7 @@ export const useProduct = (id) => {
       retry: 3, // Retry failed requests up to 3 times
       onError: (error) => {
         console.error("Error fetching product:", error);
-      },
-      staleTime: 60000 // Cache data for 1 minute (in milliseconds)
+      }
     }
   });
 };
