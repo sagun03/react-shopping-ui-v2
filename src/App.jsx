@@ -17,6 +17,7 @@ import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { CartProvider } from "./context/cartContext";
 import { OrderProvider } from "./context/orderContext";
 import { UserContextProvider } from "./context/UserContext";
+import UserProfile from "./pages/UserProfile";
 import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
 const Home = React.lazy(() => import("./pages/Homepage"));
@@ -24,39 +25,45 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ErrorBoundary>
-        <UserContextProvider>
-          <UserAuthContextProvider>
-            <DataProvider>
-              <OrderProvider>
-                <CartProvider>
-                  <Router>
-                    <Routes>
-                      <Route
-                        path="/"
-                        element={
-                          <Suspense fallback={<Loader />}>
-                            <Home />
-                          </Suspense>
-                        }
-                      />
-                      <Route path="/product/:id" element={<Product />} />
-                      <Route path="/cart" element={<Cart />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route path="/phonesignup" element={<PhoneSignUp />} />
-                      <Route path="/orders" element={<Orders />} />
-                      <Route path="/checkout" element={<Checkout />} />
-                      <Route path="/products" element={<ProductSearch />} />
-                      <Route path="/admin" element={<Admin />} />
-                    </Routes>
-                  </Router>
-                </CartProvider>
-              </OrderProvider>
-            </DataProvider>
-          </UserAuthContextProvider>
-        </UserContextProvider>
-      </ErrorBoundary>
+      <UserContextProvider>
+        <UserAuthContextProvider>
+          <DataProvider>
+          <CartProvider>
+            <Router>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Suspense
+                      fallback={
+                        <Loader />
+                      }
+                    >
+                      <Home />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <Product />
+                  }
+                />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/phonesignup" element={<PhoneSignUp />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/products" element={<ProductSearch />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/profile" element={<UserProfile />} />
+              </Routes>
+            </Router>
+            </CartProvider>
+          </DataProvider>
+        </UserAuthContextProvider>
+      </UserContextProvider>
     </QueryClientProvider>
   );
 };

@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   signInWithPhoneNumber
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../../firebase";
 
 import {
   useRegister,
@@ -15,7 +15,7 @@ import {
   useSignOut
 } from "./useAuthServer";
 
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../../context/UserContext";
 
 const extractUserData = (user) => ({
   email: user.email ? user.email : (user.phoneNumber ? user.phoneNumber : undefined),

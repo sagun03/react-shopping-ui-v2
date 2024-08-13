@@ -11,7 +11,6 @@ import {
 import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-// import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
@@ -19,6 +18,8 @@ import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
+import UserProfile from "../pages/UserProfile";
+// import { auth } from "../firebase";
 
 const Container = styled("div")(() => ({
   height: "55px",
@@ -103,6 +104,9 @@ const MenuItemMyUser = styled("div")(() => ({
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
+  "&:hover": {
+    backgroundColor: "teal"
+  },
   ...mobile({ fontSize: "12px" }),
   ...ScreenWith670px({ display: "none" })
 }));
@@ -229,6 +233,18 @@ const NavBar = () => {
                     <ExitToAppIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Logout" sx={{ marginRight: "18px" }} />
+                </MenuItem>
+
+                <MenuItem>
+                  <Link to="/profile">
+                    <ListItemText primary="My Profile" sx={{ marginRight: "18px" }} />
+                  </Link>
+                </MenuItem>
+
+                <MenuItem>
+                  <Link to="/profile">
+                    <ListItemText primary="My Profile" sx={{ marginRight: "18px" }} />
+                  </Link>
                 </MenuItem>
               </Menu>
             </>
