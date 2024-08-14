@@ -31,7 +31,7 @@ export const updateCartProducts = async (CartID, cartDetails) => {
 
 export const createCartProducts = async (cartDetails) => {
   const { userId, Products } = cartDetails;
-  return makeApiRequest("POST", "/cart", { userId: userId.toString(), Products });
+  return makeApiRequest("POST", "/cart", { userId: userId, Products });
 };
 
 export const fetchProductById = async (id) => {

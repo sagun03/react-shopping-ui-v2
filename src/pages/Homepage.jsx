@@ -16,22 +16,24 @@ import { useCartContext } from "../context/cartContext";
 import { useCart } from "../hooks/useCart";
 import { useUserAuth } from "../context/UserAuthContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
+import { useUserContext } from "../context/UserContext";
 const Homepage = () => {
+  const users = useUserContext()
   const userAuth = useUserAuth();
   const { setCartData, cartData } = useCartContext();
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    setUser(userAuth.user || {});
-  }, [userAuth.user]);
+    setUser(userAuth?.user || {});
+  }, [userAuth?.user]);
 
-  const dataFetched = useFetchCartData(userAuth.user);
+  const dataFetched = useFetchCartData(users);
 
   useEffect(() => {
-    if (cartData && cartData.length === 0 && dataFetched && userAuth.user) {
+    if (cartData.length === 0 && dataFetched && users) {
       setCartData(dataFetched);
     }
-  }, [cartData, dataFetched, userAuth.user, setCartData]);
+  }, [cartData, dataFetched, setCartData]);
   return (
     <>
       <Helmet>

@@ -9,12 +9,14 @@ import Alert from "./Alert";
 import { WrapperContainer, Container, Image, Info, Icon, Content, CustomButton } from "./styles/ProductRangeCard";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useCreateCart } from "../hooks/useCart";
+import { useUserContext } from "../context/UserContext";
 
 const ProductRangeCard = ({ name, id, size, price, images }) => {
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
   const userAuth = useUserAuth();
   const [user, setUser] = useState({});
+  const users = useUserContext()
   const { mutate: createCart } = useCreateCart();
   useEffect(() => {
     setUser(userAuth.user || {});
@@ -24,7 +26,7 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
     console.log(name, id, size, price, images, user)
 
     const productObject = {
-      userId: user?.uid,
+      userId: users?.uid,
       Products: [{
         productID: id,
         quantity: 1,
@@ -36,7 +38,7 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
       window.location.reload();
       console.log("Additional actions after cart creation");
     };
-    createCart({ cartDetails: productObject, userID: user?.uid })
+    createCart({ cartDetails: productObject, userID: users?.uid, setOpenAlert })
   };
 
   return (

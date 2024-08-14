@@ -135,13 +135,14 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const dataFetched = useFetchCartData(userAuth.user);
+
+  const dataFetched = useFetchCartData(user);
   useEffect(() => {
-    if (dataFetched && userAuth.user) {
+    if (dataFetched) {
       setCartData(dataFetched);
       setQuantity(cartData?.totalQuantity)
     }
-  }, [cartData, dataFetched, userAuth.user, setCartData]);
+  }, [cartData, dataFetched, setCartData]);
   const onClickHandler = async (e) => {
     try {
       setCartData(null)

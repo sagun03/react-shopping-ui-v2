@@ -46,8 +46,9 @@ export const useCreateCart = (onSuccessCallback) => {
     onError: (error) => {
       console.error("Error creating cart:", error);
     },
-    onSuccess: (_, { userID }) => {
+    onSuccess: (_, { userID, setOpenAlert }) => {
       console.log("Cart created successfully");
+      setOpenAlert(true)
       queryClient.invalidateQueries(["cart"], userID);
     }
   });

@@ -6,6 +6,10 @@ import { useUserAuth } from "../context/UserAuthContext";
 import Review from "./Review";
 import { mobile } from "../responsive";
 import Loader from "./Loader";
+import OrderPage from "../pages/OrderPage";
+import useFetchOrderData from "../hooks/custom hooks/useFetchOrderData";
+import { useOrderContext } from "../context/orderContext";
+import { useUserContext } from "../context/UserContext";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -48,20 +52,27 @@ const Title = styled.h1`
 
 const OrdersComponent = () => {
   const ordersCollectionRef = collection(db, "order");
-  const { user } = useUserAuth();
+  const user = useUserContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window?.scrollTo(0, 0);
   }, []);
+  const dataFetched = useFetchOrderData(user);
+  const { setOrderData, orderData } = useOrderContext();
+  useEffect(() => {
+    if (orderData.length === 0 && dataFetched && user) {
+      setOrderData(dataFetched);
+    }
+  }, [orderData, dataFetched, setOrderData]);
 
   const [userOrders, setUserOrders] = useState(undefined);
   const getOrders = useCallback(async () => {
     try {
       const data = await getDocs(ordersCollectionRef);
-      const orders = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const orders = data?.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       const userOrder = orders?.filter(
-        (order) => order.userId === user[0]?.uid
+        (order) => order?.userId === user[0]?.uid
       );
       setLoading(false);
       setUserOrders(userOrder);
@@ -78,27 +89,7 @@ const OrdersComponent = () => {
   return (
     <>
       <Title>Your Orders</Title>
-      {!loading &&
-        (userOrders?.length > 0 ? (
-          <>
-            <Wrapper>
-              {userOrders?.map((order) => (
-                <>
-                  <OrderWrapper>
-                    <Review order={order} products={order?.products} />
-                  </OrderWrapper>
-                </>
-              ))}{" "}
-            </Wrapper>
-          </>
-        ) : (
-          <Wrapper>No orders yet... but I can smell them coming!</Wrapper>
-        ))}
-      {loading && (
-        <Wrapper>
-          <Loader />
-        </Wrapper>
-      )}
+      {orderData ? <OrderPage/> : <Wrapper>No orders yet... but I can smell them coming!</Wrapper>}
     </>
   );
 };
