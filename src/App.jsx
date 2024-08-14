@@ -20,7 +20,6 @@ import { UserContextProvider } from "./context/UserContext";
 import Loader from "./components/Loader";
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
-
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
