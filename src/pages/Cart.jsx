@@ -18,6 +18,7 @@ import { useUserAuth } from "../context/UserAuthContext";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUpdateCart, useDeleteCart, useDeleteProuctCart } from "../hooks/useCart";
+import { useUserContext } from "../context/UserContext";
 
 const Container = styled.div``;
 
@@ -176,6 +177,7 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const userAuth = useUserAuth();
+  const users = useUserContext()
   const [user, setUser] = useState({});
   const { cartData, setCartData } = useCartContext();
   const [data, setData] = useState({});
@@ -190,14 +192,14 @@ const Cart = () => {
     setUser(userAuth.user || {});
   }, [userAuth.user]);
 
-  const dataFetched = useFetchCartData(userAuth.user);
+  const dataFetched = useFetchCartData(users);
 
   useEffect(() => {
-    if (dataFetched && userAuth.user) {
+    if (dataFetched && users) {
       setCartData(dataFetched);
       setData(dataFetched);
     }
-  }, [cartData, dataFetched, userAuth.user, setCartData]);
+  }, [cartData, dataFetched, setCartData]);
 
   useEffect(() => {
     window?.scrollTo(0, 0);

@@ -34,8 +34,9 @@ import {
 } from "../components/styles/Product";
 import { useCreateCart } from "../hooks/useCart";
 import { useUserAuth } from "../context/UserAuthContext";
-
+import { useUserContext } from "../context/UserContext";
 const Product = () => {
+  const users = useUserContext();
   const [product, setProduct] = useState({});
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -52,6 +53,7 @@ const Product = () => {
   }, []);
 
   useEffect(() => {
+    console.log(users, "userAuth.user")
     setUser(userAuth.user || {});
   }, [userAuth.user]);
 
@@ -73,7 +75,7 @@ const Product = () => {
 
     console.log(product, "productttt")
     const productObject = {
-      userId: user?.uid,
+      userId: users?.uid,
       Products: [{
         productID: product?.id,
         quantity,
@@ -81,8 +83,7 @@ const Product = () => {
         size
       }]
     }
-    createCart({ cartDetails: productObject, userID: user?.uid })
-    console.log(productObject, "productObject")
+    createCart({ cartDetails: productObject, userID: users?.uid, setOpenAlert })
     // setOpenAlert(true);
   };
 
@@ -101,6 +102,14 @@ const Product = () => {
       <Announcement />
       <NavBar />
       <Wrapper>
+      {openAlert && (
+        <Alert
+          open={openAlert}
+          type={"success"}
+          message={"Your Product has been added into Cart"}
+          setOpen={setOpenAlert}
+        />
+      )}
         <ImgContainer>
           {selectedSize.images && <Image src={selectedSize.images[0]} alt={product.name} />}
         </ImgContainer>
@@ -155,14 +164,6 @@ const Product = () => {
       </Wrapper>
       <NewsLetter />
       <Footer />
-      {openAlert && (
-        <Alert
-          open={openAlert}
-          type={"success"}
-          message={"Your Product has been added into Cart"}
-          setOpen={setOpenAlert}
-        />
-      )}
       <BottomNav />
     </Container>
   );

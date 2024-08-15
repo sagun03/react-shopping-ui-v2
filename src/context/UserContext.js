@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import PropTypes from "prop-types"; // Ensure no trailing space here
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
 const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
-
-// eslint-disable-next-line react/prop-types
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -42,3 +41,6 @@ export const UserContextProvider = ({ children }) => {
     </UserContext.Provider>
   )
 }
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired // Validate that children is passed and is a valid React node
+};

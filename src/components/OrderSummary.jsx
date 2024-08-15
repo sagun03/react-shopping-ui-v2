@@ -3,9 +3,9 @@ import { mobile, ScreenWith960px } from "../responsive";
 import { useSelector } from "react-redux";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { Button } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import LocationDialogBox from "./LocationDialogBox";
-
+import { useCartContext } from "../context/cartContext";
 const Summary = styled.div`
   flex: 1;
   border: 0.5px solid lightgray;
@@ -47,18 +47,17 @@ export const CustomButton = styled(Button)`
 `;
 
 const OrderSummary = () => {
+  const { cartData, setCartData } = useCartContext();
   const cart = useSelector((state) => state.cart);
   const [open, setOpen] = useState(false);
-  const subtotal = useMemo(() => {
-    return cart?.total;
-  }, [cart?.total]);
-  const getCartTotal = useMemo(() => {
-    let total = subtotal;
-    if (subtotal > 200) {
-      total = subtotal - ((20 / 100) * subtotal);
+  let subtotal = 0;
+  useEffect(() => {
+    if (cartData) {
+      cartData?.products?.forEach((value) => {
+        subtotal += value?.productDetails?.sizes[0]?.price * value?.quantity || 0;
+      });
     }
-    return Math.round(total);
-  }, [subtotal]);
+  }, []);
 
   return (
     <Summary>
@@ -77,18 +76,18 @@ const OrderSummary = () => {
           <SummaryItemPrice>Rs. -10</SummaryItemPrice>
         </SummaryItem>
       )} */}
-      {subtotal > 200 && (
+      {/* {subtotal > 200 && (
         <SummaryItem>
           <SummaryItemText>Extra Discount 20%</SummaryItemText>
           <SummaryItemPrice>
             Rs. {Math.round((20 / 100) * subtotal)}
           </SummaryItemPrice>
         </SummaryItem>
-      )}
+      )} */}
       <SummaryItem type="total">
         <SummaryItemText>Total</SummaryItemText>
         <SummaryItemPrice>
-          Rs. {getCartTotal}
+          Rs. {subtotal}
         </SummaryItemPrice>
       </SummaryItem>
       {/* <a

@@ -15,17 +15,18 @@ import { DataProvider } from "./context/DataContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { CartProvider } from "./context/cartContext";
+import { OrderProvider } from "./context/orderContext";
 import { UserContextProvider } from "./context/UserContext";
 import Loader from "./components/Loader";
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
-
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+       <UserAuthContextProvider>
       <UserContextProvider>
-        <UserAuthContextProvider>
           <DataProvider>
+            <OrderProvider>
           <CartProvider>
             <Router>
               <Routes>
@@ -58,9 +59,10 @@ const App = () => {
               </Routes>
             </Router>
             </CartProvider>
+            </OrderProvider>
           </DataProvider>
-        </UserAuthContextProvider>
       </UserContextProvider>
+      </UserAuthContextProvider>
     </QueryClientProvider>
   );
 };
