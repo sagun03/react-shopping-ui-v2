@@ -1,3 +1,6 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable import/no-duplicates */
+
 import { createContext, useContext } from "react";
 import { RecaptchaVerifier } from "firebase/auth";
 import {
@@ -54,7 +57,7 @@ export const UserAuthContextProvider = ({ children }) => {
         auth
       }}
     >
-        {children}
+      {children}
     </userAuthContext.Provider>
   );
 };

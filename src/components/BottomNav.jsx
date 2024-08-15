@@ -36,21 +36,21 @@ const bottomNavigationValues = {
   2: "/orders",
   3: "/cart"
 };
+
 const BottomNav = () => {
   const { user } = useUserAuth();
   const [value, setValue] = React.useState(0);
   const { quantity } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   useEffect(() => {
     const getKeyByValue = (object, value) => {
       return +Object.keys(object).find((key) => object[key] === value);
     };
-    console.log(getKeyByValue(bottomNavigationValues, location.pathname));
     setValue(getKeyByValue(bottomNavigationValues, location.pathname));
   }, [setValue, location]);
+
   return (
     <PaperUi elevation={3}>
       <BottomNavigation
@@ -67,40 +67,32 @@ const BottomNav = () => {
           }
         }}
       >
-        <BottomNavigationActionUi label="Home" icon={<HomeIcon />} showLabel />
-        <BottomNavigationActionUi
-          label="Products"
-          icon={<LineWeightIcon />}
-          showLabel
-        />
+        <BottomNavigationActionUi label="Home" icon={<HomeIcon />} />
+        <BottomNavigationActionUi label="Products" icon={<LineWeightIcon />} />
         {Boolean(user) && (
           <BottomNavigationActionUi
             label="My Orders"
             icon={<ListAltIcon />}
-            showLabel
           />
         )}
         <BottomNavigationActionUi
           label="Cart"
-          showLabel
           icon={
             <Badge
               badgeContent={quantity}
               color="primary"
               style={{ marginRight: "2px" }}
             >
-              <ShoppingCartOutlined />{" "}
+              <ShoppingCartOutlined />
             </Badge>
           }
         />
-        <a href="tel:+918755447070">
-          {" "}
-          <BottomNavigationActionUi
-            label="Call Us"
-            icon={<CallIcon />}
-            showLabel
-          />
-        </a>
+        <BottomNavigationActionUi
+          label="Call Us"
+          icon={<CallIcon />}
+          component="a"
+          href="tel:+918755447070"
+        />
       </BottomNavigation>
     </PaperUi>
   );

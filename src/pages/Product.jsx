@@ -1,18 +1,21 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable comma-dangle */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Add, Remove } from "@mui/icons-material";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import { useEffect, useState } from "react";
-import { addProducts } from "../redux/cartRedux";
 import { useLocation } from "react-router";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-import Alert from "../components/Alert";
-import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { useDataContext } from "../context/DataContext";
+import { useCreateCart } from "../hooks/useCart";
+import { useUserAuth } from "../context/UserAuthContext";
+import SimilarProducts from "../components/SimilarProducts"; // Import the SimilarProducts component
 import {
   Container,
   Wrapper,
@@ -32,21 +35,21 @@ import {
   Amount,
   Button
 } from "../components/styles/Product";
-import { useCreateCart } from "../hooks/useCart";
-import { useUserAuth } from "../context/UserAuthContext";
+import Review from "../components/Review";
 
 const Product = () => {
   const [product, setProduct] = useState({});
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
+  const [similarProducts, setSimilarProducts] = useState([]); // State for similar products
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
   const dispatch = useDispatch();
-  const [openAlert, setOpenAlert] = useState(false);
   const { products } = useDataContext();
   const userAuth = useUserAuth();
   const [user, setUser] = useState({});
   const { mutate: createCart } = useCreateCart();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -68,17 +71,31 @@ const Product = () => {
     }
   }, [product]);
 
-  const handleClick = () => {
-    const selectedSize = product.sizes.find(s => s.size === size);
+  useEffect(() => {
+    const fetchSimilarProducts = async () => {
+      try {
+        const response = await fetch(`/api/products/${id}/similar`);
+        const data = await response.json();
+        setSimilarProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch similar products:", error);
+      }
+    };
 
-    console.log(product, "productttt")
+    if (id) {
+      fetchSimilarProducts();
+    }
+  }, [id]);
+
+  const handleClick = () => {
+    const selectedSize = product.sizes.find((s) => s.size === size);
     const productObject = {
       userId: user?.uid,
       Products: [{
         productID: product?.id,
-        quantity,
+        quantity: quantity,
         unitPrice: selectedSize?.price,
-        size
+        size: size
       }]
     }
     createCart({ cartDetails: productObject, userID: user?.uid })
@@ -94,7 +111,7 @@ const Product = () => {
     }
   };
 
-  const selectedSize = product.sizes?.find(s => s.size === size) || {};
+  const selectedSize = product.sizes?.find((s) => s.size === size) || {};
 
   return (
     <Container>
@@ -124,10 +141,7 @@ const Product = () => {
           <FilterContainer>
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              >
+              <FilterSize value={size} onChange={(e) => setSize(e.target.value)}>
                 {product.sizes?.map((s, index) => (
                   <FilterSizeOption key={index} value={s.size}>
                     {s.size}
@@ -147,22 +161,18 @@ const Product = () => {
               </IconButton>
             </AmountContainer>
             <Button onClick={handleClick}>ADD TO CART</Button>
-            <Link to="/cart">
-              <Button>GO TO CART</Button>
-            </Link>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
+      
+      {/* Embedded Review component */}
+      <Review productId={id} userId={user?.uid} userName={user?.displayName} />
+      
+      {/* Embedded Similar Products component */}
+      <SimilarProducts products={similarProducts} />
+
       <NewsLetter />
       <Footer />
-      {openAlert && (
-        <Alert
-          open={openAlert}
-          type={"success"}
-          message={"Your Product has been added into Cart"}
-          setOpen={setOpenAlert}
-        />
-      )}
       <BottomNav />
     </Container>
   );

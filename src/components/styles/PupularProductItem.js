@@ -16,16 +16,19 @@ const InfoContainer = styled.div`
 
 const Image = styled.img`
   display: block;
-  // width: 10rem;
+  /* Uncomment and set width if needed
+  width: 10rem;
 
-  // ${mobileS({ width: "8rem" })}
-  // ${mobileSuperSmall({ width: "7rem" })}
+  ${mobileS({ width: "8rem" })}
+  ${mobileSuperSmall({ width: "7rem" })}
+  */
 `;
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const Title = styled.h1`
   color: black;
   font-weight: 400;
@@ -41,24 +44,29 @@ const Title = styled.h1`
 const Detail = styled.div`
   font-size: 1rem;
   margin-top: 20px;
+
   ${ScreenWith1470px({ fontSize: "0.9rem", marginTop: "1rem" })}
   ${ScreenWith1200px({ fontSize: "0.8rem", marginTop: ".5rem" })}
-    ${ScreenWith670px({ fontSize: "0.8rem", marginTop: ".5rem" })}
-    ${mobileS({ fontSize: ".8rem", marginTop: ".5rem" })}
-    ${mobileSuperSmall({ fontSize: "0.8rem", marginTop: ".5rem" })};
+  ${ScreenWith670px({ fontSize: "0.8rem", marginTop: ".5rem" })}
+  ${mobileS({ fontSize: "0.8rem", marginTop: ".5rem" })}
+  ${mobileSuperSmall({ fontSize: "0.8rem", marginTop: ".5rem" })}
 `;
+
 const Price = styled.span`
   font-weight: 100;
   text-decoration: line-through;
   color: #615F5F;
   font-size: 1.7rem;
+
   ${ScreenWith1470px({ fontSize: "1.6rem" })}
   ${ScreenWith1200px({ fontSize: "1.4rem" })}
   ${ScreenWith670px({ fontSize: "1.1rem" })}
 `;
+
 const Price2 = styled.span`
   font-weight: bold;
   font-size: 1.7rem;
+
   ${ScreenWith1470px({ fontSize: "1.6rem" })}
   ${ScreenWith1200px({ fontSize: "1.4rem" })}
   ${ScreenWith670px({ fontSize: "1.1rem" })}
@@ -73,6 +81,7 @@ const Button = styled.button`
   text-transform: uppercase;
   width: 100%;
   transition: all 0.5s ease;
+
   &:hover {
     background-color: white;
     transform: scale(1.1);

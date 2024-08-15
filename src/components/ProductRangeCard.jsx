@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
         productID: id,
         quantity: 1,
         unitPrice: price,
-        size: size
+        size
       }]
     }
     const onSuccessCallback = () => {

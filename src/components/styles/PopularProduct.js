@@ -17,10 +17,10 @@ const HeadingContainer = styled.div`
 const EffectCardHeading = styled.div`
   padding: 5px 10px;
   color: #333;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 48px;
   font-weight: 400;
-  margin: 0rem 0rem 4rem;
+  margin: 0 0 4rem;
 `;
 
 export { Container, HeadingContainer, EffectCardHeading };

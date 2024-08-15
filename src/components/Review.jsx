@@ -1,77 +1,148 @@
+/* eslint-disable no-multi-spaces */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable quotes */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable comma-dangle */
 /* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
 import {
+  Box,
   Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
-  styled
+  Rating,
+  LinearProgress,
+  Avatar,
 } from "@mui/material";
-import * as React from "react";
+import { styled } from "@mui/material/styles";
+import { fetchReviews } from "../services/ReviewService";
+import { autoBatchEnhancer } from "@reduxjs/toolkit";
 
-const StyledList = styled(List)(() => ({
+// Styled components
+const OverallRating = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "flex-start",
+  alignItems: "center",
+  padding: theme.spacing(1, 0),
+  fontWeight: "bold",
+  fontSize: "1.2rem",
+  color: "#b12704", // Amazon's orange color for ratings
+}));
+
+const RatingLabel = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
+  marginLeft: theme.spacing(1),
+  color: "#333",
+}));
+
+const RatingBreakdown = styled(Box)(({ theme }) => ({
+  marginLeft: theme.spacing(2),
   width: "100%",
-  border: "2px solid steelblue",
-  height: "180px",
-  overflowY: "scroll",
-  "@media only screen and (max-width: 550px)": {
-    height: "280px"
-  }
+  maxWidth: 200,
 }));
 
-const StyledListItem = styled(ListItem)(() => ({
-  border: "1px solid aliceblue",
-  gap: "3rem",
-  "@media only screen and (max-width: 550px)": {
-    gap: "2rem"
-  }
-}));
+const Review = ({ productId }) => {
+  const [reviews, setReviews] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0]);
+  const [error, setError] = useState("");
 
-const Review = ({ products, order }) => {
+  useEffect(() => {
+    const loadReviews = async () => {
+      try {
+        const data = await fetchReviews(productId);
+        setReviews(data);
+
+        // Calculate average rating
+        const totalRating = data.reduce((acc, review) => acc + review.rating, 0);
+        setAverageRating(data.length ? totalRating / data.length : 0);
+
+        // Calculate rating counts
+        const counts = [0, 0, 0, 0, 0];
+        data.forEach((review) => {
+          counts[5 - Math.round(review.rating)]++;
+        });
+        setRatingCounts(counts);
+      } catch (error) {
+        setError("Failed to fetch reviews");
+        console.error("Failed to fetch reviews:", error);
+      }
+    };
+    loadReviews();
+  }, [productId]);
+
+  const getRatingLabel = (rating) => {
+    if (rating >= 4.5) return "Best";
+    if (rating >= 3.5) return "Good";
+    if (rating >= 2.5) return "Average";
+    return "Bad";
+  };
+
   return (
-    <React.Fragment>
-      <Typography variant="h9" gutterBottom>
-        Date: {order?.date}
-      </Typography>
+    <Box sx={{ mx: "auto", px: 6 }}>
       <Typography variant="h6" gutterBottom>
-        Order summary
+        Customer Reviews
       </Typography>
-      <StyledList disablePadding>
-        {products.map((product, index) => (
-          <StyledListItem key={product.title} sx={{ py: 1, px: 0 }}>
-            <ListItemText
-              primary={
-                <>
-                  {index + 1}. {product.title}
-                  <> ({product?.quantity})</>
-                </>
-              }
-              secondary={product.size}
-            />
-            <Typography variant="body2">
-              {<> Rs. {product.price} </>}
-            </Typography>
-          </StyledListItem>
-        ))}
-        <StyledListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            Rs. {order?.total}
+      {reviews.length > 0 ? (
+        <>
+          <OverallRating>
+            Overall Rating: {averageRating.toFixed(1)}
+            <Rating value={averageRating} precision={0.1} readOnly sx={{ ml: 1 }} />
+            <RatingLabel>{getRatingLabel(averageRating)}</RatingLabel>
+          </OverallRating>
+          <Divider sx={{ my: 2 }} />
+          <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+            <Divider orientation="vertical" flexItem />
+            <RatingBreakdown>
+              {ratingCounts.map((count, index) => (
+                <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="body2">{5 - index} star</Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(count / reviews.length) * 100}
+                    sx={{ mx: 1, flex: 1 }}
+                  />
+                  <Typography variant="body2">{count}</Typography>
+                </Box>
+              ))}
+            </RatingBreakdown>
+          </Box>
+        </>
+      ) : (
+        <Typography variant="body1" style={{ padding: "10px" }}>
+          No reviews yet. Be the first to review this product!
+        </Typography>
+      )}
+      {reviews.map((review, index) => (
+        <Box key={index} sx={{ mt: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Avatar src={review.photoUrl} alt={review.name} />
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+              <Typography variant="body1">{review.title}</Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                {review.rating.toFixed(1)}
+                <Rating
+                  value={review.rating}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                  sx={{ ml: 0.5 }}
+                />
+              </Box>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: "bold", mt: 0.5 }}
+              >
+                {review.name} • {new Date(review.createdAt).toLocaleDateString()}
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="body2" sx={{ marginTop: "0.5rem" }}>
+            {review.description}
           </Typography>
-        </StyledListItem>
-      </StyledList>
-      <Divider />
-      <Grid style={{ width: "100%" }}>
-        <Grid item>
-          <Typography variant="h6" gutterBottom style={{ marginTop: "20px" }}>
-            Order Status:
-          </Typography>
-          <Typography gutterBottom>{order?.status || "Pending"}</Typography>
-          {/* <Typography gutterBottom>{order?.address}</Typography> */}
-        </Grid>
-      </Grid>
-    </React.Fragment>
+          <Divider sx={{ mt: 2 }} />
+        </Box>
+      ))}
+    </Box>
   );
 };
 

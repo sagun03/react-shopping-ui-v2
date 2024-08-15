@@ -22,12 +22,16 @@ const CategoryWrapper = styled.div`
 const LeftContainer = styled.div`
   width: 800px;
   height: 500px;
+  transition-property: width, height;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0.1s;
 
   ${ScreenWith1670px({ width: "700px", height: "450px" })}
   ${ScreenWith1470px({ width: "600px", height: "400px" })}
   ${ScreenWith1200px({ width: "500px", height: "350px" })}
   ${ScreenWith1080px({ width: "440px", height: "300px" })}
-  ${ScreenWith960px({ width: "650px", height: "500px" })};
+  ${ScreenWith960px({ width: "650px", height: "500px" })}
   ${mobile({ height: "450px" })}
 `;
 
@@ -35,6 +39,10 @@ const RightContainer = styled.div`
   display: flex;
   width: 800px;
   height: 500px;
+  transition-property: width, height;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0.1s;
 
   ${ScreenWith1670px({ width: "700px", height: "450px" })}
   ${ScreenWith1470px({ width: "600px", height: "400px" })}

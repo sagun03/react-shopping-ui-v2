@@ -14,7 +14,7 @@ import { ClouserItems } from "../utils/data";
 import { ScreenWith1080px, ScreenWith960px, tablet } from "../responsive";
 import { Link } from "react-router-dom";
 
-const Container = styled.div`to`;
+const Container = styled.div``;
 
 const Slide = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const ImgContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition-delay: 2s;
+  transitionDelay: 2s;
   transition: all 1s ease 0s;
   transform: scale(0.5);
   opacity: 0;
@@ -76,8 +76,8 @@ const Title = styled.h1`
   font-size: 60px;
   font-weight: 400;
   transition: all 1s ease 0s;
-  transition-delay: 1s;
-  -webkit-animation-duration: 1s;
+  transitionDelay: 1s;
+  WebkitAnimationDuration: 1s;
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith1080px({
@@ -97,8 +97,8 @@ const Desc = styled.p`
   font-weight: 400;
   letter-spacing: 3px;
   transition: all 1s ease 0s;
-  transition-delay: 1.3s;
-  -webkit-animation-duration: 1s;
+  transitionDelay: 1.3s;
+  WebkitAnimationDuration: 1s;
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith960px({
@@ -116,8 +116,8 @@ const Button = styled.button`
   background-color: black;
   cursor: pointer;
   transition: all 1s ease 0s;
-  transition-delay: 1.5s;
-  -webkit-animation-duration: 1s;
+  transitionDelay: 1.5s;
+  WebkitAnimationDuration: 1s;
   transform: translateY(-30px);
   opacity: 0;
   ${ScreenWith960px({

@@ -29,7 +29,7 @@ const LeftFeaturedCategorySection = () => {
               transitionDelay: "0.2s"
             }}
             from={{
-              "-webkit-animation-duration": "1s",
+              WebkitAnimationDuration: "1s",
               transform: "translateY(-30px)",
               opacity: 0
             }}
@@ -44,7 +44,7 @@ const LeftFeaturedCategorySection = () => {
               transitionDelay: "0.3s"
             }}
             from={{
-              "-webkit-animation-duration": "1s",
+              WebkitAnimationDuration: "1s",
               transform: "translateY(-30px)",
               opacity: 0
             }}
@@ -63,7 +63,7 @@ const LeftFeaturedCategorySection = () => {
               transitionDelay: "0.5s"
             }}
             from={{
-              "-webkit-animation-duration": "1s",
+              WebkitAnimationDuration: "1s",
               transform: "translateY(-30px)",
               opacity: 0
             }}

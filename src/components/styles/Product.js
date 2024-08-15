@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   display: flex;
   ${mobile({ padding: "10px", flexDirection: "column" })}
   ${tablet({ padding: "10px", flexDirection: "column" })}
-
   min-height: 60vh;
 `;
 
@@ -107,6 +106,10 @@ const Button = styled.button`
   background-color: white;
   cursor: pointer;
   font-weight: 500;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+
   &:hover {
     background-color: #f8f4f4;
   }

@@ -21,6 +21,7 @@
     "firebase": "^10.12.3",
     "google-map-react": "^2.2.1",
     "lodash.debounce": "^4.0.8",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-compare-image": "^3.4.0",
     "react-dom": "^18.3.1",
@@ -47,8 +48,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "eslintConfig": {
     "extends": [

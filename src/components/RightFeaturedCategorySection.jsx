@@ -3,7 +3,16 @@ import HandWash from "./../pages/images/hw.png";
 import FloorCleaner from "./../pages/images/fc.png";
 import { Link } from "react-router-dom";
 import AnimateIn from "../customeHooks/AnimateIn";
-import { Container, ImgContainer, Image, ChildContainer, InfoContainer, Slide, Title, Desc } from "./styles/RightFeaturedCategorySection";
+import {
+  Container,
+  ImgContainer,
+  Image,
+  ChildContainer,
+  InfoContainer,
+  Slide,
+  Title,
+  Desc
+} from "./styles/RightFeaturedCategorySection";
 
 const RightFeaturedCategorySection = () => {
   return (
@@ -16,7 +25,7 @@ const RightFeaturedCategorySection = () => {
             transitionDelay: "0s"
           }}
           from={{
-            "-webkit-animation-duration": "1s",
+            WebkitAnimationDuration: "1s",
             scale: "0",
             opacity: 0
           }}
@@ -45,7 +54,7 @@ const RightFeaturedCategorySection = () => {
             transitionDelay: "0.1s"
           }}
           from={{
-            "-webkit-animation-duration": "1s",
+            WebkitAnimationDuration: "1s",
             scale: "0",
             opacity: 0
           }}

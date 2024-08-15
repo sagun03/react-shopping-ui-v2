@@ -13,7 +13,6 @@ const Container = styled.div`
   width: 100%;
   height: inherit;
   display: flex;
-  overflow: visible;
   flex-direction: column;
   gap: 2rem;
 `;
@@ -29,6 +28,7 @@ const ImgContainer = styled.div`
   &:hover {
     transform: scale(1.25);
   }
+
   ${ScreenWith1670px({ height: "180px" })}
   ${ScreenWith1470px({ height: "165px" })}
   ${ScreenWith1200px({ height: "157px" })}
@@ -36,15 +36,15 @@ const ImgContainer = styled.div`
   ${ScreenWith960px({ height: "220px" })}
   ${ScreenWith670px({ height: "230px" })}
   ${mobile({ height: "115px" })}
-  ${(p) => (p.fc ? mobile({ position: "relative", bottom: "-57px" }) : "")}
+  ${(p) => p.fc && mobile({ position: "relative", bottom: "-57px" })}
 `;
 
 const Image = styled.img`
   display: block;
   width: 210px;
   height: 100%;
-  bottom: ${(p) => (p.fc ? 0 : 10)}%;
-  right: ${(p) => (p.fc ? 0 : 10)}%;
+  bottom: ${(p) => (p.fc ? "0" : "10")};
+  right: ${(p) => (p.fc ? "0" : "10")};
   overflow: hidden;
   position: relative;
 
@@ -70,6 +70,7 @@ const ChildContainer = styled.div`
 
 const InfoContainer = styled.div`
   padding: 2rem;
+  
   ${ScreenWith1670px({ padding: "1.5rem" })}
   ${ScreenWith1200px({ padding: "1rem" })}
   ${ScreenWith960px({ padding: "2rem" })}
@@ -90,6 +91,7 @@ const Title = styled.h1`
   font-size: 40px;
   text-align: center;
   font-weight: 400;
+
   ${ScreenWith1470px({ fontSize: "35px" })}
   ${ScreenWith1200px({ fontSize: "25px" })}
   ${ScreenWith1080px({ fontSize: "30px" })}
