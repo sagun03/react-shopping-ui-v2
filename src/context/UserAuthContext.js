@@ -1,6 +1,3 @@
-/* eslint-disable no-redeclare */
-/* eslint-disable import/no-duplicates */
-
 import { createContext, useContext } from "react";
 import { RecaptchaVerifier } from "firebase/auth";
 import {
@@ -11,8 +8,6 @@ import {
   useSignUp
 } from "../hooks/useAuthFirebase";
 import { auth } from "../firebase";
-import PropTypes from "prop-types";
-
 const userAuthContext = createContext();
 
 export const UserAuthContextProvider = ({ children }) => {
@@ -60,11 +55,6 @@ export const UserAuthContextProvider = ({ children }) => {
       {children}
     </userAuthContext.Provider>
   );
-};
-
-// prop validation
-UserAuthContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
 };
 
 export const useUserAuth = () => {

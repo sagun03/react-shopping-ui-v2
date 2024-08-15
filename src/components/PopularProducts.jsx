@@ -12,19 +12,8 @@ import PopularProductItem from "./PopularProductItem";
 
 const PopularProducts = () => {
   const { products } = useDataContext();
-
-  const popularProducts = products
-    .filter((item) => item.isPopular === true)
-    .flatMap((item) =>
-      item.sizes
-        .filter((size) => size.isPopular)
-        .map((popularSize) => ({
-          ...popularSize,
-          productId: item.id,
-          productName: item.name,
-          productDescription: item.description
-        }))
-    );
+  const popularProducts = products.slice(0, 5);
+  console.log("products", popularProducts)
 
   return (
     <>
@@ -36,7 +25,7 @@ const PopularProducts = () => {
               transitionDelay: "0.3s"
             }}
             from={{
-              "-webkit-animation-duration": "1s",
+              WebkitAnimationDuration: "1s",
               opacity: 0
             }}
             transition="all 1s ease 0s"

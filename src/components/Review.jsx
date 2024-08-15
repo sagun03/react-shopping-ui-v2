@@ -13,29 +13,9 @@ import {
   LinearProgress,
   Avatar,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { fetchReviews } from "../services/ReviewService";
-import { autoBatchEnhancer } from "@reduxjs/toolkit";
+import * as React from "react";
 
-// Styled components
-const OverallRating = styled(Box)(({ theme }) => ({
-  display: "flex",
-  justifyContent: "flex-start",
-  alignItems: "center",
-  padding: theme.spacing(1, 0),
-  fontWeight: "bold",
-  fontSize: "1.2rem",
-  color: "#b12704", // Amazon's orange color for ratings
-}));
-
-const RatingLabel = styled(Typography)(({ theme }) => ({
-  fontWeight: "bold",
-  marginLeft: theme.spacing(1),
-  color: "#333",
-}));
-
-const RatingBreakdown = styled(Box)(({ theme }) => ({
-  marginLeft: theme.spacing(2),
+const StyledList = styled(List)(() => ({
   width: "100%",
   maxWidth: 200,
 }));
@@ -78,7 +58,10 @@ const Review = ({ productId }) => {
   };
 
   return (
-    <Box sx={{ mx: "auto", px: 6 }}>
+    <React.Fragment>
+      <Typography variant="h9" gutterBottom>
+        Date: {order?.date}
+      </Typography>
       <Typography variant="h6" gutterBottom>
         Customer Reviews
       </Typography>

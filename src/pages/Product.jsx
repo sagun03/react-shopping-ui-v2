@@ -1,7 +1,3 @@
-/* eslint-disable object-shorthand */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable comma-dangle */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Add, Remove } from "@mui/icons-material";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -91,16 +87,16 @@ const Product = () => {
     const selectedSize = product.sizes.find((s) => s.size === size);
     const productObject = {
       userId: user?.uid,
-      Products: [{
-        productID: product?.id,
-        quantity: quantity,
-        unitPrice: selectedSize?.price,
-        size: size
-      }]
-    }
-    createCart({ cartDetails: productObject, userID: user?.uid })
-    console.log(productObject, "productObject")
-    // setOpenAlert(true);
+      Products: [
+        {
+          productID: product?.id,
+          quantity,
+          unitPrice: selectedSize?.price,
+          size
+        },
+      ]
+    };
+    createCart({ cartDetails: productObject, userID: user?.uid });
   };
 
   const handleQuantity = (type) => {
