@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "../components/Alert";
 import { Link } from "react-router-dom";
-import { IconButton } from "@mui/material";
+import { Divider, IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { useDataContext } from "../context/DataContext";
 import {
@@ -35,6 +35,8 @@ import {
 import { useCreateCart } from "../hooks/useCart";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
+import Review from "../components/Review";
+
 const Product = () => {
   const users = useUserContext();
   const [product, setProduct] = useState({});
@@ -48,12 +50,14 @@ const Product = () => {
   const userAuth = useUserAuth();
   const [user, setUser] = useState({});
   const { mutate: createCart } = useCreateCart();
+  const selectedSize = product.sizes?.find((s) => s.size === size) || {};
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    console.log(users, "userAuth.user")
+    console.log(users, "userAuth.user");
     setUser(userAuth.user || {});
   }, [userAuth.user]);
 
@@ -71,19 +75,23 @@ const Product = () => {
   }, [product]);
 
   const handleClick = () => {
-    const selectedSize = product.sizes.find(s => s.size === size);
-
-    console.log(product, "productttt")
+    console.log(product, "productttt");
     const productObject = {
       userId: users?.uid,
-      Products: [{
-        productID: product?.id,
-        quantity,
-        unitPrice: selectedSize?.price,
-        size
-      }]
-    }
-    createCart({ cartDetails: productObject, userID: users?.uid, setOpenAlert })
+      Products: [
+        {
+          productID: product?.id,
+          quantity,
+          unitPrice: selectedSize?.price,
+          size
+        }
+      ]
+    };
+    createCart({
+      cartDetails: productObject,
+      userID: users?.uid,
+      setOpenAlert
+    });
     // setOpenAlert(true);
   };
 
@@ -94,24 +102,24 @@ const Product = () => {
       setQuantity(quantity + 1);
     }
   };
-
-  const selectedSize = product.sizes?.find(s => s.size === size) || {};
-
+  console.log(product, "product");
   return (
     <Container>
       <Announcement />
       <NavBar />
       <Wrapper>
-      {openAlert && (
-        <Alert
-          open={openAlert}
-          type={"success"}
-          message={"Your Product has been added into Cart"}
-          setOpen={setOpenAlert}
-        />
-      )}
+        {openAlert && (
+          <Alert
+            open={openAlert}
+            type={"success"}
+            message={"Your Product has been added into Cart"}
+            setOpen={setOpenAlert}
+          />
+        )}
         <ImgContainer>
-          {selectedSize.images && <Image src={selectedSize.images[0]} alt={product.name} />}
+          {selectedSize.images && (
+            <Image src={selectedSize.images[0]} alt={product.name} />
+          )}
         </ImgContainer>
         <InfoContainer>
           <Title>{product.name}</Title>
@@ -126,7 +134,8 @@ const Product = () => {
                   marginLeft: "10px"
                 }}
               >
-                Rs. {(selectedSize.price - selectedSize.price * 0.05).toFixed(2)}
+                Rs.{" "}
+                {(selectedSize.price - selectedSize.price * 0.05).toFixed(2)}
               </span>
             </>
           )}
@@ -162,6 +171,8 @@ const Product = () => {
           </AddContainer>
         </InfoContainer>
       </Wrapper>
+      <Divider sx={{ marginTop: "4rem" }} />
+      {product.id && <Review productId={product.id} userId={user?.uid} userName={user?.displayName} />}
       <NewsLetter />
       <Footer />
       <BottomNav />
