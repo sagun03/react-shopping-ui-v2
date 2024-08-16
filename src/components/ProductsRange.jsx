@@ -70,7 +70,6 @@ const ProductsRange = () => {
           ({ category: productCategory }) => productCategory === category
         );
       }
-      console.log(filtered)
       setFilteredProducts(filtered);
       setSelectedCategory(title);
       handleMenuClose();
@@ -102,8 +101,6 @@ const ProductsRange = () => {
   );
 
   useEffect(() => {
-    const param = searchParams.get("name");
-    console.log(searchTerm, "searchTerm", param)
     if (searchTerm) {
       setIsFiltered(true)
       setSelectedCategory("All");
@@ -118,7 +115,6 @@ const ProductsRange = () => {
 
   // Memoized sorted and flattened products
   const sortedAndFlattenedProducts = useMemo(() => {
-    console.log("memmooooo", filteredProducts)
     const sorted = filteredProducts.slice().sort(sortProducts);
     return flattenProductSizes(sorted);
   }, [filteredProducts, sortProducts]);
