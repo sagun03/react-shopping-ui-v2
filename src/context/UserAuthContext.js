@@ -59,11 +59,6 @@ export const UserAuthContextProvider = ({ children }) => {
   );
 };
 
-// prop validation
-UserAuthContextProvider.propTypes = {
-  children: PropTypes.node.isRequired
-};
-
 export const useUserAuth = () => {
   return useContext(userAuthContext);
 };

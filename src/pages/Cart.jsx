@@ -193,7 +193,7 @@ const Cart = () => {
   }, [userAuth.user]);
 
   const dataFetched = useFetchCartData(users);
-
+  console.log(dataFetched, "dataFetched")
   useEffect(() => {
     if (dataFetched && users) {
       setCartData(dataFetched);
