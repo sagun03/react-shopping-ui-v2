@@ -120,7 +120,7 @@ const Review = ({ productId }) => {
                   alignItems: "flex-start"
                 }}
               >
-                <Typography variant="body1">{review.title}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: "bold" }}>{review.title}</Typography>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                   {review.rating.toFixed(1)}
                   <Rating
@@ -133,14 +133,14 @@ const Review = ({ productId }) => {
                 </Box>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: "bold", mt: 0.5 }}
+                  sx={{ fontWeight: "500", mt: 0.5 }}
                 >
                   {review.name} •{" "}
                   {new Date(review.createdAt).toLocaleDateString()}
                 </Typography>
               </Box>
             </Box>
-            <Typography variant="body2" sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}>
+            <Typography variant="body1" sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}>
               {review.description}
             </Typography>
             <Divider sx={{ mt: 2 }} />
