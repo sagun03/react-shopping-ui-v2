@@ -20,7 +20,7 @@ import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 
-const Container = styled("div")(({ theme }) => ({
+const Container = styled("div")(() => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -33,7 +33,7 @@ const Container = styled("div")(({ theme }) => ({
   ...mobileSuperSmall({ top: "0px" })
 }));
 
-const Wrapper = styled("div")(({ theme }) => ({
+const Wrapper = styled("div")(() => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -46,17 +46,17 @@ const Wrapper = styled("div")(({ theme }) => ({
   })
 }));
 
-const Left = styled("div")(({ theme }) => ({
+const Left = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   gap: "1rem"
 }));
 
-const Center = styled("div")(({ theme }) => ({
+const Center = styled("div")(() => ({
   textAlign: "center"
 }));
 
-const Logo = styled("h1")(({ theme }) => ({
+const Logo = styled("h1")(() => ({
   fontWeight: 400,
   ...ScreenWith670px({
     fontSize: "1.5rem"
@@ -64,7 +64,7 @@ const Logo = styled("h1")(({ theme }) => ({
   ...mobile({ display: "none" })
 }));
 
-const Logo2 = styled("div")(({ theme }) => ({
+const Logo2 = styled("div")(() => ({
   display: "none",
   fontWeight: 400,
   ...mobile({
@@ -74,14 +74,14 @@ const Logo2 = styled("div")(({ theme }) => ({
   })
 }));
 
-const Right = styled("div")(({ theme }) => ({
+const Right = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: "1rem"
 }));
 
-const MenuItem = styled("div")(({ theme }) => ({
+const MenuItem = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -89,7 +89,7 @@ const MenuItem = styled("div")(({ theme }) => ({
   ...mobile({ fontSize: "12px" })
 }));
 
-const MenuItem2 = styled("div")(({ theme }) => ({
+const MenuItem2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -98,7 +98,7 @@ const MenuItem2 = styled("div")(({ theme }) => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser = styled("div")(({ theme }) => ({
+const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -107,7 +107,7 @@ const MenuItemMyUser = styled("div")(({ theme }) => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser2 = styled("div")(({ theme }) => ({
+const MenuItemMyUser2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "none",

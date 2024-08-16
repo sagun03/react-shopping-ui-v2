@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { RecaptchaVerifier } from "firebase/auth";
-import PropTypes from "prop-types"; // Ensure no trailing space here
+import PropTypes from "prop-types"
 import {
   useLogOut,
   useLoginGoogle,
@@ -9,7 +9,6 @@ import {
   useSignUp
 } from "../hooks/useAuthFirebase";
 import { auth } from "../firebase";
-import PropTypes from "prop-types";
 
 const userAuthContext = createContext();
 
@@ -69,5 +68,5 @@ export const useUserAuth = () => {
   return useContext(userAuthContext);
 };
 UserAuthContextProvider.propTypes = {
-  children: PropTypes.node.isRequired // Validate that children is passed and is a valid React node
+  children: PropTypes.node.isRequired
 };
