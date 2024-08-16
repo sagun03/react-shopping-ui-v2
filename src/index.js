@@ -14,11 +14,9 @@ if (rootElement) {
   root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <React.StrictMode>
           <HelmetProvider>
             <App />
           </HelmetProvider>
-        </React.StrictMode>
       </PersistGate>
     </Provider>
   )

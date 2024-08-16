@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
+
 export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -13,10 +14,11 @@ export const UserContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log("current user", currentUser);
+      let refreshInterval;
       if (currentUser) {
         setUser(currentUser);
         // set interval to refresh token
-        var refreshInterval = setInterval(() => {
+        refreshInterval = setInterval(() => {
           currentUser.getIdToken(true).then((idToken) => {
             console.log("idToken", idToken);
             console.log("current user", currentUser);
