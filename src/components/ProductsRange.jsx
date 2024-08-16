@@ -69,6 +69,7 @@ const ProductsRange = () => {
         filtered = products.filter(
           ({ category: productCategory }) => productCategory === category
         );
+        console.log(filtered, "filtered")
       }
       setFilteredProducts(filtered);
       setSelectedCategory(title);
