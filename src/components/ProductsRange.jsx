@@ -1,19 +1,12 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useDataContext } from "../context/DataContext";
+import { useDataContext, useNavigation } from "../context/DataContext";
 import ProductRangeCard from "./ProductRangeCard";
 import SearchIcon from "@mui/icons-material/Search";
 import { v4 as uuidv4 } from "uuid";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import {
-  Divider,
-  InputAdornment,
-  Select,
-  TextField
-} from "@mui/material";
+import { Divider, InputAdornment, Select, TextField } from "@mui/material";
 import { FilterListOutlined } from "@mui/icons-material";
 import {
   Container,
@@ -49,17 +42,17 @@ const CATEGORY_MENU = [
 
 const ProductsRange = () => {
   const { products } = useDataContext();
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isFiltered, setIsFiltered] = useState(false)
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    window?.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, []);
-
-  const [searchParams] = useSearchParams();
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,18 +62,21 @@ const ProductsRange = () => {
     setAnchorEl(null);
   };
 
-  const filterProducts = useCallback((category = "", title) => {
-    if (category) {
-      setSearchTerm("");
-      const filtered = products.filter(({ category: productCategory }) => productCategory === category);
-      console.log("filtered", filtered, category);
+  const filterProducts = useCallback(
+    (category = "", title) => {
+      let filtered = products;
+      if (category) {
+        filtered = products.filter(
+          ({ category: productCategory }) => productCategory === category
+        );
+      }
+      console.log(filtered)
       setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(products);
-    }
-    setSelectedCategory(title);
-    handleMenuClose();
-  }, [products, searchParams]);
+      setSelectedCategory(title);
+      handleMenuClose();
+    },
+    [products]
+  );
 
   useEffect(() => {
     const param = searchParams.get("name");
@@ -88,37 +84,45 @@ const ProductsRange = () => {
 
     if (param) {
       filterProducts(param, paramTitle);
+    } else {
+      setFilteredProducts(products);
     }
-  }, [searchParams, filterProducts]);
+  }, [searchParams, products, filterProducts]);
 
-  const sortProducts = useCallback((a, b) => {
-    if (sortOrder === "priceLowToHigh") {
-      return a.sizes[0].price - b.sizes[0].price;
-    } else if (sortOrder === "priceHighToLow") {
-      return b.sizes[0].price - a.sizes[0].price;
-    }
-    return 0;
-  }, [sortOrder]);
-
-  const handleSearchChange = useCallback((e) => {
-    setSearchTerm(e.target.value);
-  }, []);
+  const sortProducts = useCallback(
+    (a, b) => {
+      if (sortOrder === "priceLowToHigh") {
+        return a.sizes[0].price - b.sizes[0].price;
+      } else if (sortOrder === "priceHighToLow") {
+        return b.sizes[0].price - a.sizes[0].price;
+      }
+      return 0;
+    },
+    [sortOrder]
+  );
 
   useEffect(() => {
+    const param = searchParams.get("name");
+    console.log(searchTerm, "searchTerm", param)
     if (searchTerm) {
+      setIsFiltered(true)
       setSelectedCategory("All");
       const filtered = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredProducts(filtered);
-    } else {
+    } else if (isFiltered) {
       setFilteredProducts(products);
     }
-  }, [searchTerm, products]);
+  }, [searchTerm]);
 
-  const sortedProducts = useMemo(() => filteredProducts.slice().sort(sortProducts), [filteredProducts, sortProducts]);
-  const flattenProducts = flattenProductSizes(sortedProducts);
-  console.log("sortedProducts", sortedProducts);
+  // Memoized sorted and flattened products
+  const sortedAndFlattenedProducts = useMemo(() => {
+    console.log("memmooooo", filteredProducts)
+    const sorted = filteredProducts.slice().sort(sortProducts);
+    return flattenProductSizes(sorted);
+  }, [filteredProducts, sortProducts]);
+
   return (
     <>
       <Wrapper>
@@ -128,7 +132,7 @@ const ProductsRange = () => {
         <ProductHeaderContainer>
           <ProductHeaderContent>
             <ProductHeaderCount>
-              Browse Products ({flattenProducts.length})
+              Browse Products ({sortedAndFlattenedProducts.length})
             </ProductHeaderCount>
             <ProductHeaderLeft>
               <ProductHeaderLeftContent>
@@ -162,7 +166,7 @@ const ProductsRange = () => {
                         </InputAdornment>
                       )
                     }}
-                    onChange={handleSearchChange}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </HeaderLeftSearch>
               </ProductHeaderLeftContent>
@@ -173,11 +177,9 @@ const ProductsRange = () => {
       <Container>
         <ProductsWrapper>
           <ProductMenuList>
-            <>
-              <ProductMenu title="category">
-                Category <Divider style={{ marginTop: "1rem" }} />
-              </ProductMenu>
-            </>
+            <ProductMenu title="category">
+              Category <Divider style={{ marginTop: "1rem" }} />
+            </ProductMenu>
             {CATEGORY_MENU.map(({ id, title, name }) => (
               <ProductMenu
                 selected={selectedCategory === title}
@@ -220,7 +222,7 @@ const ProductsRange = () => {
             </Menu>
           </ProductMenuListMobile>
           <ProductImageContainer>
-            {flattenProducts.map((product) => (
+            {sortedAndFlattenedProducts.map((product) => (
               <ProductImageWrapper key={uuidv4()}>
                 <ProductRangeCard {...product} />
               </ProductImageWrapper>
