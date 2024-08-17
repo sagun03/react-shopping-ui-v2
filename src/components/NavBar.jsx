@@ -8,95 +8,61 @@ import {
   Menu,
   SwipeableDrawer
 } from "@mui/material";
-import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
+import { ShoppingCartOutlined, Home as HomeIcon1, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-// import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
-import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
+// import UserProfile from "../pages/UserProfile";
+// import { auth } from "../firebase";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+// import HomeIcon from "@mui/icons-material/Home";
+import {
+  LogoImg,
+  Wrapper,
+  Container,
+  MenuIconStyles,
+  CartWrapper,
+  Left,
+  Right,
+  AccountBoxWrapper,
+  MenuItem
+} from "./styles/Navbar";
+import logo from "../assets/logo.png";
+import PropTypes from "prop-types";
 
-const Container = styled("div")(() => ({
-  height: "55px",
-  overflow: "hidden",
-  backgroundColor: "white",
-  position: "fixed",
-  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  top: "0px",
-  width: "100%",
-  zIndex: 1299,
-  ...mobile({ top: "0px" }),
-  ...mobileSuperSmall({ top: "0px" })
-}));
+// const Logo = styled("h1")(({ theme }) => ({
+//   fontWeight: 400,
+//   ...ScreenWith670px({
+//     fontSize: "1.5rem"
+//   }),
+//   ...mobile({ display: "none" })
+// }));
 
-const Wrapper = styled("div")(() => ({
-  padding: "10px 0px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-around",
-  width: "100%",
-  ...ScreenWith670px({
-    justifyContent: "space-between",
-    width: "95%",
-    padding: "10px 10px"
-  })
-}));
+// const Logo2 = styled("div")(({ theme }) => ({
+//   display: "none",
+//   fontWeight: 400,
+//   ...mobile({
+//     display: "flex",
+//     height: "38px",
+//     marginRight: "0px"
+//   })
+// }));
 
-const Left = styled("div")(() => ({
-  display: "flex",
-  alignItems: "center",
-  gap: "1rem"
-}));
-
-const Center = styled("div")(() => ({
-  textAlign: "center"
-}));
-
-const Logo = styled("h1")(() => ({
-  fontWeight: 400,
-  ...ScreenWith670px({
-    fontSize: "1.5rem"
-  }),
-  ...mobile({ display: "none" })
-}));
-
-const Logo2 = styled("div")(() => ({
-  display: "none",
-  fontWeight: 400,
-  ...mobile({
-    display: "flex",
-    height: "38px",
-    marginRight: "0px"
-  })
-}));
-
-const Right = styled("div")(() => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "1rem"
-}));
-
-const MenuItem = styled("div")(() => ({
-  fontSize: "14px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  ...mobile({ fontSize: "12px" })
-}));
-
-const MenuItem2 = styled("div")(() => ({
-  fontSize: "14px",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "none" })
-}));
+// const MenuItem2 = styled("div")(({ theme }) => ({
+//   fontSize: "14px",
+//   cursor: "pointer",
+//   display: "flex",
+//   alignItems: "center",
+//   ...mobile({ fontSize: "12px" }),
+//   ...ScreenWith670px({ display: "none" })
+// }));
 
 const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
@@ -107,14 +73,58 @@ const MenuItemMyUser = styled("div")(() => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser2 = styled("div")(() => ({
-  fontSize: "14px",
-  cursor: "pointer",
-  display: "none",
-  alignItems: "center",
-  ...mobile({ fontSize: "12px" }),
-  ...ScreenWith670px({ display: "flex" })
-}));
+// const MenuItemMyUser2 = styled("div")(({ theme }) => ({
+//   fontSize: "14px",
+//   cursor: "pointer",
+//   display: "none",
+//   alignItems: "center",
+//   ...mobile({ fontSize: "12px" }),
+//   ...ScreenWith670px({ display: "flex" })
+// }));
+
+const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
+  return (
+    <>
+      <MenuItemMyUser onClick={handleClick}>
+        <AccountBoxIcon sx={MenuIconStyles}/>
+      </MenuItemMyUser>
+      <Menu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        PaperProps={{
+          sx: AccountBoxWrapper
+        }}
+      >
+        <MenuItem>
+          <Link to="/profile" style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <ManageAccountsIcon fontSize="small" />
+            <ListItemText primary="Profile" />
+          </Link>
+        </MenuItem>
+
+        <MenuItem onClick={onClickHandler}>
+          <ExitToAppIcon fontSize="small" />
+          <ListItemText primary="Logout" />
+        </MenuItem>
+
+      </Menu>
+    </>
+  )
+}
+// prop validation
+AccountBox.propTypes = {
+  anchorEl: PropTypes.object,
+  handleClose: PropTypes.func,
+  handleClick: PropTypes.func,
+  onClickHandler: PropTypes.func
+}
 
 const NavBar = () => {
   const { user } = useUserContext();
@@ -137,12 +147,14 @@ const NavBar = () => {
   };
 
   const dataFetched = useFetchCartData(user);
+
   useEffect(() => {
     if (dataFetched) {
       setCartData(dataFetched);
       setQuantity(cartData?.totalQuantity)
     }
   }, [cartData, dataFetched, setCartData]);
+
   const onClickHandler = async (e) => {
     try {
       setCartData(null)
@@ -171,14 +183,14 @@ const NavBar = () => {
   return (
     <Container>
       <Wrapper>
-        <Left>
+        {/* <Left>
           <MenuItemMyUser2 onClick={toggleDrawer(true)}>
             <ReorderIcon />
           </MenuItemMyUser2>
           {user && (
             <MenuItem2>
               <Link to="/">
-                <HomeIcon />
+                <HomeIcon sx={MenuIconStyles}/>
               </Link>
             </MenuItem2>
           )}
@@ -187,51 +199,30 @@ const NavBar = () => {
               <Link to="/orders">My Orders</Link>
             </MenuItem2>
           )}
-        </Left>
-        <Link to="/">
+        </Left> */}
+        {/* <Link to="/">
           <Center>
-            <Logo>JK Total Washing Solutions</Logo>
             <Logo2>
               <img src={Logos} alt="logo" />
             </Logo2>
           </Center>
-        </Link>
+        </Link> */}
+        <Left>
+          <Link to="/">
+            <LogoImg src={logo} alt="logo" />
+          </Link>
+        </Left>
         <Right>
           {user ? (
-            <>
-              <MenuItemMyUser onClick={handleClick}>
-                {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
-                  user?.email?.slice(0, 5)?.toUpperCase() ||
-                  user?.phoneNumber?.slice(0, 5)) + ".."}
-              </MenuItemMyUser>
-              <MenuItemMyUser2 onClick={handleClick}>
-                <PersonIcon />
-              </MenuItemMyUser2>
-              <Menu
-                id="customized-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                PaperProps={{
-                  sx: {
-                    backgroundColor: "#2979ff",
-                    color: "white",
-                    marginTop: "10px",
-                    "&:hover": {
-                      backgroundColor: "teal"
-                    }
-                  }
-                }}
-              >
-                <MenuItem onClick={onClickHandler}>
-                  <ListItemIcon sx={{ color: "white" }}>
-                    <ExitToAppIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary="Logout" sx={{ marginRight: "18px" }} />
-                </MenuItem>
-              </Menu>
-            </>
+              // <MenuItemMyUser onClick={handleClick}>
+              //   {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
+              //     user?.email?.slice(0, 5)?.toUpperCase() ||
+              //     user?.phoneNumber?.slice(0, 5)) + ".."}
+              // </MenuItemMyUser>
+              // <MenuItemMyUser2 onClick={handleClick}>
+              //   <PersonIcon />
+              // </MenuItemMyUser2>
+              <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler}/>
           ) : (
             <>
               <Link to="/login">
@@ -239,17 +230,18 @@ const NavBar = () => {
               </Link>
             </>
           )}
-          <MenuItem2 item="cart">
+          <CartWrapper>
             <Link to="/cart">
               <Badge
                 badgeContent={quantity}
                 color="primary"
                 sx={{ marginRight: "10px" }}
               >
-                <ShoppingCartOutlined />
+                <ShoppingCartIcon/>
+                {/* <ShoppingCartOutlined /> */}
               </Badge>
             </Link>
-          </MenuItem2>
+          </CartWrapper>
         </Right>
       </Wrapper>
       {error && (
