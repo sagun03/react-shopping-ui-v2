@@ -25,6 +25,14 @@ export const sliderHideCustom = (props) => {
   `
 }
 
+export const lScreen = (props) => {
+  return css`
+    @media only screen and (min-width: 551px) {
+      ${props}
+    }
+  `
+}
+
 export const ScreenWith1200px = (props) => {
   return css`
     @media only screen and (max-width: 1299px) {

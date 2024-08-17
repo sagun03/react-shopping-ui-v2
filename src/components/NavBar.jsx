@@ -11,6 +11,7 @@ import {
 import { ShoppingCartOutlined, Home as HomeIcon, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+// import { auth } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
@@ -18,10 +19,8 @@ import Logos from "../pages/images/logo.png";
 import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
-import UserProfile from "../pages/UserProfile";
-// import { auth } from "../firebase";
 
-const Container = styled("div")(({ theme }) => ({
+const Container = styled("div")(() => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -34,7 +33,7 @@ const Container = styled("div")(({ theme }) => ({
   ...mobileSuperSmall({ top: "0px" })
 }));
 
-const Wrapper = styled("div")(({ theme }) => ({
+const Wrapper = styled("div")(() => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -47,17 +46,17 @@ const Wrapper = styled("div")(({ theme }) => ({
   })
 }));
 
-const Left = styled("div")(({ theme }) => ({
+const Left = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   gap: "1rem"
 }));
 
-const Center = styled("div")(({ theme }) => ({
+const Center = styled("div")(() => ({
   textAlign: "center"
 }));
 
-const Logo = styled("h1")(({ theme }) => ({
+const Logo = styled("h1")(() => ({
   fontWeight: 400,
   ...ScreenWith670px({
     fontSize: "1.5rem"
@@ -65,7 +64,7 @@ const Logo = styled("h1")(({ theme }) => ({
   ...mobile({ display: "none" })
 }));
 
-const Logo2 = styled("div")(({ theme }) => ({
+const Logo2 = styled("div")(() => ({
   display: "none",
   fontWeight: 400,
   ...mobile({
@@ -75,14 +74,14 @@ const Logo2 = styled("div")(({ theme }) => ({
   })
 }));
 
-const Right = styled("div")(({ theme }) => ({
+const Right = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: "1rem"
 }));
 
-const MenuItem = styled("div")(({ theme }) => ({
+const MenuItem = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -90,7 +89,7 @@ const MenuItem = styled("div")(({ theme }) => ({
   ...mobile({ fontSize: "12px" })
 }));
 
-const MenuItem2 = styled("div")(({ theme }) => ({
+const MenuItem2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
@@ -99,19 +98,16 @@ const MenuItem2 = styled("div")(({ theme }) => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser = styled("div")(({ theme }) => ({
+const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
-  "&:hover": {
-    backgroundColor: "teal"
-  },
   ...mobile({ fontSize: "12px" }),
   ...ScreenWith670px({ display: "none" })
 }));
 
-const MenuItemMyUser2 = styled("div")(({ theme }) => ({
+const MenuItemMyUser2 = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "none",
@@ -139,13 +135,14 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const dataFetched = useFetchCartData(userAuth.user);
+
+  const dataFetched = useFetchCartData(user);
   useEffect(() => {
-    if (dataFetched && userAuth.user) {
+    if (dataFetched) {
       setCartData(dataFetched);
       setQuantity(cartData?.totalQuantity)
     }
-  }, [cartData, dataFetched, userAuth.user, setCartData]);
+  }, [cartData, dataFetched, setCartData]);
   const onClickHandler = async (e) => {
     try {
       setCartData(null)
@@ -232,18 +229,6 @@ const NavBar = () => {
                     <ExitToAppIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Logout" sx={{ marginRight: "18px" }} />
-                </MenuItem>
-
-                <MenuItem>
-                  <Link to="/profile">
-                    <ListItemText primary="My Profile" sx={{ marginRight: "18px" }} />
-                  </Link>
-                </MenuItem>
-
-                <MenuItem>
-                  <Link to="/profile">
-                    <ListItemText primary="My Profile" sx={{ marginRight: "18px" }} />
-                  </Link>
                 </MenuItem>
               </Menu>
             </>

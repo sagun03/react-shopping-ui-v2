@@ -9,7 +9,7 @@ import { useUserContext } from "../context/UserContext";
 import { useGetAddress, useUpdateAddress, useDeleteAddress, useAddAddress } from "../hooks/userHooks/useUserAddress";
 
 const modalRoot = document.createElement("div");
-const AddressModal = ({ address, index, setAddress, closeModal, add, update, remove, user }) => {
+const AddressModal = ({ address, index, setAddress, closeModal, add, update, remove, user, refetch }) => {
   useEffect(() => {
     document.body.appendChild(modalRoot);
     return () => {
@@ -28,11 +28,31 @@ const AddressModal = ({ address, index, setAddress, closeModal, add, update, rem
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setDisabled(true);
-    console.log("Data submitted", data);
-    // setAddress({ uid: user.uid, token: user.accessToken, ...address });
-    // add.mutate(address);
+    const eventDesc = e.nativeEvent.submitter.innerText;
+    if (eventDesc === "SAVE") {
+      add.mutate({ token: user.accessToken, ...data });
+      if (add.error) {
+        closeModal();
+        return;
+      }
+      setAddress([...address, data]);
+      console.log("Data submitted", data);
+    }
+    if (eventDesc === "UPDATE") {
+      update.mutate(data);
+      setAddress(address.map((element, i) => i === index ? data : element));
+      console.log("Data updated", data);
+    }
     closeModal();
   }
+
+  const handleDelete = () => {
+    remove.mutate({ uid: user.uid, token: user.accessToken, id: data._id });
+    setAddress(address.filter((element, i) => i !== index));
+    console.log("Data deleted", data);
+    closeModal();
+  }
+
   const handleChange = (name) => (e) => {
     setData({ ...data, [name]: e.target.value });
   };
@@ -84,24 +104,26 @@ const AddressModal = ({ address, index, setAddress, closeModal, add, update, rem
           />
           <br />
           {
-            index !== 0 ? (
+            index !== 0 && data._id ? (
               disabled ? (
               <ButtonGroup>
                 <EditButton onClick={() => setDisabled(false)} name="Edit"/>
                 <CancelButton onClick={closeModal} name="Close"/>
               </ButtonGroup>) : (
                 <ButtonGroup>
-                  <SaveButton type="submit" name="Save"/>
-                  <CancelButton onClick={() => {
-                    setDisabled(true);
-                  }} name="Delete"/>
+                  <SaveButton type="submit" name="Update"/>
+                  <CancelButton onClick={handleDelete} name="Delete"/>
                 </ButtonGroup>
               )
             ) : (
+              index === 0 ? (
               <ButtonGroup>
                 <SaveButton type="submit" name="Save"/>
                 <CancelButton onClick={closeModal} name="Cancel"/>
-              </ButtonGroup>
+              </ButtonGroup>) : (
+              <ButtonGroup>
+                <CancelButton onClick={closeModal} name="Close"/>
+              </ButtonGroup>)
             )
           }
         </form>
@@ -116,9 +138,9 @@ AddressModal.propTypes = {
 }
 
 const AddressPanel = () => {
-  const [showModal, setShowModal] = useState(false);
   const { user } = useUserContext();
-  const { data, error, isLoading } = useGetAddress({
+  const [showModal, setShowModal] = useState(false);
+  const { data, error, isLoading, refetch } = useGetAddress({
     uid: user.uid,
     token: user.accessToken
   });
@@ -126,6 +148,7 @@ const AddressPanel = () => {
   const updateAddressMutation = useUpdateAddress();
   const deleteAddressMutation = useDeleteAddress();
   const emptyAddress = {
+    uid: user.uid,
     street: "",
     city: "",
     state: "",
@@ -137,8 +160,7 @@ const AddressPanel = () => {
 
   useEffect(() => {
     if (data) {
-      const { __v, _id, ...addressData } = data.data.addressData;
-      setAddress(prevAddress => [emptyAddress, addressData]);
+      setAddress([emptyAddress, ...data.data.addressData]);
     }
   }, [data]);
 
@@ -169,13 +191,13 @@ const AddressPanel = () => {
             )
           }
           return (
-            <AddAdressBox key={index} onClick={openModal(index)}>
+            <AddAdressBox key={element._id} onClick={openModal(index)}>
               <p>{element.street}</p>
             </AddAdressBox>
           )
         })
       }
-      {showModal && <AddressModal address={address} index={addressIndex} setAddress={setAddress} closeModal={closeModal} add={addAddressMutation} update={updateAddressMutation} remove={deleteAddressMutation} user={user}/>}
+      {showModal && <AddressModal address={address} index={addressIndex} setAddress={setAddress} closeModal={closeModal} add={addAddressMutation} update={updateAddressMutation} remove={deleteAddressMutation} user={user} refetch={refetch}/>}
     </AddressPanelContainer>
     </>
   )

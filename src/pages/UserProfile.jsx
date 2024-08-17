@@ -39,7 +39,6 @@ const UserProfile = () => {
     userReferrals
   }
 
-  const { user } = useUserContext();
   const [activePanel, setActivePanel] = useState("PROFILE");
 
   return (
@@ -47,10 +46,9 @@ const UserProfile = () => {
       <Navbar />
       <Announcement />
       <TopContainer>
-        <Header>{ (user?.displayName || user?.email || user?.phoneNumber) + " " }</Header>
         <UserProfileContainer>
           <ProfileSideBar setPanel={setActivePanel}/>
-          <ProfilePanelSwitcher data={data} state={activePanel}/>
+          <ProfilePanelSwitcher state={activePanel}/>
         </UserProfileContainer>
       </TopContainer>
     </>
