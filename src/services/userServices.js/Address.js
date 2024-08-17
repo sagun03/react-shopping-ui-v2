@@ -31,7 +31,7 @@ export const deleteAddress = async (payload) => {
   const { token, uid } = payload;
   const response = await apiClient.request({
     method: "DELETE",
-    url: `/user/address/delete/${uid}`,
+    url: `/user/address/remove/${uid}?id=${payload.id}`,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`

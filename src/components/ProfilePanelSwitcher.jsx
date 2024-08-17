@@ -3,11 +3,11 @@ import ProfilePanel from "./ProfilePanel";
 import PropTypes from "prop-types";
 import AddressPanel from "./AddressPanel";
 
-const ProfilePanelSwitcher = ({ data, state }) => {
+const ProfilePanelSwitcher = ({ state }) => {
   return (
     <ContentPanel>
-      {state === "PROFILE" && <ProfilePanel userData={data.userData} />}
-      {state === "ADDRESS" && <AddressPanel userAddress={data.userAddress} />}
+      {state === "PROFILE" && <ProfilePanel />}
+      {state === "ADDRESS" && <AddressPanel />}
     </ContentPanel>
   )
 };

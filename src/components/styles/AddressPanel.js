@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile } from "../../responsive";
+import { lScreen, mobile } from "../../responsive";
 
 export const AddressPanelContainer = styled.div`
   display: grid;
@@ -8,6 +8,10 @@ export const AddressPanelContainer = styled.div`
     padding: " 0 15px",
     gridTemplateColumns: "1fr 1fr",
     gap: "10px"
+  })}
+  ${lScreen({
+    gridTemplateColumns: "1fr 1fr 1fr",
+    gap: "20px"
   })}
 `;
 
@@ -21,10 +25,6 @@ export const AddAdressBox = styled.div`
   border: 1px solid #e0e0e0;
   background-color: #e0e0e0;
   padding: 15px;
-  ${mobile({
-    width: "5rem",
-    height: "5rem"
-  })}
 `;
 
 export const ModalContainer = styled.div`
@@ -41,6 +41,7 @@ export const ModalContainer = styled.div`
 `;
 
 export const InnerWrapper = styled.div`
+  max-width: 300px;
   background-color: #FFF;
   display: flex;
   margin: 30px;

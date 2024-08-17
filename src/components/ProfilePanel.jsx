@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import { ProfilePanelContainer, InputField, InnerHeading, ButtonGroup } from "./styles/ProfilePanel";
+import { ProfilePanelContainer, InputField, ButtonGroup, InnerHeading, StyledBox } from "./styles/ProfilePanel";
 import { SaveButton, CancelButton, EditButton } from "./EditButtons";
-import { Button } from "style-components";
+import { useUserContext } from "../context/UserContext";
 
-const ProfilePanel = ({ userData }) => {
+const ProfilePanel = () => {
+  const { user: userData } = useUserContext();
   const [user, setUser] = useState({
-    Username: userData.Username,
-    Email: userData.Email,
-    Role: userData.Role
+    Username: userData.displayName,
+    Email: userData.email,
+    Role: "User"
   })
 
   const [disabled, setDisabled] = useState(true);
@@ -24,14 +24,8 @@ const ProfilePanel = ({ userData }) => {
     <div>
       <ProfilePanelContainer>
         <InnerHeading>Profile</InnerHeading>
-        <Box
+        <StyledBox
           component={"form"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
           onSubmit={handleSave}
         >
           <InputField
@@ -65,7 +59,7 @@ const ProfilePanel = ({ userData }) => {
               )
             }
           </ButtonGroup>
-        </Box>
+        </StyledBox>
       </ProfilePanelContainer>
     </div>
   )

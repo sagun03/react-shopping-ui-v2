@@ -1,19 +1,22 @@
-import { SideBarContainer, ImageContainer, Image, SideBarButtonGroup, SideBarButton, PointsContainer } from "./styles/UserProfile";
+import { Text, Header, SideBarContainer, ImageContainer, Image, SideBarButtonGroup, SideBarButton, PointsContainer } from "./styles/UserProfile";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import BadgeIcon from "@mui/icons-material/Badge";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import PeopleIcon from "@mui/icons-material/People";
 import PropTypes from "prop-types";
+import { useUserContext } from "../context/UserContext";
 
 const ProfileSideBar = ({ setPanel }) => {
+  const { user } = useUserContext();
   return (
     <SideBarContainer>
+      <Header>{ (user?.displayName || user?.email || user?.phoneNumber) + " " }</Header>
       <ImageContainer>
         <Image src="profile-placeholder.png" />
         <PointsContainer>
           <MonetizationOnIcon />
-          1000
+          <Text>{user?.points || 0}</Text>
         </PointsContainer>
       </ImageContainer>
       <SideBarButtonGroup>
@@ -51,6 +54,7 @@ const ProfileSideBar = ({ setPanel }) => {
 };
 
 ProfileSideBar.propTypes = {
+  user: PropTypes.object.isRequired,
   setPanel: PropTypes.func.isRequired
 };
 export default ProfileSideBar;
