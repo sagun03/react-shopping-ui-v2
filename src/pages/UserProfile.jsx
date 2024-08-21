@@ -5,6 +5,8 @@ import { UserProfileContainer, Header, TopContainer } from "../components/styles
 import ProfilePanelSwitcher from "../components/ProfilePanelSwitcher";
 import ProfileSideBar from "../components/ProfileSideBar";
 import { useUserContext } from "../context/UserContext";
+import BottomNav from "../components/BottomNav";
+import Footer from "../components/Footer";
 
 const UserProfile = () => {
   const userData = {
@@ -39,6 +41,7 @@ const UserProfile = () => {
     userReferrals
   }
 
+  const user = useUserContext();
   const [activePanel, setActivePanel] = useState("PROFILE");
 
   return (
@@ -46,11 +49,19 @@ const UserProfile = () => {
       <Navbar />
       <Announcement />
       <TopContainer>
-        <UserProfileContainer>
-          <ProfileSideBar setPanel={setActivePanel}/>
-          <ProfilePanelSwitcher state={activePanel}/>
-        </UserProfileContainer>
+        {
+          user.user ? (
+            <UserProfileContainer>
+              <ProfileSideBar setPanel={setActivePanel}/>
+              <ProfilePanelSwitcher state={activePanel}/>
+            </UserProfileContainer>
+          ) : (
+            <h1>Please sign in to view your profile</h1>
+          )
+        }
       </TopContainer>
+      <Footer />
+      <BottomNav />
     </>
   );
 }
