@@ -34,10 +34,11 @@ export const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
-  z-index: 1000;
+  z-index: 1500;
   top: 50px;
   width: 100vw;
   height: 100vh;
+  padding-bottom: 75px;
 `;
 
 export const InnerWrapper = styled.div`

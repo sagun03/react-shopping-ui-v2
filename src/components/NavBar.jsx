@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ShoppingCartOutlined, Home as HomeIcon1, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
@@ -164,7 +164,7 @@ const NavBar = () => {
       await logOut();
       setTimeout(() => {
         setLoading(false);
-        window.location.reload();
+        window.location.href = "/";
       }, 1000);
     } catch (err) {
       console.log(err);

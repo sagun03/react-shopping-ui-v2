@@ -8,7 +8,7 @@ const Cointainer = styled.div`
   display: flex;
   background: #1d2b36;
   padding-top: 5rem;
-  ${mobile({ flexDirection: "column" })}
+  ${mobile({ flexDirection: "column", paddingBottom: "50px" })}
   color: white;
 `;
 

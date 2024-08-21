@@ -12,6 +12,7 @@ export const TopContainer = styled.div`
   ${lScreen({
     marginTop: "150px"
   })}
+  margin-bottom: 125px;
 `;
 
 export const UserProfileContainer = styled.div`
