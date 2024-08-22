@@ -17,7 +17,7 @@ import { Helmet } from "react-helmet-async";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
-import { useUpdateCart, useDeleteCart, useDeleteProuctCart } from "../hooks/useCart";
+import { useUpdateCart, useDeleteCart, useDeleteProductCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
 
 const Container = styled.div``;
@@ -177,8 +177,7 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const userAuth = useUserAuth();
-  const users = useUserContext()
-  const [user, setUser] = useState({});
+  const { user } = useUserContext()
   const { cartData, setCartData } = useCartContext();
   const [data, setData] = useState({});
   const [size, setSize] = useState("");
@@ -186,20 +185,17 @@ const Cart = () => {
 
   const { mutate: updateCart } = useUpdateCart();
   const { mutate: deleteCart } = useDeleteCart();
-  const { mutate: deleteProductCart } = useDeleteProuctCart()
+  const { mutate: deleteProductCart } = useDeleteProductCart()
+
+  const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
-    setUser(userAuth.user || {});
-  }, [userAuth.user]);
-
-  const dataFetched = useFetchCartData(users);
-  console.log(dataFetched, "dataFetched")
-  useEffect(() => {
-    if (dataFetched && users) {
-      setCartData(dataFetched);
-      setData(dataFetched);
+    console.log(cartData, "cartData")
+    if (cartData) {
+      // setCartData(dataFetched);
+      setData(cartData);
     }
-  }, [cartData, dataFetched, setCartData]);
+  }, [cartData]);
 
   useEffect(() => {
     window?.scrollTo(0, 0);
@@ -272,14 +268,14 @@ const Cart = () => {
         <Announcement />
         <NavBar />
         <Wrapper>
-          {!dataFetched || data.length === 0 || dataFetched?.products.length === 0 ? (
+          {data.length === 0 || data?.products?.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Product</Title>
             </Link>
           ) : (
             <Title>YOUR BAG</Title>
           )}
-          {!dataFetched || data.length === 0 || dataFetched?.products.length === 0 ? (
+          {data.length === 0 || data?.products?.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>

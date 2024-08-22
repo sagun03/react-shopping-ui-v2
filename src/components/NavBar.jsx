@@ -149,11 +149,11 @@ const NavBar = () => {
   const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
-    if (dataFetched) {
-      setCartData(dataFetched);
+    console.log(user, "user")
+    if (cartData) {
       setQuantity(cartData?.totalQuantity)
     }
-  }, [cartData, dataFetched, setCartData]);
+  }, [cartData]);
 
   const onClickHandler = async (e) => {
     try {

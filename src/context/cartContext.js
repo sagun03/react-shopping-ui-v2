@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
+  const [isCartData, setIsCartData] = useState(false)
 
   return (
-    <CartContext.Provider value={{ cartData, setCartData }}>
+    <CartContext.Provider value={{ cartData, setCartData, isCartData, setIsCartData }}>
       {children}
     </CartContext.Provider>
   );

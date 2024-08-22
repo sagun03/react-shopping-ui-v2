@@ -1,7 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchCartProducts, updateCartProducts, createCartProducts, deleteCart, deleteProductCart } from "../services/cartService";
+import { useCartContext } from "../context/cartContext";
 
-export const useCart = (user) => {
+// Fetch Cart Data Hook
+export const useCart = (user, shouldFetchCart) => {
+  const { isCartData } = useCartContext()
+  console.log(isCartData, "isCartData")
   const fetchCartData = async () => {
     return fetchCartProducts(user); // Fetch cart data based on user
   };
@@ -14,11 +18,14 @@ export const useCart = (user) => {
     onError: (error) => {
       console.error("Error fetching products:", error);
     },
-    enabled: !!user // Only run query if user is available
+    enabled: !!user && (shouldFetchCart || isCartData)
   });
 };
+
+// Update Cart Hook
 export const useUpdateCart = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ CartID, cartDetails }) => {
       if (!CartID) {
@@ -30,17 +37,21 @@ export const useUpdateCart = () => {
       console.error("Error updating cart:", error);
     },
     onSuccess: (_, { userID }) => {
-      console.log("Cart updated successfully");
-      queryClient.invalidateQueries(["cart"], userID);
+      console.log("Cart updated successfully", userID);
+      // Ensure `shouldFetchCart` is set to `true` when invalidating the query
+      queryClient.invalidateQueries({
+        queryKey: ["cart", userID] // Always pass the correct query key
+      });
     }
   });
 };
 
+// Create Cart Hook
 export const useCreateCart = (onSuccessCallback) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ cartDetails }) => {
-      console.log(cartDetails, "cartDetails")
       return createCartProducts(cartDetails);
     },
     onError: (error) => {
@@ -48,13 +59,19 @@ export const useCreateCart = (onSuccessCallback) => {
     },
     onSuccess: (_, { userID, setOpenAlert }) => {
       console.log("Cart created successfully");
-      setOpenAlert(true)
-      queryClient.invalidateQueries(["cart"], userID);
+      setOpenAlert(true);
+      // Ensure the query is invalidated and refetched
+      queryClient.invalidateQueries({
+        queryKey: ["cart", userID, true] // Invalidate with `shouldFetchCartUpdate` as true
+      });
     }
   });
-}
+};
+
+// Delete Cart Hook
 export const useDeleteCart = (onSuccessCallback) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ CartID }) => {
       return deleteCart(CartID);
@@ -63,23 +80,32 @@ export const useDeleteCart = (onSuccessCallback) => {
       console.error("Error deleting cart:", error);
     },
     onSuccess: (_, { userID }) => {
-      console.log("Cart Deleted successfully");
-      queryClient.invalidateQueries(["cart"], userID);
+      console.log("Cart deleted successfully");
+
+      queryClient.invalidateQueries({
+        queryKey: ["cart", userID, true] // Force refetch with `shouldFetchCartUpdate` set to true
+      });
     }
   });
-}
-export const useDeleteProuctCart = (onSuccessCallback) => {
+};
+
+// Delete Product from Cart Hook
+export const useDeleteProductCart = (onSuccessCallback) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ CartID, productId }) => {
       return deleteProductCart(CartID, productId);
     },
     onError: (error) => {
-      console.error("Error deleting cart:", error);
+      console.error("Error deleting product from cart:", error);
     },
     onSuccess: (_, { userID }) => {
-      console.log("Cart Deleted successfully");
-      queryClient.invalidateQueries(["cart"], userID);
+      console.log("Product deleted from cart successfully");
+
+      queryClient.invalidateQueries({
+        queryKey: ["cart", userID, true] // Ensure the correct query key for refetch
+      });
     }
   });
-}
+};
