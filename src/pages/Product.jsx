@@ -38,7 +38,7 @@ import { useUserContext } from "../context/UserContext";
 import Review from "../components/Review";
 
 const Product = () => {
-  const users = useUserContext();
+  const { user } = useUserContext();
   const [product, setProduct] = useState({});
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -48,19 +48,12 @@ const Product = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const { products } = useDataContext();
   const userAuth = useUserAuth();
-  const [user, setUser] = useState({});
   const { mutate: createCart } = useCreateCart();
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    console.log(users, "userAuth.user");
-    setUser(userAuth.user || {});
-  }, [userAuth.user]);
-
   useEffect(() => {
     if (id) {
       const product = products.find((product) => product.id === id);
@@ -75,9 +68,9 @@ const Product = () => {
   }, [product]);
 
   const handleClick = () => {
-    console.log(product, "productttt");
+    console.log(product, "productttt", user);
     const productObject = {
-      userId: users?.uid,
+      userId: user?.uid,
       Products: [
         {
           productID: product?.id,
@@ -89,7 +82,7 @@ const Product = () => {
     };
     createCart({
       cartDetails: productObject,
-      userID: users?.uid,
+      userID: user?.uid,
       setOpenAlert
     });
     // setOpenAlert(true);

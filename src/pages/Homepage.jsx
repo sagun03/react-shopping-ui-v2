@@ -18,19 +18,14 @@ import { useUserAuth } from "../context/UserAuthContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUserContext } from "../context/UserContext";
 const Homepage = () => {
-  const users = useUserContext()
+  const { user } = useUserContext()
   const userAuth = useUserAuth();
   const { setCartData, cartData } = useCartContext();
-  const [user, setUser] = useState({});
+
+  const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
-    setUser(userAuth?.user || {});
-  }, [userAuth?.user]);
-
-  const dataFetched = useFetchCartData(users);
-
-  useEffect(() => {
-    if (cartData.length === 0 && dataFetched && users) {
+    if (cartData.length === 0 && dataFetched && user) {
       setCartData(dataFetched);
     }
   }, [cartData, dataFetched, setCartData]);

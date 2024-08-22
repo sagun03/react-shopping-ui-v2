@@ -15,18 +15,14 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
   const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
   const userAuth = useUserAuth();
-  const [user, setUser] = useState({});
-  const users = useUserContext()
+  const { user } = useUserContext()
   const { mutate: createCart } = useCreateCart();
-  useEffect(() => {
-    setUser(userAuth.user || {});
-  }, [userAuth.user]);
 
   const handleClick = () => {
-    console.log(name, id, size, price, images, user)
+    console.log(name, id, size, price, images, user, "ranggeeeee")
 
     const productObject = {
-      userId: users?.uid,
+      userId: user?.uid,
       Products: [{
         productID: id,
         quantity: 1,
@@ -38,7 +34,7 @@ const ProductRangeCard = ({ name, id, size, price, images }) => {
       window.location.reload();
       console.log("Additional actions after cart creation");
     };
-    createCart({ cartDetails: productObject, userID: users?.uid, setOpenAlert })
+    createCart({ cartDetails: productObject, userID: user?.uid, setOpenAlert })
   };
 
   return (
