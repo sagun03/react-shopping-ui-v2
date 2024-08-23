@@ -13,7 +13,6 @@ import productBackground from "../../pages/images/productBackground.jpg"
 const Container = styled.div`
   display: flex;
   margin: 3rem auto;
-  padding: 0rem 0.5rem;
   position: relative;
   flex-wrap: wrap;
   flex-direction: column;
@@ -31,21 +30,21 @@ const Heading = styled.h1`
   padding-left: 4rem;
   font-weight: 400;
   ${mobileS({
-    fontSize: "38px"
-    // paddingLeft: "30px",
-  })}
+  fontSize: "38px"
+  // paddingLeft: "30px",
+})}
   ${mobileSuperSmall({
-    fontSize: "1.5rem"
-    // paddingLeft: "20px",
-  })}
+  fontSize: "1.5rem"
+  // paddingLeft: "20px",
+})}
 `
 
 const ProductsWrapper = styled.div`
   width: 90%;
   display: grid;
   grid-template-columns: 22% auto;
-
-  ${ScreenWith960px({ gridTemplateColumns: "none", gap: "2rem" })}
+  gap: 1rem;
+  ${ScreenWith960px({ gridTemplateColumns: "none" })}
 `
 const ProductMenuList = styled.ul`
   list-style: none;
@@ -60,16 +59,16 @@ const ProductMenuList = styled.ul`
   padding: 30px;
   height: fit-content;
   ${ScreenWith960px({
-    display: "none"
-  })};
+  display: "none"
+})};
 `
 const ProductMenuListMobile = styled.div`
   display: none;
 
   ${ScreenWith960px({
-    display: "flex",
-    justifyContent: "center"
-  })}
+  display: "flex",
+  justifyContent: "center"
+})}
 `
 const CustomButton = styled(Button)`
   &.MuiButton-root {
@@ -98,28 +97,25 @@ const ProductMenu = styled.li`
 `
 const ProductImageContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+   margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   height: fit-content;
-  gap: 1.5rem;
-  // overflow-y: scroll;
+  gap: .7rem;
 
   ${ScreenWith960px({
-    // height: "70rem",
-    gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))"
-  })}
-  ${ScreenWith670px({
-    // height: "auto",
-    // overflowY: "unset",
-    // display: "block",
-  })}
+  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"
+})}
+   ${mobile({
+  gridTemplateColumns: "repeat(auto-fill, minmax(168px, 1fr))"
+})}
 `
 
 const ProductHeader = styled.div`
   padding: 20px 60px;
   border-bottom: 1px solid #d8d8d8;
   ${ScreenWith670px({
-    marginTop: "80px"
-  })}
+  marginTop: "80px"
+})}
 `
 
 const ProductHeaderContainer = styled.div`
@@ -131,9 +127,9 @@ const ProductHeaderContent = styled.div`
   flex-wrap: wrap;
   align-items: center;
   ${mobile({
-    flexDirection: "column",
-    gap: "1rem"
-  })}
+  flexDirection: "column",
+  gap: "1rem"
+})}
 `
 const ProductHeaderCount = styled.div`
   flex: 1;
@@ -148,10 +144,10 @@ const ProductHeaderLeftContent = styled.div`
   display: flex;
   justify-content: space-around;
   ${mobile({
-    flexDirection: "column",
-    gap: "1rem",
-    alignItems: "center"
-  })}
+  flexDirection: "column",
+  gap: "1rem",
+  alignItems: "center"
+})}
 `
 const HeaderLeftSelect = styled.div``
 const ProductImageWrapper = styled.div``
@@ -174,8 +170,8 @@ const Wrapper = styled.div`
   padding: 90px 0px;
   // text-align: center;
   ${ScreenWith670px({
-    display: "none"
-  })}
+  display: "none"
+})}
 `
 
 const CircularContainer = styled.div`
@@ -184,9 +180,9 @@ const CircularContainer = styled.div`
   top: 50%;
   left: 65%;
   ${mobile({
-    top: "250px",
-    left: "48.5%"
-  })}
+  top: "250px",
+  left: "48.5%"
+})}
 `
 
 export {

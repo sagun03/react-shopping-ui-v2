@@ -5,15 +5,15 @@ const config = {
   "500 ml": 90,
   "1 liter": 190,
   "5 liter": 600
-}
+};
 
 export const getPrice = (size) => {
-  return config[size]
-}
+  return config[size];
+};
 
-export const flattenProductSizes = products =>
-  products.flatMap(product =>
-    product.sizes.map(size => ({
+export const flattenProductSizes = (products) =>
+  products.flatMap((product) =>
+    product.sizes.map((size) => ({
       id: product.id,
       name: product.name,
       description: product.description,
@@ -23,6 +23,8 @@ export const flattenProductSizes = products =>
       price: size.price,
       images: size.images,
       inStock: size.inStock,
-      reviews: product.reviews
+      discountPercentage: size.discountPercentage,
+      ratingCount: product.ratingCount,
+      averageRating: product.averageRating
     }))
   );
