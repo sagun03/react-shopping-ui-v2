@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useDataContext, useNavigation } from "../context/DataContext";
+import { useDataContext } from "../context/DataContext";
 import ProductRangeCard from "./ProductRangeCard";
 import SearchIcon from "@mui/icons-material/Search";
 import { v4 as uuidv4 } from "uuid";
@@ -47,7 +47,7 @@ const ProductsRange = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isFiltered, setIsFiltered] = useState(false)
+  const [isFiltered, setIsFiltered] = useState(false);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const ProductsRange = () => {
         filtered = products.filter(
           ({ category: productCategory }) => productCategory === category
         );
-        console.log(filtered, "filtered")
+        console.log(filtered, "filtered");
       }
       setFilteredProducts(filtered);
       setSelectedCategory(title);
@@ -103,7 +103,7 @@ const ProductsRange = () => {
 
   useEffect(() => {
     if (searchTerm) {
-      setIsFiltered(true)
+      setIsFiltered(true);
       setSelectedCategory("All");
       const filtered = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -119,7 +119,6 @@ const ProductsRange = () => {
     const sorted = filteredProducts.slice().sort(sortProducts);
     return flattenProductSizes(sorted);
   }, [filteredProducts, sortProducts]);
-
   return (
     <>
       <Wrapper>
