@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { useDispatch } from "react-redux";
 import Alert from "./Alert";
 import {
@@ -26,7 +26,7 @@ import {
 // import { useUserAuth } from "../context/UserAuthContext";
 import { useCreateCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductRangeCard = ({
   name,
@@ -41,10 +41,10 @@ const ProductRangeCard = ({
 }) => {
   // const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
+  const navigate = useNavigate();
   // const userAuth = useUserAuth();
   const { user } = useUserContext();
   const { mutate: createCart } = useCreateCart();
-
   const handleClick = () => {
     const productObject = {
       userId: user?.uid,
@@ -61,10 +61,14 @@ const ProductRangeCard = ({
     createCart({ cartDetails: productObject, userID: user?.uid, setOpenAlert });
   };
 
+  const handleNavigate = () => {
+    localStorage.setItem("size", size);
+    navigate(`/product/${id}`);
+  };
+
   return (
     <WrapperContainer>
-      <Link to={`/product/${id}`}>
-        <Container>
+        <Container onClick={handleNavigate}>
           {!inStock && (
             <OutOfStockLabel>
               <BannerText>OUT OF STOCK</BannerText>
@@ -111,7 +115,6 @@ const ProductRangeCard = ({
             setOpen={setOpenAlert}
           />
         )}
-      </Link>
     </WrapperContainer>
   );
 };

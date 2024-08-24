@@ -19,7 +19,6 @@ import {
 import { useReviews } from "../hooks/useReview";
 
 const Review = ({ productId }) => {
-  console.log("productId", productId);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0]);
@@ -28,7 +27,7 @@ const Review = ({ productId }) => {
     isLoading: isReviewsLoading,
     isError
   } = useReviews(productId);
-  console.log(reviewData, "reviewData");
+
   useEffect(() => {
     if (reviewData?.length > 0) {
       setReviews(reviewData);
@@ -91,7 +90,7 @@ const Review = ({ productId }) => {
                 <Typography variant="body2">{5 - index} star</Typography>
                 <LinearProgress
                   variant="determinate"
-                  value={(count / reviews.length) * 100}
+                  value={count > 0 ? (count / reviews.length) * 100 : 0}
                   sx={{ mx: 1, flex: 1 }}
                 />
                 <Typography variant="body2">{count}</Typography>
@@ -101,7 +100,7 @@ const Review = ({ productId }) => {
         </>
       ) : isReviewsLoading ? (
         <Typography variant="body1" sx={{ padding: "10px" }}>
-         Loading reviews...
+          Loading reviews...
         </Typography>
       ) : (
         <Typography variant="body1" sx={{ padding: "10px" }}>
@@ -120,7 +119,9 @@ const Review = ({ productId }) => {
                   alignItems: "flex-start"
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: "bold" }}>{review.title}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                  {review.title}
+                </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                   {review.rating.toFixed(1)}
                   <Rating

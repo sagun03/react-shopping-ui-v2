@@ -4,14 +4,18 @@ import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import { useEffect, useState } from "react";
-import { addProducts } from "../redux/cartRedux";
-import { useLocation } from "react-router";
-import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+// import { addProducts } from "../redux/cartRedux";
+// import { useDispatch } from "react-redux";
+// import { v4 as uuidv4 } from "uuid";
 import Alert from "../components/Alert";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Divider, IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
+import Review from "../components/Review";
+import SimilarProducts from "../components/SimilarProducts"; // Import SimilarProducts component
+import { useCreateCart } from "../hooks/useCart";
+// import { useUserAuth } from "../context/UserAuthContext";
+import { useUserContext } from "../context/UserContext";
 import { useDataContext } from "../context/DataContext";
 import {
   Container,
@@ -32,43 +36,44 @@ import {
   Amount,
   Button
 } from "../components/styles/Product";
-import { useCreateCart } from "../hooks/useCart";
-import { useUserAuth } from "../context/UserAuthContext";
-import { useUserContext } from "../context/UserContext";
-import Review from "../components/Review";
+import Loader from "../components/Loader";
 
 const Product = () => {
   const { user } = useUserContext();
   const [product, setProduct] = useState({});
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const { products } = useDataContext();
-  const userAuth = useUserAuth();
   const { mutate: createCart } = useCreateCart();
+  const urlSize = localStorage.getItem("size");
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
     if (id) {
       const product = products.find((product) => product.id === id);
       setProduct(product || {});
     }
-  }, [id, products]);
 
-  useEffect(() => {
     if (product.sizes && product.sizes.length > 0) {
-      setSize(product.sizes[0].size); // Set default size from product data
+      if (urlSize) {
+        const matchedSize = product.sizes.find(s => s.size === urlSize);
+        setSize(matchedSize ? matchedSize.size : product.sizes[0].size);
+      } else {
+        setSize(product.sizes[0].size);
+      }
     }
-  }, [product]);
+  }, [id, products, product.sizes, urlSize]);
 
   const handleClick = () => {
-    console.log(product, "productttt", user);
     const productObject = {
       userId: user?.uid,
       Products: [
@@ -85,7 +90,6 @@ const Product = () => {
       userID: user?.uid,
       setOpenAlert
     });
-    // setOpenAlert(true);
   };
 
   const handleQuantity = (type) => {
@@ -95,7 +99,20 @@ const Product = () => {
       setQuantity(quantity + 1);
     }
   };
-  console.log(product, "product");
+  const handleSizeChange = (e) => {
+    const newSize = e.target.value;
+    setSize(newSize);
+    localStorage.setItem("size", newSize);
+  };
+
+  if (!product.id) {
+    return <p>Product not found.</p>;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <Container>
       <Announcement />
@@ -105,7 +122,7 @@ const Product = () => {
           <Alert
             open={openAlert}
             type={"success"}
-            message={"Your Product has been added into Cart"}
+            message={"Your Product has been added to the cart"}
             setOpen={setOpenAlert}
           />
         )}
@@ -119,7 +136,7 @@ const Product = () => {
           <Desc>{product.description}</Desc>
           {selectedSize.price && (
             <>
-              <Price>Rs. {selectedSize.price}</Price>{" "}
+              <Price>Rs. {selectedSize.price}</Price>
               <span
                 style={{
                   fontWeight: "100",
@@ -137,7 +154,7 @@ const Product = () => {
               <FilterTitle>Size</FilterTitle>
               <FilterSize
                 value={size}
-                onChange={(e) => setSize(e.target.value)}
+                onChange={handleSizeChange}
               >
                 {product.sizes?.map((s, index) => (
                   <FilterSizeOption key={index} value={s.size}>
@@ -165,7 +182,13 @@ const Product = () => {
         </InfoContainer>
       </Wrapper>
       <Divider sx={{ marginTop: "4rem" }} />
-      {product.id && <Review productId={product.id} userId={user?.uid} userName={user?.displayName} />}
+      <SimilarProducts currentProduct={product} />
+      <Divider sx={{ marginTop: "4rem" }} />
+      <Review
+        productId={product.id}
+        userId={user?.uid}
+        userName={user?.displayName}
+      />
       <NewsLetter />
       <Footer />
       <BottomNav />

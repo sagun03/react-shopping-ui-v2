@@ -28,17 +28,7 @@ import {
   Wrapper,
   CustomButton
 } from "./styles/Products";
-import { flattenProductSizes } from "../utils/helper";
-
-const CATEGORY_MENU = [
-  { id: 1, title: "All", name: "" },
-  { id: 2, title: "Liquid Detergent", name: "detergent" },
-  { id: 3, title: "Hand Wash", name: "handWash" },
-  { id: 4, title: "Floor Cleaner", name: "floorCleaner" },
-  { id: 6, title: "Dish Washer", name: "dishWasher" },
-  { id: 7, title: "Toilet Cleaner", name: "toiletCleaner" },
-  { id: 8, title: "Glass Cleaner", name: "colin" }
-];
+import { CATEGORY_MENU, flattenProductSizes } from "../utils/helper";
 
 const ProductsRange = () => {
   const { products } = useDataContext();
@@ -119,6 +109,7 @@ const ProductsRange = () => {
     const sorted = filteredProducts.slice().sort(sortProducts);
     return flattenProductSizes(sorted);
   }, [filteredProducts, sortProducts]);
+
   return (
     <>
       <Wrapper>

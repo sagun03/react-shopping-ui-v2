@@ -1,0 +1,38 @@
+.swiper-button-next, .swiper-button-prev {
+    background-color: hsl(2, 89%, 59%);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #fff;
+    border: 2px solid #fff;
+    transition: background-color 0.4s ease, transform 0.4s ease;
+}
+
+.swiper-button-next {
+    right: 10px;
+}
+
+.swiper-button-prev {
+    left: 10px;
+}
+
+.swiper-container {
+    position: relative;
+}
+
+
+.swiper-button-next, .swiper-button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    transform: translateY(-50%) scale(1.1);
+}
