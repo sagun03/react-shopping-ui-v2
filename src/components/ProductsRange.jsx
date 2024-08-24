@@ -44,13 +44,8 @@ const ProductsRange = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
   const filterProducts = useCallback(
     (category = "", title) => {
@@ -59,7 +54,6 @@ const ProductsRange = () => {
         filtered = products.filter(
           ({ category: productCategory }) => productCategory === category
         );
-        console.log(filtered, "filtered");
       }
       setFilteredProducts(filtered);
       setSelectedCategory(title);
@@ -79,14 +73,15 @@ const ProductsRange = () => {
     }
   }, [searchParams, products, filterProducts]);
 
+  // Sorting logic (applied after flattening)
   const sortProducts = useCallback(
     (a, b) => {
       if (sortOrder === "priceLowToHigh") {
-        return a.sizes[0].price - b.sizes[0].price;
+        return a.price - b.price; // Sorting by lowest price first
       } else if (sortOrder === "priceHighToLow") {
-        return b.sizes[0].price - a.sizes[0].price;
+        return b.price - a.price; // Sorting by highest price first
       }
-      return 0;
+      return 0; // Default: no sorting
     },
     [sortOrder]
   );
@@ -97,17 +92,21 @@ const ProductsRange = () => {
       setSelectedCategory("All");
       const filtered = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      )
       setFilteredProducts(filtered);
-    } else if (isFiltered) {
-      setFilteredProducts(products);
     }
-  }, [searchTerm]);
+  }, [searchTerm, products]);
 
-  // Memoized sorted and flattened products
-  const sortedAndFlattenedProducts = useMemo(() => {
-    const sorted = filteredProducts.slice().sort(sortProducts);
-    return flattenProductSizes(sorted);
+  // Memoized flattening and then sorting products
+  const flattenedAndSortedProducts = useMemo(() => {
+    // First, flatten the products
+    const flattenedProducts = flattenProductSizes(filteredProducts);
+    console.log(flattenedProducts, "Flattened Products");
+
+    // Then sort them according to the selected order
+    const sorted = flattenedProducts.slice().sort(sortProducts);
+    console.log(sorted, "Sorted Products");
+    return sorted;
   }, [filteredProducts, sortProducts]);
 
   return (
@@ -119,25 +118,19 @@ const ProductsRange = () => {
         <ProductHeaderContainer>
           <ProductHeaderContent>
             <ProductHeaderCount>
-              Browse Products ({sortedAndFlattenedProducts.length})
+              Browse Products ({flattenedAndSortedProducts.length})
             </ProductHeaderCount>
             <ProductHeaderLeft>
               <ProductHeaderLeftContent>
                 <HeaderLeftSelect>
                   <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
                     value={sortOrder}
                     onChange={(event) => setSortOrder(event.target.value)}
                     style={{ minWidth: "8rem" }}
                   >
                     <MenuItem value={"default"}>Default</MenuItem>
-                    <MenuItem value={"priceHighToLow"}>
-                      Price - High to Low
-                    </MenuItem>
-                    <MenuItem value={"priceLowToHigh"}>
-                      Price - Low to High
-                    </MenuItem>
+                    <MenuItem value={"priceHighToLow"}>Price - High to Low</MenuItem>
+                    <MenuItem value={"priceLowToHigh"}>Price - Low to High</MenuItem>
                   </Select>
                 </HeaderLeftSelect>
                 <HeaderLeftSearch>
@@ -187,13 +180,10 @@ const ProductsRange = () => {
               {selectedCategory}
             </CustomButton>
             <Menu
-              id="simple-menu"
               anchorEl={anchorEl}
               keepMounted
-              color="inherit"
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
-              variant={"selectedMenu"}
             >
               {CATEGORY_MENU.map(({ id, title, name }) => (
                 <React.Fragment key={id}>
@@ -209,7 +199,7 @@ const ProductsRange = () => {
             </Menu>
           </ProductMenuListMobile>
           <ProductImageContainer>
-            {sortedAndFlattenedProducts.map((product) => (
+            {flattenedAndSortedProducts.map((product) => (
               <ProductImageWrapper key={uuidv4()}>
                 <ProductRangeCard {...product} />
               </ProductImageWrapper>
