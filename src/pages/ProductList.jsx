@@ -4,7 +4,7 @@ import Announcement from "../components/Announcement"
 import BottomNav from "../components/BottomNav"
 import { Helmet } from "react-helmet-async"
 
-const ProductSearch = () => {
+const ProductList = () => {
   return (
     <>
        <Helmet>
@@ -20,4 +20,4 @@ const ProductSearch = () => {
   )
 }
 
-export default ProductSearch
+export default ProductList
