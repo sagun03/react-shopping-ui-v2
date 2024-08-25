@@ -52,17 +52,14 @@ const Product = () => {
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
     if (id) {
       const product = products.find((product) => product.id === id);
       setProduct(product || {});
+      setQuantity(1)
     }
+  }, [id, products]);
 
+  useEffect(() => {
     if (product.sizes && product.sizes.length > 0) {
       if (urlSize) {
         const matchedSize = product.sizes.find(s => s.size === urlSize);
@@ -71,7 +68,15 @@ const Product = () => {
         setSize(product.sizes[0].size);
       }
     }
-  }, [id, products, product.sizes, urlSize]);
+  }, [product.sizes, urlSize]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+  }, [product, id]);
 
   const handleClick = () => {
     const productObject = {
