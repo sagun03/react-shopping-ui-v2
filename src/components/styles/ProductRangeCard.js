@@ -16,7 +16,7 @@ const WrapperContainer = styled.div`
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  cursor: pointer;
+  cursor:  ${({ isOutOfStock }) => (isOutOfStock ? "not-allowed" : "pointer")};
   transition: all 0.5s ease;
   ${ScreenWith670px({
     margin: 0,
@@ -29,6 +29,8 @@ const WrapperContainer = styled.div`
     ${ScreenWith1080px({
     height: "500px"
   })}
+
+  
   &:hover {
     background-color: #f0f0f0;
   }

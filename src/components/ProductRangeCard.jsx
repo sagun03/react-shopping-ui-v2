@@ -62,13 +62,14 @@ const ProductRangeCard = ({
   };
 
   const handleNavigate = () => {
+    if (!inStock) return;
     localStorage.setItem("size", size);
     navigate(`/product/${id}`);
   };
 
   return (
-    <WrapperContainer>
-        <Container onClick={handleNavigate}>
+    <WrapperContainer isOutOfStock={!inStock}>
+        <Container onClick={handleNavigate} >
           {!inStock && (
             <OutOfStockLabel>
               <BannerText>OUT OF STOCK</BannerText>
