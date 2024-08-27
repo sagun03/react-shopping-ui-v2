@@ -1,0 +1,4 @@
+:root {
+  --layout-width: clamp(300px, 90%, 1200px);
+  --top-depth: 80px;
+}

@@ -20,6 +20,7 @@ import { UserContextProvider } from "./context/UserContext";
 import UserProfile from "./pages/UserProfile";
 import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { Layout as CheckoutDev1 } from "./pages/CheckoutDev1";
 
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => {
                     <Route path="/products" element={<ProductList />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/profile" element={<UserProfile />} />
+                <Route path="/dev1/checkout" element={<CheckoutDev1 />} />
                   </Routes>
                 </Router>
               </CartProvider>
