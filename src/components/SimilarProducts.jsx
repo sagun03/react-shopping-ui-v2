@@ -54,7 +54,7 @@ const SimilarProducts = ({ currentProduct }) => {
 
   if (loading) {
     return (
-      <SimilarProductsWrapper>
+      <SimilarProductsWrapper style={{ display: "block" }}>
         <SimilarProductsHeading>
           Loading Similar Products and Related Products...
         </SimilarProductsHeading>
