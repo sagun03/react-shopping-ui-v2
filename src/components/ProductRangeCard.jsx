@@ -26,7 +26,7 @@ import {
 // import { useUserAuth } from "../context/UserAuthContext";
 import { useCreateCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductRangeCard = ({
   name,
