@@ -22,6 +22,7 @@ const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0]);
+
   const {
     data: reviewData,
     isLoading: isReviewsLoading,
@@ -31,11 +32,13 @@ const Review = ({ productId }) => {
   useEffect(() => {
     if (reviewData?.length > 0) {
       setReviews(reviewData);
+
       const totalRating = reviewData.reduce(
         (acc, review) => acc + review.rating,
         0
       );
-      setAverageRating(reviewData.length ? totalRating / reviewData.length : 0);
+      const avgRating = reviewData.length ? totalRating / reviewData.length : 0;
+      setAverageRating(avgRating);
 
       const counts = [0, 0, 0, 0, 0];
       reviewData.forEach((review) => {
@@ -141,7 +144,10 @@ const Review = ({ productId }) => {
                 </Typography>
               </Box>
             </Box>
-            <Typography variant="body1" sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}>
+            <Typography
+              variant="body1"
+              sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
+            >
               {review.description}
             </Typography>
             <Divider sx={{ mt: 2 }} />

@@ -1,27 +1,24 @@
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import { Link } from "react-router-dom";
+import { Divider, IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
+import Loader from "../components/Loader";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 import NewsLetter from "../components/NewsLetter";
-import { useEffect, useState } from "react";
-// import { addProducts } from "../redux/cartRedux";
-// import { useDispatch } from "react-redux";
-// import { v4 as uuidv4 } from "uuid";
 import Alert from "../components/Alert";
-import { Link, useParams } from "react-router-dom";
-import { Divider, IconButton } from "@mui/material";
 import BottomNav from "../components/BottomNav";
-import Review from "../components/Review";
-import SimilarProducts from "../components/SimilarProducts"; // Import SimilarProducts component
-import { useCreateCart } from "../hooks/useCart";
-// import { useUserAuth } from "../context/UserAuthContext";
-import { useUserContext } from "../context/UserContext";
 import { useDataContext } from "../context/DataContext";
+import { useCreateCart } from "../hooks/useCart";
+import { useUserContext } from "../context/UserContext";
+import Review from "../components/Review"; // Import Review component
+
 import {
   Container,
   Wrapper,
   ImgContainer,
-  Image,
   InfoContainer,
   Title,
   Desc,
@@ -34,18 +31,37 @@ import {
   AddContainer,
   AmountContainer,
   Amount,
-  Button
+  ThumbnailContainer,
+  Thumbnail,
+  CarouselContainer,
+  ZoomImage,
+  OverallRatingContainer,
+  RatingStars,
+  PriceContainer,
+  DiscountedPrice,
+  DiscountText,
+  CustomButton,
+  ButtonContainer,
+  ButtonWrapper,
+  AddToCartIcon,
+  LeftInfoContainer,
+  DiscountPercentageContainer,
+  StyledLink
 } from "../components/styles/Product";
-import Loader from "../components/Loader";
+import SimilarProducts from "../components/SimilarProducts";
+import { Icon } from "../components/styles/ProductRangeCard";
 
 const Product = () => {
   const { user } = useUserContext();
   const [product, setProduct] = useState({});
-  const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
   const { products } = useDataContext();
   const { mutate: createCart } = useCreateCart();
   const urlSize = localStorage.getItem("size");
@@ -55,15 +71,16 @@ const Product = () => {
     if (id) {
       const product = products.find((product) => product.id === id);
       setProduct(product || {});
-      setQuantity(1)
+      setQuantity(1);
     }
   }, [id, products]);
 
   useEffect(() => {
     if (product.sizes && product.sizes.length > 0) {
       if (urlSize) {
-        const matchedSize = product.sizes.find(s => s.size === urlSize);
+        const matchedSize = product.sizes.find((s) => s.size === urlSize);
         setSize(matchedSize ? matchedSize.size : product.sizes[0].size);
+        setSelectedImage(matchedSize?.images[0]);
       } else {
         setSize(product.sizes[0].size);
       }
@@ -104,6 +121,7 @@ const Product = () => {
       setQuantity(quantity + 1);
     }
   };
+
   const handleSizeChange = (e) => {
     const newSize = e.target.value;
     setSize(newSize);
@@ -117,7 +135,7 @@ const Product = () => {
   if (isLoading) {
     return <Loader />;
   }
-
+  const discount = product.discountPercentage || 5;
   return (
     <Container>
       <Announcement />
@@ -127,63 +145,137 @@ const Product = () => {
           <Alert
             open={openAlert}
             type={"success"}
-            message={"Your Product has been added to the cart"}
+            message={"Your Product has been added to the cart."}
             setOpen={setOpenAlert}
           />
         )}
         <ImgContainer>
-          {selectedSize.images && (
-            <Image src={selectedSize.images[0]} alt={product.name} />
-          )}
+          <ThumbnailContainer>
+            {selectedSize
+              ?.images.map((img, index) => (
+                <Thumbnail
+                  key={index}
+                  src={img}
+                  alt={`Thumbnail ${index}`}
+                  onClick={() => setSelectedImage(img)}
+                  active={selectedImage === img}
+                />
+              ))}
+          </ThumbnailContainer>
+          <CarouselContainer>
+            <ZoomImage src={selectedImage} alt={product.name} />
+          </CarouselContainer>
         </ImgContainer>
         <InfoContainer>
-          <Title>{product.name}</Title>
-          <Desc>{product.description}</Desc>
-          {selectedSize.price && (
-            <>
-              <Price>Rs. {selectedSize.price}</Price>
-              <span
-                style={{
-                  fontWeight: "100",
-                  fontSize: "40px",
-                  marginLeft: "10px"
-                }}
-              >
-                Rs.{" "}
-                {(selectedSize.price - selectedSize.price * 0.05).toFixed(2)}
-              </span>
-            </>
-          )}
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize
-                value={size}
-                onChange={handleSizeChange}
-              >
-                {product.sizes?.map((s, index) => (
-                  <FilterSizeOption key={index} value={s.size}>
-                    {s.size}
-                  </FilterSizeOption>
+          <LeftInfoContainer >
+            <Title>{product.name}</Title>
+            <Divider
+              sx={{ marginTop: "1.5rem", borderBottomWidth: "medium" }}
+            />
+            <OverallRatingContainer>
+              <RatingStars>
+                {[...Array(5)].map((_, index) => (
+                  <span
+                    key={index}
+                    style={{
+                      color: index < product.averageRating ? "black" : "grey"
+                    }}
+                  >
+                    {index < product.averageRating ? "★" : "☆"}
+                  </span>
                 ))}
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <IconButton disabled={quantity === 1}>
-                <Remove onClick={() => handleQuantity("dec")} />
-              </IconButton>
-              <Amount>{quantity}</Amount>
-              <IconButton>
-                <Add onClick={() => handleQuantity("add")} />
-              </IconButton>
-            </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
-            <Link to="/cart">
-              <Button>GO TO CART</Button>
-            </Link>
-          </AddContainer>
+                <span
+                  style={{
+                    color: "grey",
+                    fontSize: "1.5rem",
+                    marginLeft: ".5rem"
+                  }}
+                >
+                  ({product.ratingCount})
+                </span>
+              </RatingStars>
+            </OverallRatingContainer>
+            <Desc>
+              {showFullDescription
+                ? product.description
+                : `${product.description?.substring(0, 300)}...`}
+              {product.description && product.description.length > 300 && (
+                <span
+                  style={{
+                    textDecoration: "underline",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    marginLeft: "10px"
+                  }}
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                >
+                  {showFullDescription ? "Show less" : "Read full description"}
+                </span>
+              )}
+            </Desc>
+            <PriceContainer>
+            <DiscountPercentageContainer>
+              <Price>Rs. {selectedSize?.price}</Price>
+               <DiscountedPrice>
+                  Rs.{" "}
+                  {selectedSize?.price - selectedSize?.price * (discount / 100)}
+                </DiscountedPrice>
+                </DiscountPercentageContainer>
+                <DiscountText>{discount}% OFF</DiscountText>
+            </PriceContainer>
+            {product.sizes && product.sizes.length > 0 && (
+              <>
+                <FilterContainer>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: "1rem"
+                    }}
+                  >
+                    <Filter>
+                      <FilterTitle>Size: </FilterTitle>
+                      <FilterSize value={size} onChange={handleSizeChange}>
+                        {product.sizes?.map((s, index) => (
+                          <FilterSizeOption key={index} value={s.size}>
+                            {s.size}
+                          </FilterSizeOption>
+                        ))}
+                      </FilterSize>
+                    </Filter>
+                  </div>
+                </FilterContainer>
+              </>
+            )}
+            <AddContainer>
+              <AmountContainer>
+                <IconButton disabled={quantity === 1}>
+                  <Remove onClick={() => handleQuantity("dec")} />
+                </IconButton>
+                <Amount>{quantity}</Amount>
+                <IconButton>
+                  <Add onClick={() => handleQuantity("add")} />
+                </IconButton>
+              </AmountContainer>
+            </AddContainer>
+          </LeftInfoContainer>
+          <ButtonContainer>
+            <Divider
+              sx={{ marginBottom: "1.5rem", borderBottomWidth: "medium" }}
+            />
+            <ButtonWrapper>
+              <StyledLink to="/cart">
+                <CustomButton variant="border">GO TO CART</CustomButton>
+              </StyledLink>
+              <CustomButton onClick={handleClick}>
+                ADD TO CART{" "}
+                <Icon>
+                  <AddToCartIcon />
+                </Icon>
+              </CustomButton>
+            </ButtonWrapper>
+          </ButtonContainer>
         </InfoContainer>
       </Wrapper>
       <Divider sx={{ marginTop: "4rem" }} />
