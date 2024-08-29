@@ -1,118 +1,156 @@
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { mobile, ScreenWith960px } from "../responsive";
-import { useSelector } from "react-redux";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { Button } from "@mui/material";
-import { useMemo, useState, useEffect } from "react";
-import LocationDialogBox from "./LocationDialogBox";
 import { useCartContext } from "../context/cartContext";
+
+// Styled components with modern design
 const Summary = styled.div`
-  flex: 1;
-  border: 0.5px solid lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  height: fit-content;
-  ${mobile({
-    marginTop: "2rem"
-  })}
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 30px;
+  background-color: #ffffff;
+  max-width: 400px;
+  margin: 0px auto 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+    padding: 25px;
+  }
 `;
 
 const SummaryTitle = styled.h1`
-  font-weight: 200;
-  ${ScreenWith960px({
-    fontSize: "1.5rem"
-  })}
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: #111;
+  text-align: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 15px;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const SummaryItem = styled.div`
-  margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-  font-weight: ${(props) => props.type === "total" && "500"};
-  font-size: ${(props) => props.type === "total" && "24px"};
+  align-items: center;  /* Vertically align text */
+  margin: 20px 0;
+  padding: 10px 0;
+  border-bottom: ${(props) => (props.type === "total" ? "none" : "1px solid #e3e3e3")};
+  font-weight: ${(props) => (props.type === "total" ? "700" : "400")};
+  font-size: ${(props) => (props.type === "total" ? "1.4rem" : "1.1rem")};
+  color: ${(props) => (props.type === "total" ? "#B12704" : "#565959")};
 
-  ${ScreenWith960px({
-    fontSize: (props) => (props.type === "total" ? "1.25rem" : "1rem")
-  })}
+  @media (max-width: 768px) {
+    font-size: ${(props) => (props.type === "total" ? "1.2rem" : "1rem")};
+    margin: 15px 0;
+  }
 `;
 
-const SummaryItemText = styled.span``;
+const PriceText = styled.span`
+  color: ${(props) => (props.discount ? "#B12704" : "#111")};
+  margin-left: 15px; /* Provides spacing between text and price */
+  font-size: ${(props) => (props.type === "total" ? "1.4rem" : "1.1rem")};
 
-const SummaryItemPrice = styled.span``;
+  @media (max-width: 768px) {
+    font-size: ${(props) => (props.type === "total" ? "1.2rem" : "1rem")};
+  }
+`;
 
-export const CustomButton = styled(Button)`
+const DiscountLink = styled.span`
+  color: #007185;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 15px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const CustomButton = styled(Button)`
   width: 100%;
-  background-color: #25d366 !important;
-  color: white !important;
+  background-color: #f0c14b !important;
+  color: #111 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  margin-top: 30px;
+  padding: 12px !important;
+
+  &:hover {
+    background-color: #e7b32e !important;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    padding: 10px !important;
+    font-size: 1rem !important;
+  }
 `;
 
+// Main Component
 const OrderSummary = () => {
   const { cartData, setCartData } = useCartContext();
-  const cart = useSelector((state) => state.cart);
-  const [open, setOpen] = useState(false);
-  let subtotal = 0;
+  const [discount, setDiscount] = useState(500);
+  const [couponDiscount, setCouponDiscount] = useState(300);
+  const [totalMRP, setTotalMRP] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  // Function to calculate total price
+  const calculateTotalPrice = () => {
+    const totalPrice = cartData?.products?.reduce((acc, item) => {
+      const price = item.productDetails.sizes[0].price; // Get the price of the first available size
+      return acc + price * item.quantity; // Calculate for each product based on quantity
+    }, 0);
+    setTotalMRP(totalPrice);
+    setTotalAmount(totalPrice); // Assuming no discount for now
+  };
+
   useEffect(() => {
-    if (cartData) {
-      cartData?.products?.forEach((value) => {
-        subtotal += value?.productDetails?.sizes[0]?.price * value?.quantity || 0;
-      });
-    }
-  }, []);
+    calculateTotalPrice();
+  }, [cartData]);
+
+  const handlePlaceOrder = () => {
+    alert("Order Placed Successfully!");
+  };
 
   return (
     <Summary>
-      <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+      <SummaryTitle>Price Details</SummaryTitle>
+
       <SummaryItem>
-        <SummaryItemText>Subtotal</SummaryItemText>
-        <SummaryItemPrice>Rs. {subtotal.toFixed(2)}</SummaryItemPrice>
+        <span>Total MRP</span>
+        <PriceText>Rs. {totalMRP}</PriceText>
       </SummaryItem>
-      {/* <SummaryItem>
-        <SummaryItemText>Estimated Shipping</SummaryItemText>
-        <SummaryItemPrice>Rs. 10</SummaryItemPrice>
-      </SummaryItem> */}
-      {/* {cart?.total > 250 && (
-        <SummaryItem>
-          <SummaryItemText>Shipping Discount</SummaryItemText>
-          <SummaryItemPrice>Rs. -10</SummaryItemPrice>
-        </SummaryItem>
-      )} */}
-      {/* {subtotal > 200 && (
-        <SummaryItem>
-          <SummaryItemText>Extra Discount 20%</SummaryItemText>
-          <SummaryItemPrice>
-            Rs. {Math.round((20 / 100) * subtotal)}
-          </SummaryItemPrice>
-        </SummaryItem>
-      )} */}
+
+      <SummaryItem>
+        <span>Discount</span>
+        <PriceText discount>- Rs. {discount}</PriceText>
+        <DiscountLink>See Details</DiscountLink>
+      </SummaryItem>
+
+      <SummaryItem>
+        <span>Coupon Discount</span>
+        <PriceText discount>- Rs. {couponDiscount}</PriceText>
+        <DiscountLink>Apply Coupon</DiscountLink>
+      </SummaryItem>
+
       <SummaryItem type="total">
-        <SummaryItemText>Total</SummaryItemText>
-        <SummaryItemPrice>
-          Rs. {subtotal}
-        </SummaryItemPrice>
+        <span>Total Amount</span>
+        <PriceText type="total">Rs. {totalAmount}</PriceText>
       </SummaryItem>
-      {/* <a
-        href={`https://wa.me/919560363492?text=${encodeURIComponent(
-          `Hi I want to order these items from your website, these are the following: ${cart?.product?.map(
-            (item, index) =>
-              `${index + 1}: Name: ${item?.title} Quantity: ${
-                item?.quantity
-              } Size: ${item?.size}. Your Final Total Amount is ${
-                cart?.total < 200
-                  ? cart?.total
-                  : cart?.total - ((20 / 100) * cart?.total + 0.0).toFixed(2)
-              } ${cart?.total < 200 && `, with discount of 20%`} `
-          )}`
-        )}`}
-      > */}
-      <CustomButton
-        variant="contained"
-        startIcon={<WhatsAppIcon />}
-        onClick={() => setOpen(true)}
-      >
-        Send Order On Whatsapp
+
+      <CustomButton variant="contained" onClick={handlePlaceOrder}>
+        Place Order
       </CustomButton>
-      {/* </a> */}
-      <LocationDialogBox open={open} setOpen={setOpen} />
     </Summary>
   );
 };
