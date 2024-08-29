@@ -136,7 +136,7 @@ const NavBar = () => {
   // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
   const { cartData, setCartData } = useCartContext();
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(0);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -145,8 +145,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
     console.log(user, "user")
