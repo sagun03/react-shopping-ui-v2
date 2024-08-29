@@ -88,6 +88,7 @@ export const StepCompContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `
 export const ProgressButtonContainer = styled.div`
   display: flex;

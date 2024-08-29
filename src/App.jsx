@@ -20,7 +20,11 @@ import { UserContextProvider } from "./context/UserContext";
 import UserProfile from "./pages/UserProfile";
 import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { Layout as CheckoutDev1 } from "./pages/CheckoutDev1";
+import AddressSwitch from "./pages/Checkout/AddressSwitch";
+import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
+import CartSwitch from "./pages/Checkout/CartSwitch";
+import CheckoutSwitcher from "./pages/Checkout/CheckoutSwitcher";
+import { StepperProvider } from "./context/StepperContext";
 
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
@@ -33,29 +37,33 @@ const App = () => {
           <UserAuthContextProvider>
             <DataProvider>
               <CartProvider>
-                <Router>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <Suspense fallback={<Loader />}>
-                          <Home />
-                        </Suspense>
-                      }
-                    />
-                    <Route path="/product/:id" element={<Product />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/phonesignup" element={<PhoneSignUp />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/products" element={<ProductList />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/profile" element={<UserProfile />} />
-                <Route path="/dev1/checkout" element={<CheckoutDev1 />} />
-                  </Routes>
-                </Router>
+                <StepperProvider>
+                  <Router>
+                    <Routes>
+                      <Route
+                        path="/"
+                        element={
+                          <Suspense fallback={<Loader />}>
+                            <Home />
+                          </Suspense>
+                        }
+                      />
+                      <Route path="/product/:id" element={<Product />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/phonesignup" element={<PhoneSignUp />} />
+                      <Route path="/orders" element={<Orders />} />
+                      <Route path="/checkout" element={<Checkout />} />
+                      <Route path="/products" element={<ProductList />} />
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="/profile" element={<UserProfile />} />
+                      <Route path="/dev1/address" element={<AddressSwitch />} />
+                      <Route path="/dev1/payment" element={<PaymentSwitch />} />
+                      <Route path="/dev1/cart" element={<CartSwitch />} />
+                    </Routes>
+                  </Router>
+                </StepperProvider>
               </CartProvider>
             </DataProvider>
           </UserAuthContextProvider>

@@ -114,7 +114,7 @@ export const ErrorBoxContainer = styled.div`
 `
 export const InnerWrapper = styled.div`
   display: grid;
-  grid-template-columns: 2.5fr 0.1fr 2fr; 
+  grid-template-columns: 4fr 0.1fr 2fr; 
   gap: 10px;
   width: var(--layout-width);
   padding: 10px;
