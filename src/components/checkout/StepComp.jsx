@@ -2,42 +2,34 @@ import React from "react";
 import ConnectorLabel from "./ConnectorLabel";
 import IconLabel from "./IconLabel";
 import { StepCompContainer, Connector, InnerStepper } from "./styles";
-import PropTypes from "prop-types";
+import { useStepperContext } from "../../context/StepperContext";
 
-const StepComp = ({ active, completed, steps, icons, total }) => {
-  console.log(active);
+const StepComp = () => {
+  const { activeStep, completed, stepLabels, stepIcons, totalSteps, handleStep } = useStepperContext();
   return (
     <InnerStepper>
-      {
-        steps.map((_, index) => (
-          index === total - 1 ? (
+      {stepLabels.map((step, index) => (
+        index === totalSteps - 1 ? (
+          <span onClick={ handleStep(index) } key={ index }>
             <StepCompContainer key={index}>
-              <IconLabel active={active === index} completed={completed.has(index)} icon={icons[index]} />
-              <ConnectorLabel active={active === index} completed={completed.has(index)} step={steps[index]} />
+              <IconLabel active={activeStep === index} completed={completed.has(index)} icon={stepIcons[index]} />
+              <ConnectorLabel active={activeStep === index} completed={completed.has(index)} step={step} />
             </StepCompContainer>
-          ) : (
-            <>
+          </span>
+        ) : (
+          <>
+            <span onClick={ handleStep(index) } key={ index }>
               <StepCompContainer key={index}>
-                <IconLabel active={active === index} completed={completed.has(index)} icon={icons[index]} />
-                <ConnectorLabel active={active === index} completed={completed.has(index)} step={steps[index]} />
+                <IconLabel active={activeStep === index} completed={completed.has(index)} icon={stepIcons[index]} />
+                <ConnectorLabel active={activeStep === index} completed={completed.has(index)} step={step} />
               </StepCompContainer>
-              <Connector ownerState={{ active: [active === index], completed: [completed.has(index - 1)] }}/>
-            </>
-          )
+            </span>
+            <Connector ownerState={{ active: [activeStep === index], completed: [completed.has(index - 1)] }}/>
+          </>
         )
-        )
-      }
+      ))}
     </InnerStepper>
   )
-}
-
-StepComp.propTypes = {
-  active: PropTypes.number.isRequired,
-  completed: PropTypes.object.isRequired,
-  steps: PropTypes.array.isRequired,
-  icons: PropTypes.array.isRequired,
-  iconIndex: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired
 }
 
 export default StepComp;
