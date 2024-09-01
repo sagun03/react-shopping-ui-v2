@@ -4,7 +4,7 @@ import { useCartContext } from "../context/cartContext";
 
 let isUpdate = false;
 // Fetch Cart Data Hook
-export const useCart = (user, shouldFetchCart) => {
+export const useCart = (user) => {
   const { isCartData } = useCartContext();
   const fetchCartData = async () => {
     return fetchCartProducts(user); // Fetch cart data based on user
@@ -48,7 +48,7 @@ export const useUpdateCart = () => {
 };
 
 // Create Cart Hook
-export const useCreateCart = (onSuccessCallback) => {
+export const useCreateCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -70,7 +70,7 @@ export const useCreateCart = (onSuccessCallback) => {
 };
 
 // Delete Cart Hook
-export const useDeleteCart = (onSuccessCallback) => {
+export const useDeleteCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -91,7 +91,7 @@ export const useDeleteCart = (onSuccessCallback) => {
 };
 
 // Delete Product from Cart Hook
-export const useDeleteProductCart = (onSuccessCallback) => {
+export const useDeleteProductCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({

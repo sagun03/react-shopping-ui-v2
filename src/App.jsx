@@ -23,7 +23,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import AddressSwitch from "./pages/Checkout/AddressSwitch";
 import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
 import CartSwitch from "./pages/Checkout/CartSwitch";
-import CheckoutSwitcher from "./pages/Checkout/CheckoutSwitcher";
 import { StepperProvider } from "./context/StepperContext";
 
 const Home = React.lazy(() => import("./pages/Homepage"));

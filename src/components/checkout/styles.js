@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { styled as MuiStyled } from "@mui/system";
 import "./vars.css";
 

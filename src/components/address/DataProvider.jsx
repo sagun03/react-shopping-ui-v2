@@ -1,10 +1,7 @@
 import { createContext, useReducer, useContext, useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import {
-  useGetAddress,
-  useAddAddress,
-  useUpdateAddress,
-  useDeleteAddress
+  useGetAddress
 } from "../../hooks/userHooks/useUserAddress";
 import PropTypes from "prop-types";
 
@@ -73,14 +70,9 @@ const AddressProvider = ({ children }) => {
   });
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useUserContext();
-  const [showModal, setShowModal] = useState(false);
-  const addAddressMutation = useAddAddress();
-  const updateAddressMutation = useUpdateAddress();
-  const deleteAddressMutation = useDeleteAddress();
-  const [address, setAddress] = useState([]);
-  const [addressIndex, setAddressIndex] = useState(0);
+  const [, setAddress] = useState([]);
 
-  const { data, error, isLoading, refetch } = useGetAddress({
+  const { data, error, isLoading } = useGetAddress({
     uid: user.uid,
     token: user.accessToken
   });

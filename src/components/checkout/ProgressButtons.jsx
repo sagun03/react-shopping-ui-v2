@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ProgressButtonContainer, ProgressButton } from "./styles";
 import { useStepperContext } from "../../context/StepperContext";
 
 const ProgressButtons = () => {
-  const { activeStep, stepLinks, totalSteps, handleNext, handleBack } = useStepperContext();
+  const { activeStep, totalSteps, handleNext, handleBack } = useStepperContext();
   return (
     <ProgressButtonContainer>
       <ProgressButton disabled={activeStep === 0} onClick={handleBack}>Back</ProgressButton>

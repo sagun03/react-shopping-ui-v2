@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
 import { Divider, IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Loader from "../components/Loader";
@@ -116,6 +115,7 @@ const Product = () => {
 
   const handleQuantity = (type) => {
     if (type === "dec") {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       quantity > 1 && setQuantity(quantity - 1);
     } else {
       setQuantity(quantity + 1);

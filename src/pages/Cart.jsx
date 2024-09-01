@@ -3,32 +3,19 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
-import { mobile, ScreenWith670px, ScreenWith960px } from "../responsive";
-import { useSelector, useDispatch } from "react-redux";
+import { mobile, ScreenWith670px } from "../responsive";
 import { Fragment, useEffect, useState } from "react";
-import { addProduct, removeProducts } from "../redux/cartRedux";
-import { v4 as uuidv4 } from "uuid";
 import addToCart from "./images/addToCart.png";
 import { Link } from "react-router-dom";
 import OrderSummary from "../components/OrderSummary";
-import { IconButton, Card, CardContent, Typography, Button } from "@mui/material";
+import { IconButton, Typography, Button } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
-import { useUserAuth } from "../context/UserAuthContext";
 import { useCartContext } from "../context/cartContext";
-import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUpdateCart, useDeleteCart, useDeleteProductCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
 
 const Container = styled.div``;
-
-const CheckboxContainer = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  display: flex;
-  align-items: center;
-`;
 
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
   margin-right: 8px; /* Space between checkbox and label */
@@ -98,10 +85,6 @@ const Bottom = styled.div`
 
 const Info = styled.div`
   position: relative; /* Ensure relative positioning for child elements */
-`;
-
-const ProductDescription = styled(Typography)`
-  font-size: 14px;
 `;
 
 const CartImageContainer = styled.div`
@@ -224,21 +207,14 @@ const Hr = styled.hr`
 
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
-  const cart = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
-  const userAuth = useUserAuth();
   const { user } = useUserContext()
-  const { cartData, setCartData } = useCartContext();
+  const { cartData } = useCartContext();
   const [data, setData] = useState({});
-  const [size, setSize] = useState("");
-  const [singleNull, setSingleNull] = useState(false)
 
   const { mutate: updateCart } = useUpdateCart();
   const { mutate: deleteCart } = useDeleteCart();
   const { mutate: deleteProductCart } = useDeleteProductCart()
   const [checkedItems, setCheckedItems] = useState({});
-
-  const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
     console.log(cartData, "cartData")
@@ -379,14 +355,14 @@ const Cart = () => {
         <Announcement />
         <NavBar />
         <Wrapper>
-          {data?.products?.length === 0 ? (
+          {data?.products?.length === 0 || data.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
             <Title>Your Bag</Title>
           )}
-          {data?.products?.length === 0 ? (
+          {data?.products?.length === 0 || data.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>

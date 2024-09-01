@@ -98,9 +98,9 @@ const CustomButton = styled(Button)`
 
 // Main Component
 const OrderSummary = () => {
-  const { cartData, setCartData } = useCartContext();
-  const [discount, setDiscount] = useState(500);
-  const [couponDiscount, setCouponDiscount] = useState(300);
+  const { cartData } = useCartContext();
+  const [discount] = useState(500);
+  const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
 

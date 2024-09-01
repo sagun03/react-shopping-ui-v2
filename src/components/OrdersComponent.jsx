@@ -2,10 +2,7 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
-import { useUserAuth } from "../context/UserAuthContext";
-import Review from "./Review";
 import { mobile } from "../responsive";
-import Loader from "./Loader";
 import OrderPage from "../pages/OrderPage";
 import useFetchOrderData from "../hooks/custom hooks/useFetchOrderData";
 import { useOrderContext } from "../context/orderContext";
@@ -31,19 +28,6 @@ const Wrapper = styled.div`
   })}
 `;
 
-const OrderWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  height: 350px;
-  margin-top: 20px;
-  padding: 20px;
-  background: #e2eaff;
-  ${mobile({
-    height: "450px"
-  })}
-`;
 const Title = styled.h1`
   font-weight: 300;
   text-align: center;
@@ -53,7 +37,7 @@ const Title = styled.h1`
 const OrdersComponent = () => {
   const ordersCollectionRef = collection(db, "order");
   const user = useUserContext();
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     window?.scrollTo(0, 0);
