@@ -25,7 +25,7 @@ export const LogoImg = styled.img`
   filter: brightness(1.3);
 `;
 
-export const Wrapper = styled("div")(({ theme }) => ({
+export const Wrapper = styled("div")(() => ({
   padding: "10px 0px",
   display: "flex",
   alignItems: "center",
@@ -38,7 +38,7 @@ export const Wrapper = styled("div")(({ theme }) => ({
   })
 }));
 
-export const Container = styled("div")(({ theme }) => ({
+export const Container = styled("div")(() => ({
   height: "55px",
   overflow: "hidden",
   backgroundColor: "white",
@@ -67,20 +67,20 @@ export const CartWrapper = styled.div`
   padding-left: 13px;
 `;
 
-export const Left = styled("div")(({ theme }) => ({
+export const Left = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   gap: "1rem"
 }));
 
-export const Right = styled("div")(({ theme }) => ({
+export const Right = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: "1rem"
 }));
 
-export const MenuItem = styled("div")(({ theme }) => ({
+export const MenuItem = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",

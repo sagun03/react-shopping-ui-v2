@@ -1,9 +1,8 @@
-import { createContext, useContext, useState, useMemo, useEffect } from "react";
+import { createContext, useContext, useState, useMemo } from "react";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 
 const steps = {
   0: {
@@ -33,11 +32,10 @@ export const StepperProvider = ({ children }) => {
 
   // state
   const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState(new Set());
+  const [completed] = useState(new Set());
 
   const totalSteps = useMemo(() => stepLabels.length, [stepLabels]);
   const isLastStep = () => activeStep === totalSteps - 1;
-  const allStepsCompleted = () => completed.size === totalSteps;
 
   const handleNext = () => {
     const newActiveStep = isLastStep() ? totalSteps : activeStep + 1;
@@ -50,18 +48,6 @@ export const StepperProvider = ({ children }) => {
 
   const handleStep = (step) => () => {
     setActiveStep(step);
-  }
-
-  const handleComplete = () => {
-    const newCompleted = new Set(completed);
-    newCompleted.add(activeStep);
-    setCompleted(newCompleted);
-    handleNext();
-  }
-
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted(new Set());
   }
 
   return (

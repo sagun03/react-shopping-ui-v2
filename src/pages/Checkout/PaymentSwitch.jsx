@@ -1,10 +1,10 @@
 import React from "react";
 import CheckoutSwitcher from "./CheckoutSwitcher";
-import Payment from "./Payment";
+import PaymentWithElements from "./PaymentWithElements";
 const PaymentSwitch = () => {
   return (
     <CheckoutSwitcher>
-      <Payment />
+      <PaymentWithElements />
     </CheckoutSwitcher>
   );
 }

@@ -16,11 +16,6 @@ export const UserContextProvider = ({ children }) => {
       if (currentUser) {
         setUser(currentUser);
         // set interval to refresh token
-        var refreshInterval = setInterval(() => {
-          currentUser.getIdToken(true).catch((error) => {
-            console.log("error while refreshing token", error);
-          });
-        }, 60000)
       }
     }
     );

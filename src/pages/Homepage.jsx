@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // import Announcement from "../components/Announcement";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
@@ -13,13 +13,10 @@ import Announcement from "../components/Announcement";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async"
 import { useCartContext } from "../context/cartContext";
-import { useCart } from "../hooks/useCart";
-import { useUserAuth } from "../context/UserAuthContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUserContext } from "../context/UserContext";
 const Homepage = () => {
   const { user } = useUserContext()
-  const userAuth = useUserAuth();
   const { setCartData, cartData } = useCartContext();
 
   const dataFetched = useFetchCartData(user);

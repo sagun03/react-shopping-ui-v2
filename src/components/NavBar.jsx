@@ -3,20 +3,18 @@ import {
   Backdrop,
   Badge,
   CircularProgress,
-  ListItemIcon,
   ListItemText,
   Menu,
   SwipeableDrawer
 } from "@mui/material";
-import { ShoppingCartOutlined, Home as HomeIcon1, ExitToApp as ExitToAppIcon, Person as PersonIcon, Reorder as ReorderIcon } from "@mui/icons-material";
+import { ExitToApp as ExitToAppIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
-import { mobile, mobileSuperSmall, ScreenWith670px } from "../responsive";
+import { mobile, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
-import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 // import UserProfile from "../pages/UserProfile";
 // import { auth } from "../firebase";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -128,7 +126,6 @@ AccountBox.propTypes = {
 
 const NavBar = () => {
   const { user } = useUserContext();
-  const userAuth = useUserAuth()
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();

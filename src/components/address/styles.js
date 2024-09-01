@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "styled-components";
 import { styled as MuiStyled } from "@mui/system";
 import { TextField } from "@mui/material";
