@@ -24,6 +24,7 @@ import AddressSwitch from "./pages/Checkout/AddressSwitch";
 import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
 import CartSwitch from "./pages/Checkout/CartSwitch";
 import { StepperProvider } from "./context/StepperContext";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => {
                       <Route path="/dev1/address" element={<AddressSwitch />} />
                       <Route path="/dev1/payment" element={<PaymentSwitch />} />
                       <Route path="/dev1/cart" element={<CartSwitch />} />
+                        <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
                     </Routes>
                   </Router>
                 </StepperProvider>

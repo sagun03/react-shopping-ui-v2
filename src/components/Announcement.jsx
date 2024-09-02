@@ -3,7 +3,7 @@ import { mobileS, mobileSuperSmall } from "../responsive";
 
 const Container = styled.div`
   height: fit-content;
-  background-color: teal;
+  background-color:  #f44336;
   color: white;
   display: flex;
   justify-content: center;
