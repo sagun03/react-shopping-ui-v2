@@ -3,11 +3,11 @@ import {
   Backdrop,
   Badge,
   CircularProgress,
-  ListItemText,
+  Divider,
   Menu,
   SwipeableDrawer
 } from "@mui/material";
-import { ExitToApp as ExitToAppIcon } from "@mui/icons-material";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
@@ -15,12 +15,9 @@ import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import { mobile, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
-// import UserProfile from "../pages/UserProfile";
-// import { auth } from "../firebase";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-// import HomeIcon from "@mui/icons-material/Home";
 import {
   LogoImg,
   Wrapper,
@@ -30,38 +27,13 @@ import {
   Left,
   Right,
   AccountBoxWrapper,
-  MenuItem
+  MenuItem,
+  PointsItem,
+  ItemText
 } from "./styles/Navbar";
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
 import Component from "./Search/Component";
-
-// const Logo = styled("h1")(({ theme }) => ({
-//   fontWeight: 400,
-//   ...ScreenWith670px({
-//     fontSize: "1.5rem"
-//   }),
-//   ...mobile({ display: "none" })
-// }));
-
-// const Logo2 = styled("div")(({ theme }) => ({
-//   display: "none",
-//   fontWeight: 400,
-//   ...mobile({
-//     display: "flex",
-//     height: "38px",
-//     marginRight: "0px"
-//   })
-// }));
-
-// const MenuItem2 = styled("div")(({ theme }) => ({
-//   fontSize: "14px",
-//   cursor: "pointer",
-//   display: "flex",
-//   alignItems: "center",
-//   ...mobile({ fontSize: "12px" }),
-//   ...ScreenWith670px({ display: "none" })
-// }));
 
 const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
@@ -72,20 +44,11 @@ const MenuItemMyUser = styled("div")(() => ({
   ...ScreenWith670px({ display: "none" })
 }));
 
-// const MenuItemMyUser2 = styled("div")(({ theme }) => ({
-//   fontSize: "14px",
-//   cursor: "pointer",
-//   display: "none",
-//   alignItems: "center",
-//   ...mobile({ fontSize: "12px" }),
-//   ...ScreenWith670px({ display: "flex" })
-// }));
-
 const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
   return (
     <>
       <MenuItemMyUser onClick={handleClick}>
-        <AccountBoxIcon sx={MenuIconStyles}/>
+        <PermIdentityOutlinedIcon sx={MenuIconStyles} />
       </MenuItemMyUser>
       <Menu
         id="customized-menu"
@@ -98,19 +61,46 @@ const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
         }}
       >
         <MenuItem>
+          <PointsItem>
+          <MonetizationOnIcon sx={{
+            color: "gold",
+            fontSize: "16px"
+          }} />
+          100
+          </PointsItem>
+        </MenuItem>
+        <Divider sx={{
+          margin: "10px auto",
+          width: "90%"
+        }}/>
+        <MenuItem>
           <Link to="/profile" style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
           }}>
-            <ManageAccountsIcon fontSize="small" />
-            <ListItemText primary="Profile" />
+            <ItemText>
+              My Profile
+            </ItemText>
           </Link>
         </MenuItem>
-
+        <MenuItem>
+          <Link to="#" style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <ItemText>
+              My Orders
+            </ItemText>
+          </Link>
+        </MenuItem>
+        <Divider sx={{
+          margin: "-5px auto 10px auto",
+          width: "90%"
+        }}/>
         <MenuItem onClick={onClickHandler}>
-          <ExitToAppIcon fontSize="small" />
-          <ListItemText primary="Logout" />
+          Sign out
         </MenuItem>
 
       </Menu>
@@ -153,7 +143,7 @@ const NavBar = () => {
 
   const onClickHandler = async (e) => {
     try {
-      setCartData(null)
+      setCartData([]);
       setAnchorEl(null);
       setLoading(true);
       e.preventDefault();
@@ -179,30 +169,6 @@ const NavBar = () => {
   return (
     <Container>
       <Wrapper>
-        {/* <Left>
-          <MenuItemMyUser2 onClick={toggleDrawer(true)}>
-            <ReorderIcon />
-          </MenuItemMyUser2>
-          {user && (
-            <MenuItem2>
-              <Link to="/">
-                <HomeIcon sx={MenuIconStyles}/>
-              </Link>
-            </MenuItem2>
-          )}
-          {user && (
-            <MenuItem2>
-              <Link to="/orders">My Orders</Link>
-            </MenuItem2>
-          )}
-        </Left> */}
-        {/* <Link to="/">
-          <Center>
-            <Logo2>
-              <img src={Logos} alt="logo" />
-            </Logo2>
-          </Center>
-        </Link> */}
         <Left>
           <Link to="/">
             <LogoImg src={logo} alt="logo" />
@@ -211,14 +177,6 @@ const NavBar = () => {
         <Right>
           <Component />
           {user ? (
-              // <MenuItemMyUser onClick={handleClick}>
-              //   {(user?.displayName?.slice(0, 5)?.toUpperCase() ||
-              //     user?.email?.slice(0, 5)?.toUpperCase() ||
-              //     user?.phoneNumber?.slice(0, 5)) + ".."}
-              // </MenuItemMyUser>
-              // <MenuItemMyUser2 onClick={handleClick}>
-              //   <PersonIcon />
-              // </MenuItemMyUser2>
               <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler}/>
           ) : (
             <>
@@ -234,8 +192,13 @@ const NavBar = () => {
                 color="primary"
                 sx={{ marginRight: "10px" }}
               >
-                <ShoppingCartIcon/>
-                {/* <ShoppingCartOutlined /> */}
+                <ShoppingCartOutlinedIcon sx={{
+                  fontSize: "25px",
+                  cursor: "pointer",
+                  "&:hover": {
+                    color: "teal"
+                  }
+                }}/>
               </Badge>
             </Link>
           </CartWrapper>

@@ -29,7 +29,6 @@ SearchModal.propTypes = {
 }
 
 const Component = () => {
-  const modalRef = useRef(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -40,7 +39,14 @@ const Component = () => {
   return (
     <>
     <SearchContainer onClick={handleOpen}>
-      <SearchIcon />
+      <SearchIcon sx={{
+        fontSize: "20px",
+        "&:hover": {
+          cursor: "pointer",
+          color: "teal"
+        }
+      }}/>
+      search
     </SearchContainer>
     {open &&
       <SearchModal>

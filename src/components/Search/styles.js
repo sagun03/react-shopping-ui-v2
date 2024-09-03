@@ -6,10 +6,15 @@ import { styled as MUIStyled } from "@mui/system";
 export const SearchContainer = styled.div`
   cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-top: 1em;
   margin-bottom: 1em;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 60px;
+  gap: 3px;
+  padding: 5px 10px;
+  font-size: 15px;
 `
 export const ModalContainer = styled.div`
   display: flex;
