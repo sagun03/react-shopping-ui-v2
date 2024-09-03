@@ -1,8 +1,10 @@
 import React from "react";
 import { StepLabelRoot, LabelRootInner } from "./styles";
+import { useStepperContext } from "../../context/StepperContext";
 import PropTypes from "prop-types";
 
 const ConnectorLabel = ({ active, completed, step }) => {
+  const { activeStep, completed: completedSteps } = useStepperContext();
   return (
     <StepLabelRoot ownerState={{ active, completed }}>
       <LabelRootInner ownerState={{ active, completed }}>

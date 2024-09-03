@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "styled-components";
 import Layout from "../../components/checkout/Layout";
+import { PanelContainer } from "../../components/address/styles";
 
 const Payment = () => {
   const stripe = useStripe();
@@ -52,43 +53,46 @@ const Payment = () => {
 
   return (
     <Layout>
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor="email-input">Email</Label>
-          <InputWrapper>
-            <Input
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              type="email"
-              id="email-input"
-              placeholder="johndoe@gmail.com"
-              required
-            />
-          </InputWrapper>
-        </FormGroup>
-        <PaymentElement/>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        <Button type="submit" disabled={!stripe || !elements || !emailInput }>
-          Pay
-        </Button>
-      </Form>
+      <PanelContainer>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label htmlFor="email-input">Email</Label>
+            <InputWrapper>
+              <Input
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+                type="email"
+                id="email-input"
+                placeholder="johndoe@gmail.com"
+                required
+              />
+            </InputWrapper>
+          </FormGroup>
+          <PaymentElement/>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <Button type="submit" disabled={!stripe || !elements || !emailInput }>
+            Pay
+          </Button>
+        </Form>
+      </PanelContainer>
     </Layout>
   );
 };
 
 // Styled Components
 const Form = styled.form`
-  padding: 2rem;
-  width: 100%;
-  max-width: 600px; /* Restrict width on larger screens */
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 `;
 
 const FormGroup = styled.div`
   margin-bottom: 1.5rem;
+  width: 100%;
 `;
 
 const Label = styled.label`
@@ -102,11 +106,12 @@ const Label = styled.label`
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Input = styled.input`
   padding: 14px;
-  width: 100%;
+  max-width: 100%;
   background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid #ced4da;

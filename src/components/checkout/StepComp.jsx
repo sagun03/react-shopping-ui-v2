@@ -9,7 +9,7 @@ const StepComp = () => {
   return (
     <InnerStepper>
       {stepLabels.map((step, index) => (
-        index === totalSteps - 1 ? (
+        index === 0 ? (
           <span onClick={ handleStep(index) } key={ index }>
             <StepCompContainer key={index}>
               <IconLabel active={activeStep === index} completed={completed.has(index)} icon={stepIcons[index]} />
@@ -18,13 +18,13 @@ const StepComp = () => {
           </span>
         ) : (
           <>
+            <Connector key={index} ownerState={{ completed: completed, i: index }}/>
             <span onClick={ handleStep(index) } key={ index }>
               <StepCompContainer key={index}>
                 <IconLabel active={activeStep === index} completed={completed.has(index)} icon={stepIcons[index]} />
                 <ConnectorLabel active={activeStep === index} completed={completed.has(index)} step={step} />
               </StepCompContainer>
             </span>
-            <Connector ownerState={{ active: [activeStep === index], completed: [completed.has(index - 1)] }}/>
           </>
         )
       ))}

@@ -1,15 +1,18 @@
 import { createContext, useReducer, useContext, useState, useEffect } from "react";
 import { useUserContext } from "../../context/UserContext";
 import {
-  useGetAddress
+  useGetAddress,
+  useAddAddress,
+  useUpdateAddress,
+  useDeleteAddress
 } from "../../hooks/userHooks/useUserAddress";
 import PropTypes from "prop-types";
 
 const addressContext = createContext();
 const initialState = {
   contact: {
-    Name: "",
-    Mobile: ""
+    name: "",
+    mobile: ""
   },
   address: {
     pincode: "",
@@ -17,8 +20,8 @@ const initialState = {
     city: "",
     state: ""
   },
-  pref: "",
-  default: false
+  pref: "HOME",
+  defaultAddress: false
 }
 
 const reducer = (state, action) => {
@@ -47,8 +50,10 @@ const reducer = (state, action) => {
     case "UPDATE_DEFAULT":
       return {
         ...state,
-        default: action.value
+        defaultAddress: action.value
       }
+    case "RESET":
+      return initialState;
     default:
       return state;
   }
@@ -58,8 +63,8 @@ const AddressProvider = ({ children }) => {
   const [validation, setValidation] = useState({
     // required fields
     contact: {
-      Name: true,
-      Mobile: true
+      name: true,
+      mobile: true
     },
     address: {
       pincode: true,
@@ -68,40 +73,36 @@ const AddressProvider = ({ children }) => {
       state: true
     }
   });
-  const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useUserContext();
-  const [, setAddress] = useState([]);
-
-  const { data, error, isLoading } = useGetAddress({
+  const { data, error, isLoading, refetch } = useGetAddress({
     uid: user.uid,
     token: user.accessToken
   });
-
-  const emptyAddress = {
-    uid: user.uid,
-    street: "",
-    city: "",
-    state: "",
-    pincode: "",
-    phone: ""
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const addAddressMutation = useAddAddress();
+  const updateAddressMutation = useUpdateAddress();
+  const deleteAddressMutation = useDeleteAddress();
+  const [address, setAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [defaultIndex, setDefaultIndex] = useState(null);
 
   useEffect(() => {
     if (data) {
-      setAddress([emptyAddress, ...data.data.addressData]);
+      setAddress([...data.data.addressData]);
+      setDefaultIndex(data.data.addressData.findIndex((element) => element.defaultAddress));
+      if (defaultIndex !== null) {
+        setSelectedAddress(defaultIndex);
+      }
     }
   }, [data]);
 
-  if (isLoading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
-
   const makeValidations = () => {
     const updatedValidation = { ...validation };
-    Object.keys(state).forEach(key => {
-      Object.keys(state[key]).forEach(field => {
+    Object.keys(validation).forEach(key => {
+      Object.keys(validation[key]).forEach(field => {
         updatedValidation[key][field] = !!state[key][field];
-      })
-    })
+      });
+    });
     console.log(updatedValidation);
     setValidation(updatedValidation);
   }
@@ -125,7 +126,20 @@ const AddressProvider = ({ children }) => {
         state,
         dispatch,
         validation,
-        validate
+        validate,
+        address,
+        setAddress,
+        addAddressMutation,
+        updateAddressMutation,
+        deleteAddressMutation,
+        data,
+        error,
+        selectedAddress,
+        setSelectedAddress,
+        isLoading,
+        defaultIndex,
+        setDefaultIndex,
+        refetch
       }
     }>
       {children}

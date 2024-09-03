@@ -1,4 +1,6 @@
-import { Wrapper, InnerWrapper } from "../address/styles";
+import { Wrapper, InnerWrapper, CartDetail, CartDetailMobile, LeftPanel } from "../address/styles";
+import { Divider } from "@mui/material";
+import { DividerStyles } from "./styles";
 import StepperBox from "./StepperBox";
 import PropTypes from "prop-types";
 
@@ -6,14 +8,13 @@ const Layout = ({ children }) => {
   return (
     <Wrapper>
       <StepperBox />
-      {/* <Divider sx={DividerStyles}/> */}
+      <Divider sx={DividerStyles}/>
       <InnerWrapper>
-        { children }
-        {/* <Divider orientation="vertical" sx={{
-          sm: { display: "none" }
-        }}/> */}
-        {/* <CartDetail /> */}
-        {/* <CartDetailMobile /> */}
+        <LeftPanel>
+          { children }
+        </LeftPanel>
+        <CartDetail />
+        <CartDetailMobile />
       </InnerWrapper>
     </Wrapper>
   );
