@@ -58,10 +58,10 @@ const App = () => {
                       <Route path="/products" element={<ProductList />} />
                       <Route path="/admin" element={<Admin />} />
                       <Route path="/profile" element={<UserProfile />} />
-                      <Route path="/dev1/address" element={<AddressSwitch />} />
-                      <Route path="/dev1/payment" element={<PaymentSwitch />} />
-                      <Route path="/dev1/cart" element={<CartSwitch />} />
-                        <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
+                      <Route path="/checkout/address" element={<AddressSwitch />} />
+                      <Route path="/checkout/payment" element={<PaymentSwitch />} />
+                      <Route path="/checkout/cart" element={<CartSwitch />} />
+                      <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
                     </Routes>
                   </Router>
                 </StepperProvider>

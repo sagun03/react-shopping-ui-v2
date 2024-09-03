@@ -1,12 +1,16 @@
 import React from "react";
 import Layout from "../../components/checkout/Layout";
+import { PanelContainer } from "../../components/address/styles";
+import CartMockup from "./CartMockup";
 
-const Cart = () => {
+const CartComponent = () => {
   return (
     <Layout>
-      <div>CartSwitch</div>
+      <PanelContainer>
+        <CartMockup />
+      </PanelContainer>
     </Layout>
   );
 }
 
-export default Cart;
+export default CartComponent;

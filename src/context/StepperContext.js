@@ -9,17 +9,17 @@ const steps = {
   0: {
     icon: <ShoppingBagIcon fontSize="large"/>,
     label: "Cart",
-    link: "/dev1/cart"
+    link: "/checkout/cart"
   },
   1: {
     icon: <ImportContactsIcon fontSize="large"/>,
     label: "Address",
-    link: "/dev1/address"
+    link: "/checkout/address"
   },
   2: {
     icon: <PaymentIcon fontSize="large" />,
     label: "Payment",
-    link: "/dev1/payment"
+    link: "/checkout/payment"
   }
 }
 
