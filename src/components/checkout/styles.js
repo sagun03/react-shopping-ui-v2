@@ -56,7 +56,7 @@ export const Connector = MuiStyled("div")(
     zIndex: 1,
     display: "block",
     width: "15vw",
-    border: ownerState.completed ? "1px dashed rgba(0, 0, 0, 0.2)" : "1px dashed rgba(0, 128, 128, 0.9)"
+    border: ownerState.completed.has(ownerState.i - 1) ? "1px dashed rgba(0, 128, 128, 0.9)" : "1px dashed rgba(0, 0, 0, 0.2)"
   })
 )
 export const LabelRootInner = MuiStyled("div")(

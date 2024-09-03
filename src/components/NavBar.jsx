@@ -34,6 +34,7 @@ import {
 } from "./styles/Navbar";
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
+import Component from "./Search/Component";
 
 // const Logo = styled("h1")(({ theme }) => ({
 //   fontWeight: 400,
@@ -208,6 +209,7 @@ const NavBar = () => {
           </Link>
         </Left>
         <Right>
+          <Component />
           {user ? (
               // <MenuItemMyUser onClick={handleClick}>
               //   {(user?.displayName?.slice(0, 5)?.toUpperCase() ||

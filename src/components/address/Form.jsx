@@ -8,19 +8,35 @@ import {
   ChipGroup,
   ChipStyles,
   CheckBoxContainer,
-  CommonText
+  CommonText,
+  ButtonGroup
 } from "./styles";
 import { TextInput } from "./InputField";
 import { useAddressContext } from "./DataProvider";
-import { SaveButton } from "../EditButtons";
+import { SaveButton, CancelButton } from "../EditButtons";
 import { Button, Checkbox } from "@mui/material";
 import ErrorBox from "./ErrorBox";
+import propTypes from "prop-types";
+import { useUserContext } from "../../context/UserContext";
 
-const Form = () => {
-  const { state, dispatch, validate } = useAddressContext();
+const Form = ({ index, closeModal }) => {
+  const {
+    state,
+    dispatch,
+    validate,
+    address,
+    setAddress,
+    selectedAddress,
+    defaultIndex,
+    setDefaultIndex,
+    refetch,
+    addAddressMutation: add,
+    updateAddressMutation: update,
+    deleteAddressMutation: remove
+  } = useAddressContext();
+  const { user } = useUserContext();
   const [pref, setPref] = useState("HOME");
   const [error, setError] = useState({ state: false, message: "" });
-
   const handleChange = (type, field) => (e) => {
     dispatch({
       type: `UPDATE_${type.toUpperCase()}`,
@@ -29,21 +45,87 @@ const Form = () => {
     });
   }
 
+  useEffect(() => {
+    if (index >= 0) {
+      for (const key in address[index]) {
+        dispatch({
+          type: "UPDATE_CONTACT",
+          field: key,
+          value: address[index][key]
+        });
+        dispatch({
+          type: "UPDATE_ADDRESS",
+          field: key,
+          value: address[index][key]
+        });
+        dispatch({
+          type: "UPDATE_PREF",
+          value: address[index].pref
+        });
+        dispatch({
+          type: "UPDATE_DEFAULT",
+          value: address[index].defaultAddress
+        });
+      }
+    } else {
+      dispatch({ type: "RESET" });
+    }
+  }, [selectedAddress])
+
+  const flattenData = () => {
+    const data = {
+      ...state.contact,
+      ...state.address,
+      pref: pref,
+      defaultAddress: state.defaultAddress
+    }
+    return data;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const eventDesc = e.nativeEvent.submitter.innerText;
     if (validate()) {
       console.log("Validation passed");
       setError({ state: false, message: "" });
-      console.log("Data submitted", state);
+      if (eventDesc === "SAVE") {
+        console.log(flattenData());
+        add.mutate({ token: user.accessToken, ...flattenData() });
+        if (add.error) {
+          closeModal();
+          return;
+        }
+        setAddress([...address, flattenData()]);
+        console.log("Data submitted", address);
+      }
+      if (eventDesc === "UPDATE") {
+        const updatedData = {
+          token: user.accessToken,
+          uid: user.uid,
+          _id: address[index]._id,
+          ...flattenData()
+        }
+        update.mutate(updatedData);
+        if (updatedData.defaultAddress) {
+          setDefaultIndex(index);
+          setAddress(address.map((element, i) => i === index ? updatedData : { ...element, defaultAddress: false }));
+        } else {
+          setAddress(address.map((element, i) => i === index ? updatedData : element));
+        }
+        console.log("Data updated", state);
+      }
+      closeModal();
     } else {
       console.log("Validation failed");
       setError({ state: true, message: "Please fill all the required fields" });
     }
   }
 
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
+  const handleDelete = () => {
+    remove.mutate({ uid: user.uid, token: user.accessToken, id: address[index]._id });
+    setAddress(address.filter((element, i) => i !== index));
+    closeModal();
+  }
 
   return (
     <AddressForm onSubmit={handleSubmit} noValidate>
@@ -54,21 +136,21 @@ const Form = () => {
         <InnerHeading>CONTACT DETAILS</InnerHeading>
         <TextInput
           label="Name"
-          name="Name"
+          name="name"
           group="contact"
-          value={state.contact.Name}
+          value={state.contact.name}
           required
           autocomplete="name"
-          onChange={handleChange("contact", "Name")}
+          onChange={handleChange("contact", "name")}
         />
         <TextInput
           label="Mobile"
-          name="Mobile"
+          name="mobile"
           group="contact"
-          value={state.contact.Mobile}
+          value={state.contact.mobile}
           required
           autocomplete="tel"
-          onChange={handleChange("contact", "Mobile")}
+          onChange={handleChange("contact", "mobile")}
         />
       </InputContainer>
 
@@ -123,7 +205,7 @@ const Form = () => {
             backgroundColor: "rgba(0, 128, 128, 0.1)"
           } : ChipStyles} onClick={() => {
             setPref("HOME");
-            dispatch({ type: "UPDATE_PREF", value: "Home" })
+            dispatch({ type: "UPDATE_PREF", value: "HOME" })
           }}> Home </Button>
           <Button variant="outlined" sx={ pref === "WORK" ? {
             ...ChipStyles,
@@ -132,14 +214,14 @@ const Form = () => {
             backgroundColor: "rgba(0, 128, 128, 0.1)"
           } : ChipStyles} onClick={() => {
             setPref("WORK");
-            dispatch({ type: "UPDATE_PREF", value: "Work" })
+            dispatch({ type: "UPDATE_PREF", value: "WORK" })
           }}> Work </Button>
         </ChipGroup>
       </InputContainer>
       <InputContainer>
         <CheckBoxContainer>
           <Checkbox
-          checked={state.default}
+          checked={state.defaultAddress}
           onChange={(e) => {
             dispatch({ type: "UPDATE_DEFAULT", value: e.target.checked })
           }}
@@ -148,9 +230,26 @@ const Form = () => {
           <CommonText>Make This my default Address</CommonText>
         </CheckBoxContainer>
       </ InputContainer>
-      <SaveButton type="submit" name="Add Address" styles={{ backgroundColor: "#008080", ...ButtonStyles }}/>
+      {
+        index >= 0 ? (
+          <ButtonGroup>
+            <SaveButton type="submit" name="Update" styles={{ backgroundColor: "#008080", ...ButtonStyles }}/>
+            <CancelButton onClick={handleDelete} name="Delete" styles={{ backgroundColor: "#FF6347", ...ButtonStyles }}/>
+          </ButtonGroup>
+        ) : (
+          <ButtonGroup>
+            <SaveButton type="submit" name="Save" styles={{ backgroundColor: "#008080", ...ButtonStyles }}/>
+            <CancelButton onClick={closeModal} name="Cancel" styles={{ backgroundColor: "#FF6347", ...ButtonStyles }}/>
+          </ButtonGroup>
+        )
+      }
     </AddressForm>
   )
+}
+
+Form.propTypes = {
+  index: propTypes.number,
+  closeModal: propTypes.func
 }
 
 export default Form;

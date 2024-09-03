@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "styled-components";
 import { styled as MuiStyled } from "@mui/system";
-import { TextField } from "@mui/material";
+import { TextField, Radio } from "@mui/material";
 import { mobile, ScreenWith670px } from "../../responsive";
 import "../checkout/vars.css";
 
@@ -10,13 +10,11 @@ export const AddressForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: var(--layout-width);
+  width: 100%;
   margin-top: -1em;
-  scale: 0.9;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 5px;
-
 `
 export const InputContainer = styled.div`
   display: flex;
@@ -56,15 +54,16 @@ export const ButtonStyles = {
   "&:hover": {
     width: "99%",
     height: "clamp(28px, 4.8vw, 48px)",
-    backgroundColor: "#008080"
+    backgroundColor: "black"
   }
 }
 
 export const SmallButtonGroup = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  width: 93%;
+  gap: 2px;
+  padding-right: 1%;
+  width: 94%;
 `
 export const Container = styled.div`
   display: flex;
@@ -114,23 +113,28 @@ export const ErrorBoxContainer = styled.div`
   padding: 5px;
 `
 export const InnerWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 0.1fr 2fr; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 10px;
-  width: var(--layout-width);
-  padding: 10px;
+  width: 85%;
   ${mobile({
-    display: "block"
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0"
   })};
   ${ScreenWith670px({
-    display: "block"
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0"
   })};
 `
 export const CartDetail = styled.div`
   display: block;
-  height: 90%;
-  width: 100%;
+  height: 500px;
+  flex: 1 1 0;
   background-color: black;
+  border-radius: 5px;
   ${mobile({
     display: "none"
   })};
@@ -140,13 +144,63 @@ export const CartDetail = styled.div`
 `
 export const CartDetailMobile = styled.div`
   display: none;
+  border-radius: 5px;
   ${mobile({
     display: "block"
   })};
   ${ScreenWith670px({
     display: "block"
   })};
-  height: 500px;
-  width: 100%;
+  height: 300px;
+  width: 105%;
   background-color: black;
 `
+export const AddressBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  background-color: #e0e0e0;
+  border-radius: 5px;      
+  width: 100%;
+  padding-bottom: 5px;    
+  cursor: pointer;
+`
+export const PanelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+`
+export const LeftPanel = styled.div`
+  height: var(--panel-height);
+  margin-right: 5px;
+  flex: 2 1 0;
+`
+export const ButtonGroup = styled.div` 
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const AddCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
+  padding-left: 10px;
+`
+export const StyledRadio = MuiStyled(Radio)(
+  ({ theme }) => ({
+    color: "teal",
+    "&.Mui-checked": {
+      color: "teal"
+    }
+  })
+);
