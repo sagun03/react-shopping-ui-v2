@@ -95,6 +95,17 @@ const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
             </ItemText>
           </Link>
         </MenuItem>
+        <MenuItem>
+          <Link to="/checkout" style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <ItemText>
+              Checkout
+            </ItemText>
+          </Link>
+        </MenuItem>
         <Divider sx={{
           margin: "-5px auto 10px auto",
           width: "90%"
