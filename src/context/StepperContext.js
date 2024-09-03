@@ -3,7 +3,6 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 
 const steps = {
   0: {
