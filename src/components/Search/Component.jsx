@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   ModalContainer,
@@ -8,19 +8,20 @@ import {
 import SearchBox from "./SearchBox";
 import ReactDOM from "react-dom";
 import propTypes from "prop-types";
-import { Close } from "@mui/icons-material";
 
 const SearchModal = ({ children }) => {
-  const modalRoot = document.createElement("div");
+  const modalRoot = document.body;
+  const modalContainer = useRef(document.createElement("div"));
   useEffect(() => {
-    document.body.appendChild(modalRoot);
+    const containerElement = modalContainer.current;
+    modalRoot.appendChild(containerElement);
     return () => {
-      document.body.removeChild(modalRoot);
+      modalRoot.removeChild(containerElement);
     };
-  }, []);
+  }, [modalRoot]);
   return ReactDOM.createPortal(<ModalContainer>
     {children}
-  </ModalContainer>, modalRoot);
+  </ModalContainer>, modalContainer.current);
 }
 
 SearchModal.propTypes = {
@@ -38,13 +39,22 @@ const Component = () => {
   return (
     <>
     <SearchContainer onClick={handleOpen}>
-      <SearchIcon />
+      <SearchIcon sx={{
+        fontSize: "20px",
+        "&:hover": {
+          cursor: "pointer",
+          color: "teal"
+        }
+      }}/>
+      search
     </SearchContainer>
-    {open && <SearchModal>
-      <ModalChild>
-      <SearchBox closeModal={handleClose}/>
-      </ModalChild>
-    </SearchModal >}
+    {open &&
+      <SearchModal>
+        <ModalChild>
+        <SearchBox closeModal={handleClose}/>
+        </ModalChild>
+      </SearchModal >
+    }
     </>
   );
 }

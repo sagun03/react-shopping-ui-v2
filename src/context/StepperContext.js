@@ -3,23 +3,22 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 
 const steps = {
   0: {
     icon: <ShoppingBagIcon fontSize="large"/>,
     label: "Cart",
-    link: "/dev1/cart"
+    link: "/checkout/cart"
   },
   1: {
     icon: <ImportContactsIcon fontSize="large"/>,
     label: "Address",
-    link: "/dev1/address"
+    link: "/checkout/address"
   },
   2: {
     icon: <PaymentIcon fontSize="large" />,
     label: "Payment",
-    link: "/dev1/payment"
+    link: "/checkout/payment"
   }
 }
 

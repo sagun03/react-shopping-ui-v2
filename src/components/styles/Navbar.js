@@ -2,20 +2,42 @@ import styled from "styled-components";
 import { ScreenWith670px, mobile, mobileSuperSmall } from "./../../responsive";
 
 export const MenuIconStyles = {
-  fontSize: "38px",
+  fontSize: "30px",
   cursor: "pointer",
   "&:hover": {
     color: "teal"
   }
 }
 
+export const PointsItem = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 200;
+  padding: 3px 10px;
+  color: white;
+  background-color: black;
+  border-radius: 50px;
+`;
+
+export const ItemText = styled.div`
+  font-size: 14px;
+  margin-bottom: 15px;
+  font-weight: 200;
+`;
+
 export const AccountBoxWrapper = {
-  backgroundColor: "transparent",
-  backdropFilter: "blur(50px)",
-  color: "black",
-  marginTop: "10px",
-  padding: "0 !important",
-  width: "110px"
+  padding: "10px",
+  width: "clamp(100px, 30%, 125px)",
+  borderRadius: "5px",
+  boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+  backgroundColor: "white",
+  position: "absolute",
+  top: "50px",
+  right: "10px",
+  zIndex: 1000
 }
 
 export const LogoImg = styled.img`
@@ -59,12 +81,8 @@ export const CartWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  font-size: 1.1rem;
-  background-color: teal;
   border-radius: 5px;
-  color: white;
-  padding: 3px;
-  padding-left: 13px;
+  color: black;
 `;
 
 export const Left = styled("div")(() => ({
@@ -77,7 +95,7 @@ export const Right = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "1rem"
+  gap: "0.9em"
 }));
 
 export const MenuItem = styled("div")(() => ({
@@ -87,8 +105,7 @@ export const MenuItem = styled("div")(() => ({
   alignItems: "center",
   paddingInline: "5px 5px",
   "&:hover": {
-    backgroundColor: "teal",
-    color: "white"
+    color: "teal"
   },
   ...mobile({ fontSize: "12px" })
 }));

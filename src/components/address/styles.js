@@ -35,6 +35,7 @@ export const InnerHeading = styled.p`
 export const Wrapper = styled.div`
   width: var(--layout-width);
   margin-top: var(--top-depth) !important;
+  margin-bottom: var(--bottom-depth) !important;
   display: flex;
   flex-direction: column;
   align-items: center;
