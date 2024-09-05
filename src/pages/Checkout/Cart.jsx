@@ -1,13 +1,13 @@
 import React from "react";
 import Layout from "../../components/checkout/Layout";
 import { PanelContainer } from "../../components/address/styles";
-import CartMockup from "./CartMockup";
+import Cart from "../Cart";
 
 const CartComponent = () => {
   return (
     <Layout>
       <PanelContainer>
-        <CartMockup />
+        <Cart/>
       </PanelContainer>
     </Layout>
   );

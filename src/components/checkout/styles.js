@@ -8,7 +8,7 @@ export const StepperContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 1em;
+  margin: 2rem;
 `
 export const InnerStepper = styled.div`
   display: flex;

@@ -9,17 +9,6 @@ const Address = () => {
   return (
     <Layout>
       <AddressPanel />
-      <Button
-        style={{
-          marginTop: "1rem",
-          backgroundColor: "#f0c14b",
-          color: "#111",
-          padding: "0.5rem 0.5rem"
-        }}
-        onClick={handleComplete}
-      >
-        Proceed to Payment
-      </Button>
     </Layout>
   );
 }

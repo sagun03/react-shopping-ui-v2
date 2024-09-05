@@ -33,13 +33,13 @@ export const InnerHeading = styled.p`
   padding: 10px;
 `
 export const Wrapper = styled.div`
-  width: var(--layout-width);
   margin-top: var(--top-depth) !important;
   margin-bottom: var(--bottom-depth) !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
+    margin: 0 auto;
+
 `
 export const StyledTextField = MuiStyled(TextField)(
   ({ theme }) => ({
@@ -117,8 +117,9 @@ export const InnerWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
-  width: 85%;
+  padding: 0 2rem;
+  width: 90%;
+  margin-top:1.5rem;
   ${mobile({
     flexDirection: "column",
     alignItems: "center",
@@ -134,7 +135,6 @@ export const CartDetail = styled.div`
   display: block;
   height: 500px;
   flex: 1 1 0;
-  background-color: black;
   border-radius: 5px;
   ${mobile({
     display: "none"
@@ -152,9 +152,8 @@ export const CartDetailMobile = styled.div`
   ${ScreenWith670px({
     display: "block"
   })};
-  height: 300px;
-  width: 105%;
-  background-color: black;
+
+
 `
 export const AddressBox = styled.div`
   display: flex;

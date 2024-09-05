@@ -60,6 +60,7 @@ const reducer = (state, action) => {
 }
 
 const AddressProvider = ({ children }) => {
+  const [isValidate, setIsValidate] = useState(false)
   const [validation, setValidation] = useState({
     // required fields
     contact: {
@@ -75,8 +76,8 @@ const AddressProvider = ({ children }) => {
   });
   const { user } = useUserContext();
   const { data, error, isLoading, refetch } = useGetAddress({
-    uid: user.uid,
-    token: user.accessToken
+    uid: user?.uid,
+    token: user?.accessToken
   });
   const [state, dispatch] = useReducer(reducer, initialState);
   const addAddressMutation = useAddAddress();
@@ -110,10 +111,12 @@ const AddressProvider = ({ children }) => {
   const validate = () => {
     makeValidations();
     let flag = true;
+    setIsValidate(true)
     Object.keys(validation).forEach(key => {
       Object.keys(validation[key]).forEach(field => {
         if (!validation[key][field]) {
           flag = false;
+          setIsValidate(false)
         }
       })
     })
@@ -139,7 +142,8 @@ const AddressProvider = ({ children }) => {
         isLoading,
         defaultIndex,
         setDefaultIndex,
-        refetch
+        refetch,
+        isValidate
       }
     }>
       {children}

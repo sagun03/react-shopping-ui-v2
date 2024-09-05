@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "styled-components";
-import Layout from "../../components/checkout/Layout";
+// import Layout from "../../components/checkout/Layout";
 import { PanelContainer } from "../../components/address/styles";
 
 const Payment = () => {
@@ -37,7 +37,7 @@ const Payment = () => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: "http://localhost:3000/dev1/cart"
+        return_url: "http://localhost:3000/orderconfirmation/1233"
       }
     });
 
@@ -52,7 +52,6 @@ const Payment = () => {
   };
 
   return (
-    <Layout>
       <PanelContainer>
         <Form onSubmit={handleSubmit}>
           <FormGroup>
@@ -75,7 +74,6 @@ const Payment = () => {
           </Button>
         </Form>
       </PanelContainer>
-    </Layout>
   );
 };
 
@@ -84,6 +82,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 90%;
+  padding: 2rem;
+  width: 100%;
+  max-width: 700px;
+  height: 380px;
+  margin: 0px 10px 0 auto;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
