@@ -17,7 +17,6 @@ import { mobile, ScreenWith670px } from "../responsive";
 import { useCartContext } from "../context/cartContext";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import {
   LogoImg,
   Wrapper,
@@ -197,7 +196,7 @@ const NavBar = () => {
             </>
           )}
           <CartWrapper>
-            <Link to="/cart">
+            <Link to="/checkout/cart">
               <Badge
                 badgeContent={quantity}
                 color="primary"

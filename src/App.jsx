@@ -25,7 +25,7 @@ import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
 import CartSwitch from "./pages/Checkout/CartSwitch";
 import { StepperProvider } from "./context/StepperContext";
 import OrderConfirmation from "./pages/OrderConfirmation";
-
+import { AddressProvider } from "./components/address/DataProvider";
 const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
 
@@ -35,6 +35,7 @@ const App = () => {
       <ErrorBoundary>
         <UserContextProvider>
           <UserAuthContextProvider>
+            <AddressProvider>
             <DataProvider>
               <CartProvider>
                 <StepperProvider>
@@ -62,11 +63,13 @@ const App = () => {
                       <Route path="/checkout/payment" element={<PaymentSwitch />} />
                       <Route path="/checkout/cart" element={<CartSwitch />} />
                       <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
+                      {/* <Route path="/PaymentWithElements" element={<PaymentWithElements />} /> */}
                     </Routes>
                   </Router>
                 </StepperProvider>
               </CartProvider>
             </DataProvider>
+            </AddressProvider>
           </UserAuthContextProvider>
         </UserContextProvider>
       </ErrorBoundary>

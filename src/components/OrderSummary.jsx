@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
+import { useStepperContext } from "../context/StepperContext";
 
 // Styled components with modern design
 const Summary = styled.div`
@@ -13,6 +14,7 @@ const Summary = styled.div`
   margin: 0px auto 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
+  flex:1;
 
   &:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
@@ -103,6 +105,7 @@ const OrderSummary = () => {
   const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
+  const { activeStep, setActiveStep, completed } = useStepperContext()
 
   // Function to calculate total price
   const calculateTotalPrice = () => {
@@ -118,8 +121,12 @@ const OrderSummary = () => {
     calculateTotalPrice();
   }, [cartData]);
 
-  const handlePlaceOrder = () => {
-    alert("Order Placed Successfully!");
+  const handlePlaceOrder = (step) => {
+    if (step === 0) {
+      setActiveStep(1)
+    } else if (step === 1 && !completed.has(step) && activeStep !== step) {
+      setActiveStep(2)
+    }
   };
 
   return (
@@ -148,9 +155,11 @@ const OrderSummary = () => {
         <PriceText type="total">Rs. {totalAmount}</PriceText>
       </SummaryItem>
 
-      <CustomButton variant="contained" onClick={handlePlaceOrder}>
+      {activeStep === 0 ? <CustomButton variant="contained" onClick={() => handlePlaceOrder(activeStep)}>
         Place Order
-      </CustomButton>
+      </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(activeStep)}>
+       Go to Checkout
+      </CustomButton> : null}
     </Summary>
   );
 };

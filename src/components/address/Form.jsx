@@ -15,11 +15,13 @@ import { TextInput } from "./InputField";
 import { useAddressContext } from "./DataProvider";
 import { SaveButton, CancelButton } from "../EditButtons";
 import { Button, Checkbox } from "@mui/material";
-import ErrorBox from "./ErrorBox";
 import propTypes from "prop-types";
 import { useUserContext } from "../../context/UserContext";
+import { useStepperContext } from "../../context/StepperContext";
+import ErrorBox from "./ErrorBox"
 
 const Form = ({ index, closeModal }) => {
+  const { setActiveStep } = useStepperContext()
   const {
     state,
     dispatch,
@@ -27,9 +29,7 @@ const Form = ({ index, closeModal }) => {
     address,
     setAddress,
     selectedAddress,
-    defaultIndex,
     setDefaultIndex,
-    refetch,
     addAddressMutation: add,
     updateAddressMutation: update,
     deleteAddressMutation: remove
@@ -86,6 +86,7 @@ const Form = ({ index, closeModal }) => {
     e.preventDefault();
     const eventDesc = e.nativeEvent.submitter.innerText;
     if (validate()) {
+      setActiveStep(2)
       console.log("Validation passed");
       setError({ state: false, message: "" });
       if (eventDesc === "SAVE") {
