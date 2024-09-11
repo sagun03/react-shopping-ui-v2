@@ -28,7 +28,8 @@ import {
   AccountBoxWrapper,
   MenuItem,
   PointsItem,
-  ItemText
+  ItemText,
+  NavText
 } from "./styles/Navbar";
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
@@ -39,15 +40,19 @@ const MenuItemMyUser = styled("div")(() => ({
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
+  "&:hover": {
+    color: "red"
+  },
   ...mobile({ fontSize: "12px" }),
   ...ScreenWith670px({ display: "none" })
 }));
 
-const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
+const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler, user }) => {
   return (
     <>
       <MenuItemMyUser onClick={handleClick}>
         <PermIdentityOutlinedIcon sx={MenuIconStyles} />
+        <NavText>{user.displayName}</NavText>
       </MenuItemMyUser>
       <Menu
         id="customized-menu"
@@ -122,7 +127,8 @@ AccountBox.propTypes = {
   anchorEl: PropTypes.object,
   handleClose: PropTypes.func,
   handleClick: PropTypes.func,
-  onClickHandler: PropTypes.func
+  onClickHandler: PropTypes.func,
+  user: PropTypes.object
 }
 
 const NavBar = () => {
@@ -187,7 +193,7 @@ const NavBar = () => {
         <Right>
           <Component />
           {user ? (
-              <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler}/>
+              <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler} user={user}/>
           ) : (
             <>
               <Link to="/login">
@@ -200,15 +206,17 @@ const NavBar = () => {
               <Badge
                 badgeContent={quantity}
                 color="primary"
-                sx={{ marginRight: "10px" }}
+                sx={{
+                  marginRight: "10px",
+                  display: "flex",
+                  alignItems: "center"
+                }}
               >
                 <ShoppingCartOutlinedIcon sx={{
                   fontSize: "25px",
-                  cursor: "pointer",
-                  "&:hover": {
-                    color: "teal"
-                  }
+                  cursor: "pointer"
                 }}/>
+                <NavText>Cart</NavText>
               </Badge>
             </Link>
           </CartWrapper>

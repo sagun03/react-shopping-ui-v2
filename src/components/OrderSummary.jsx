@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, act } from "react";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
+import PropTypes from "prop-types";
 
 // Styled components with modern design
 const Summary = styled.div`
@@ -11,6 +12,7 @@ const Summary = styled.div`
   padding: 30px;
   background-color: #ffffff;
   max-width: 400px;
+  // position: ${(props) => (props.isFixed ? "fixed" : "none")};
   margin: 0px auto 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
@@ -105,7 +107,7 @@ const OrderSummary = () => {
   const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const { activeStep, setActiveStep, completed } = useStepperContext()
+  const { activeStep, handleStep } = useStepperContext();
 
   // Function to calculate total price
   const calculateTotalPrice = () => {
@@ -121,12 +123,8 @@ const OrderSummary = () => {
     calculateTotalPrice();
   }, [cartData]);
 
-  const handlePlaceOrder = (step) => {
-    if (step === 0) {
-      setActiveStep(1)
-    } else if (step === 1 && !completed.has(step) && activeStep !== step) {
-      setActiveStep(2)
-    }
+  const handlePlaceOrder = (step) => () => {
+    handleStep(step)();
   };
 
   return (
@@ -155,11 +153,13 @@ const OrderSummary = () => {
         <PriceText type="total">Rs. {totalAmount}</PriceText>
       </SummaryItem>
 
-      {activeStep === 0 ? <CustomButton variant="contained" onClick={() => handlePlaceOrder(activeStep)}>
-        Place Order
-      </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(activeStep)}>
-       Go to Checkout
-      </CustomButton> : null}
+      {
+        activeStep === 0 ? <CustomButton variant="contained" onClick={handlePlaceOrder(0)}>
+          Place Order
+        </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(1)}>
+          Go to Checkout
+        </CustomButton> : null
+      }
     </Summary>
   );
 };

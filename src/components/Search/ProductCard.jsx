@@ -23,7 +23,9 @@ const ProductCard = ({ product }) => {
           <CardImage src={imageBlob} alt={product.name} />
         </CardImageContainer>
         <CardContent>
-          <p>{product.name}</p>
+          <p style={{
+            fontWeight: 700
+          }}>{product.name}</p>
           <CardRating>
             <span>{product.averageRating}</span>
             <StarIcon />

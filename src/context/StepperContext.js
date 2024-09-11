@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useMemo, useEffect } from "react";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import PaymentIcon from "@mui/icons-material/Payment";
+import { useAddressContext } from "../components/address/DataProvider";
 import PropTypes from "prop-types";
 
 const steps = {
@@ -32,6 +33,7 @@ export const StepperProvider = ({ children }) => {
 
   // state
   const [activeStep, setActiveStep] = useState(0);
+  const { selectedAddress } = useAddressContext();
   const [completed, setCompleted] = useState(new Set());
 
   const totalSteps = useMemo(() => stepLabels.length, [stepLabels]);
@@ -48,7 +50,21 @@ export const StepperProvider = ({ children }) => {
   }
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
+    console.log(step)
+    switch (step) {
+      case 0:
+        handleComplete();
+        setActiveStep(1);
+        break;
+      case 1:
+        if (selectedAddress !== null) {
+          handleComplete();
+          setActiveStep(2);
+        }
+        break;
+      default:
+        console.log("Invalid step");
+    }
   }
 
   const handleComplete = () => {

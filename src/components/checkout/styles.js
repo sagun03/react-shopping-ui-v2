@@ -24,7 +24,7 @@ export const StepIconRoot = MuiStyled("div")(
     width: "1.5em",
     height: "1.5em",
     padding: "1em",
-    background: ownerState.active || ownerState.completed ? "teal" : "rgba(0, 0, 0, 0.2)",
+    background: ownerState.active || ownerState.completed ? "rgb(240, 193, 75)" : "rgba(0, 0, 0, 0.2)",
     borderRadius: "50%",
     justifyContent: "center",
     zIndex: 99,
@@ -40,7 +40,7 @@ export const StepLabelRoot = MuiStyled("div")(
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    color: ownerState.active ? "teal" : "rgba(0, 0, 0, 0.5)"
+    color: ownerState.active ? "rgb(240, 193, 75)" : "rgba(0, 0, 0, 0.5)"
   })
 )
 
@@ -56,7 +56,7 @@ export const Connector = MuiStyled("div")(
     zIndex: 1,
     display: "block",
     width: "15vw",
-    border: ownerState.completed.has(ownerState.i - 1) ? "1px dashed rgba(0, 128, 128, 0.9)" : "1px dashed rgba(0, 0, 0, 0.2)"
+    border: ownerState.completed.has(ownerState.i - 1) ? "1px dashed rgba(240, 193, 75, 0.9)" : "1px dashed rgba(0, 0, 0, 0.2)"
   })
 )
 export const LabelRootInner = MuiStyled("div")(
@@ -65,16 +65,16 @@ export const LabelRootInner = MuiStyled("div")(
     flexDirection: "column",
     alignItems: "center",
     gap: "2px",
-    color: ownerState.active ? "teal" : "rgba(0, 0, 0, 0.5)",
+    color: ownerState.active ? "red" : ownerState.completed ? "red" : "rgba(0, 0, 0, 0.5)",
     "&:after": {
       content: ownerState.completed && !ownerState.active ? "'✓'" : "''",
       fontSize: "14px",
       display: "block",
       width: "100%",
       height: ownerState.active ? 3 : "none",
-      backgroundColor: ownerState.active ? "teal" : "none",
+      backgroundColor: ownerState.active ? "red" : "none",
       textAlign: "center",
-      color: "teal",
+      color: "red",
       borderRadius: "5em"
     },
     marginBottom: "-2.7em"
@@ -100,7 +100,7 @@ export const ProgressButtonContainer = styled.div`
 export const ProgressButton = styled.button`
   padding: 0.5em 1em;
   border: none;
-  background-color: teal;
+  background-color: rgb(240, 193, 75);
   color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -109,7 +109,7 @@ export const ProgressButton = styled.button`
   }
 `
 export const DividerStyles = {
-  width: "var(--layout-width)",
+  width: "90%",
   marginBlock: "1.5em 1em",
   display: "inline-block"
 }

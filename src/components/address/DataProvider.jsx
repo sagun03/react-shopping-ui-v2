@@ -60,20 +60,6 @@ const reducer = (state, action) => {
 }
 
 const AddressProvider = ({ children }) => {
-  const [isValidate, setIsValidate] = useState(false)
-  const [validation, setValidation] = useState({
-    // required fields
-    contact: {
-      name: true,
-      mobile: true
-    },
-    address: {
-      pincode: true,
-      street: true,
-      city: true,
-      state: true
-    }
-  });
   const { user } = useUserContext();
   const { data, error, isLoading, refetch } = useGetAddress({
     uid: user?.uid,
@@ -86,6 +72,7 @@ const AddressProvider = ({ children }) => {
   const [address, setAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [defaultIndex, setDefaultIndex] = useState(null);
+  const [submit, setSubmit] = useState(false)
 
   useEffect(() => {
     if (data) {
@@ -97,39 +84,13 @@ const AddressProvider = ({ children }) => {
     }
   }, [data]);
 
-  const makeValidations = () => {
-    const updatedValidation = { ...validation };
-    Object.keys(validation).forEach(key => {
-      Object.keys(validation[key]).forEach(field => {
-        updatedValidation[key][field] = !!state[key][field];
-      });
-    });
-    console.log(updatedValidation);
-    setValidation(updatedValidation);
-  }
-
-  const validate = () => {
-    makeValidations();
-    let flag = true;
-    setIsValidate(true)
-    Object.keys(validation).forEach(key => {
-      Object.keys(validation[key]).forEach(field => {
-        if (!validation[key][field]) {
-          flag = false;
-          setIsValidate(false)
-        }
-      })
-    })
-    return flag;
-  }
-
   return (
     <addressContext.Provider value={
       {
         state,
         dispatch,
-        validation,
-        validate,
+        submit,
+        setSubmit,
         address,
         setAddress,
         addAddressMutation,
@@ -142,8 +103,7 @@ const AddressProvider = ({ children }) => {
         isLoading,
         defaultIndex,
         setDefaultIndex,
-        refetch,
-        isValidate
+        refetch
       }
     }>
       {children}
