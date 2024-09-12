@@ -79,8 +79,8 @@ const AddressPanel = () => {
             <p>Add Address</p>
           </div>
         </AddressBox>
-        {/* {
-          defaultIndex !== null &&
+        {
+          address[defaultIndex] &&
             <>
               <p style={{
                 textAlign: "left",
@@ -93,7 +93,7 @@ const AddressPanel = () => {
                 <AddressCard index={defaultIndex} />
               </AddressBox>
             </>
-        } */}
+        }
 
         {
           address.map((element, index) => (

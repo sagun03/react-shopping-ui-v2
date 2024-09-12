@@ -3,11 +3,17 @@ import { ScreenWith670px, mobile, mobileSuperSmall } from "./../../responsive";
 
 export const MenuIconStyles = {
   fontSize: "30px",
-  cursor: "pointer",
-  "&:hover": {
-    color: "teal"
-  }
+  cursor: "pointer"
 }
+
+export const NavText = styled.p`
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 15px;
+  ${mobile({
+    display: "none"
+  })}
+`
 
 export const PointsItem = styled.div`
   display: flex;
@@ -77,12 +83,15 @@ export const Container = styled("div")(() => ({
 }));
 
 export const CartWrapper = styled.div`
+  cursor: "pointer"
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
   border-radius: 5px;
   color: black;
+  &:hover {
+    color: red;
+  }
 `;
 
 export const Left = styled("div")(() => ({
@@ -105,7 +114,7 @@ export const MenuItem = styled("div")(() => ({
   alignItems: "center",
   paddingInline: "5px 5px",
   "&:hover": {
-    color: "teal"
+    color: "red"
   },
   ...mobile({ fontSize: "12px" })
 }));

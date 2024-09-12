@@ -22,7 +22,14 @@ const Layout = ({ children }) => {
           <LeftPanel>
             { children }
           </LeftPanel>
-          <CartDetail ><OrderSummary /> </CartDetail>
+          <CartDetail>
+            <div style={{
+              position: "sticky",
+              top: "30%"
+            }}>
+              <OrderSummary />
+            </div>
+          </CartDetail>
           <CartDetailMobile ><OrderSummary /></CartDetailMobile>
         </InnerWrapper>
       </Wrapper>
@@ -30,18 +37,6 @@ const Layout = ({ children }) => {
       <Footer />
       <BottomNav />
     </>
-    // <Wrapper>
-    //   <StepperBox />
-    //   {/* <Divider sx={DividerStyles}/> */}
-    //   {/* <InnerWrapper> */}
-    //     { children }
-    //     {/* <Divider orientation="vertical" sx={{
-    //       sm: { display: "none" }
-    //     }}/> */}
-    //     {/* <CartDetail /> */}
-    //     {/* <CartDetailMobile /> */}
-    //   {/* </InnerWrapper> */}
-    // </Wrapper>
   );
 };
 

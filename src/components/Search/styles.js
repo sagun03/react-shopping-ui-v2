@@ -15,14 +15,22 @@ export const SearchContainer = styled.div`
   gap: 3px;
   padding: 5px 10px;
   font-size: 15px;
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
 `
 export const ModalContainer = styled.div`
   display: flex;
   z-index: 10000;
   position: fixed;
-  top: 78px;
+  top: 74px;
+  // padding-top: 75px;
+  height: 100vh;
   width: 100%;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
 `
 export const SearchClose = styled.div`
   width: 100%;
@@ -36,7 +44,8 @@ export const SearchClose = styled.div`
 `
 export const ModalChild = styled.div`
   display: flex;
-  width: clamp(300px, 50vw, 500px);
+  width: clamp(300px, 150vw, 600px);
+  height: fit-content;
   padding: 0.5em;
   border-radius: 10px;
   background-color: rgba(255, 255, 255);
@@ -48,6 +57,7 @@ export const SearchBoxWrapper = styled.div`
 `
 export const FieldStyles = styled.input`
   padding: 0.5em;
+  font-size: 1.1em;
   flex: 10 1 0;
   border: 1px solid teal;
   outline: none;
@@ -60,9 +70,11 @@ export const FieldStyles = styled.input`
 `
 export const CardContainer = styled.div`
   display: flex;
+  font-size: 1.3em;
+  padding: 0.5em;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 1em;
+  min-heigth: fit-content;
+  gap: 5px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -77,10 +89,10 @@ export const SearchDetailWrapper = styled.div`
 export const CardWrapper = styled.div`
   display: flex;
   align-items: center;
-  max-height: 90px;
+  max-height: fit-content;
   gap: 5px;
   border-radius: 10px;
-  padding: 0.5em;
+  padding: 0 0.1em;
   font-size: clamp(0.8em, 1vw, 16px);
   fonrWeight: 200;
   cursor: pointer;
@@ -90,19 +102,26 @@ export const CardWrapper = styled.div`
 `
 export const CardImageContainer = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   padding: 0;
   margin-right: -0.5em;
   border-radius: 10px;
-  flex: 0.75 1 0;]
+  flex: 0.6 1 0;
+  // border: 2px solid black;
   ${mobile({ flex: "1 1 0" })}
 `
 export const CardImage = styled.img`
-  width: clamp(50px, 70px, 80%);
+  width: 80%;
+  height: 80%;
   border-radius: 10px;
-  object-fit: fill;
+  object-fit: contain;
 `
 export const CardContent = styled.div`
   display: flex;
+  line-height: 25px;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
   padding: 0.5em;

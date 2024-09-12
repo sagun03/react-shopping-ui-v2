@@ -40,11 +40,7 @@ const Component = () => {
     <>
     <SearchContainer onClick={handleOpen}>
       <SearchIcon sx={{
-        fontSize: "20px",
-        "&:hover": {
-          cursor: "pointer",
-          color: "teal"
-        }
+        fontSize: "20px"
       }}/>
       search
     </SearchContainer>

@@ -66,6 +66,9 @@ const SearchBox = ({ closeModal }) => {
         searchResults.length === 0 &&
         <CardContainer>
           <p>Top Suggestions</p>
+          <p style={{
+            height: "1px !important"
+          }}/>
           {products.map(product => (
             product.isPopular &&
             <ProductCard key={product.id} product={product} />

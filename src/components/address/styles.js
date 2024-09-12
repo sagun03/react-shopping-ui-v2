@@ -106,7 +106,8 @@ export const CommonText = styled.p`
 `
 export const ErrorBoxContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: left;
+  flex-direction: column;
   width: 98%;
   gap: 10px;
   background-color: rgba(255, 0, 0, 0.1);
@@ -133,7 +134,6 @@ export const InnerWrapper = styled.div`
 `
 export const CartDetail = styled.div`
   display: block;
-  height: 500px;
   flex: 1 1 0;
   border-radius: 5px;
   ${mobile({
@@ -198,9 +198,9 @@ export const AddCard = styled.div`
 `
 export const StyledRadio = MuiStyled(Radio)(
   ({ theme }) => ({
-    color: "teal",
+    color: "red",
     "&.Mui-checked": {
-      color: "teal"
+      color: "red"
     }
   })
 );

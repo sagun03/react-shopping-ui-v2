@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   AddressForm,
   InputContainer,
@@ -18,14 +18,15 @@ import { Button, Checkbox } from "@mui/material";
 import propTypes from "prop-types";
 import { useUserContext } from "../../context/UserContext";
 import { useStepperContext } from "../../context/StepperContext";
-import ErrorBox from "./ErrorBox"
+import ErrorBox from "./ErrorBox";
+import { performValidations } from "./validations";
 
 const Form = ({ index, closeModal }) => {
   const { setActiveStep } = useStepperContext()
   const {
     state,
+    setSubmit,
     dispatch,
-    validate,
     address,
     setAddress,
     selectedAddress,
@@ -37,7 +38,19 @@ const Form = ({ index, closeModal }) => {
   const { user } = useUserContext();
   const [pref, setPref] = useState("HOME");
   const [error, setError] = useState({ state: false, message: "" });
+
+  const errorFields = useMemo(() => {
+    const fields = {};
+    if (error.message) {
+      error.message.forEach(obj => {
+        fields[obj.path[0]] = obj.message;
+      })
+    }
+    return fields;
+  }, [error])
+
   const handleChange = (type, field) => (e) => {
+    setSubmit(false);
     dispatch({
       type: `UPDATE_${type.toUpperCase()}`,
       field,
@@ -84,8 +97,14 @@ const Form = ({ index, closeModal }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmit(true);
     const eventDesc = e.nativeEvent.submitter.innerText;
-    if (validate()) {
+    const vRes = performValidations(state);
+    console.log("isValid", vRes.isValid);
+    vRes.errors && console.log("error", vRes.errors);
+    vRes.data && console.log("data", vRes.data);
+
+    if (vRes.isValid) {
       setActiveStep(2)
       console.log("Validation passed");
       setError({ state: false, message: "" });
@@ -118,27 +137,24 @@ const Form = ({ index, closeModal }) => {
       closeModal();
     } else {
       console.log("Validation failed");
-      setError({ state: true, message: "Please fill all the required fields" });
+      setError({ state: true, message: vRes.errors });
     }
   }
 
   const handleDelete = () => {
     remove.mutate({ uid: user.uid, token: user.accessToken, id: address[index]._id });
-    setAddress(address.filter((element, i) => i !== index));
+    setAddress(address.filter((_, i) => i !== index));
     closeModal();
   }
 
   return (
     <AddressForm onSubmit={handleSubmit} noValidate>
-      { error.state && <ErrorBox>
-        <p>{ error.message }</p>
-      </ErrorBox> }
+      { error.state && <ErrorBox errors={errorFields} /> }
       <InputContainer>
         <InnerHeading>CONTACT DETAILS</InnerHeading>
         <TextInput
           label="Name"
           name="name"
-          group="contact"
           value={state.contact.name}
           required
           autocomplete="name"
@@ -147,7 +163,6 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="Mobile"
           name="mobile"
-          group="contact"
           value={state.contact.mobile}
           required
           autocomplete="tel"
@@ -160,7 +175,6 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="Street"
           name="street"
-          group="address"
           value={state.address.street}
           required
           autocomplete="street-address"
@@ -169,7 +183,6 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="City"
           name="city"
-          group="address"
           value={state.address.city}
           required
           autocomplete="address-level2"
@@ -179,7 +192,6 @@ const Form = ({ index, closeModal }) => {
           <TextInput
             label="State"
             name="state"
-            group="address"
             value={state.address.state}
             required
             autocomplete="address-level1"
@@ -188,7 +200,6 @@ const Form = ({ index, closeModal }) => {
           <TextInput
             label="Pincode"
             name="pincode"
-            group="address"
             value={state.address.pincode}
             required
             autocomplete="postal-code"

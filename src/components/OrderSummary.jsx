@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, act } from "react";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
+import PropTypes from "prop-types";
+import { usePointsContext } from "../context/PointsContext";
+import { StyledButton } from "./styles/Product";
 
 // Styled components with modern design
 const Summary = styled.div`
@@ -11,6 +14,7 @@ const Summary = styled.div`
   padding: 30px;
   background-color: #ffffff;
   max-width: 400px;
+  // position: ${(props) => (props.isFixed ? "fixed" : "none")};
   margin: 0px auto 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
@@ -101,11 +105,13 @@ const CustomButton = styled(Button)`
 // Main Component
 const OrderSummary = () => {
   const { cartData } = useCartContext();
+  const { points, setPoints, pointsToCash } = usePointsContext();
+  const [pointsDiscount, setPointsDiscount] = useState(0);
   const [discount] = useState(500);
   const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const { activeStep, setActiveStep, completed } = useStepperContext()
+  const { activeStep, handleStep } = useStepperContext();
 
   // Function to calculate total price
   const calculateTotalPrice = () => {
@@ -117,16 +123,27 @@ const OrderSummary = () => {
     setTotalAmount(totalPrice); // Assuming no discount for now
   };
 
+  const useMaxPoints = () => {
+    const pointsDiscount = Math.round(totalAmount * 0.2);
+    console.log(pointsDiscount)
+    const cashedPoints = pointsToCash;
+    if (cashedPoints >= pointsDiscount) {
+      setPointsDiscount(pointsDiscount);
+      setTotalAmount(totalAmount => totalAmount - pointsDiscount);
+      setPoints(points => points - pointsDiscount * 10);
+    } else {
+      setPointsDiscount(points * 0.1);
+      setTotalAmount(totalAmount => totalAmount - cashedPoints);
+      setPoints(0);
+    }
+  }
+
   useEffect(() => {
     calculateTotalPrice();
   }, [cartData]);
 
-  const handlePlaceOrder = (step) => {
-    if (step === 0) {
-      setActiveStep(1)
-    } else if (step === 1 && !completed.has(step) && activeStep !== step) {
-      setActiveStep(2)
-    }
+  const handlePlaceOrder = (step) => () => {
+    handleStep(step)();
   };
 
   return (
@@ -136,6 +153,19 @@ const OrderSummary = () => {
       <SummaryItem>
         <span>Total MRP</span>
         <PriceText>Rs. {totalMRP}</PriceText>
+      </SummaryItem>
+
+      <SummaryItem>
+        <span>Points</span>
+        <PriceText>{points}</PriceText>
+        {
+          pointsDiscount !== 0 && <PriceText discount>
+            - Rs. {pointsDiscount}
+          </PriceText>
+        }
+        {
+          totalAmount && <StyledButton onClick={useMaxPoints}>Redeem</StyledButton>
+        }
       </SummaryItem>
 
       <SummaryItem>
@@ -155,11 +185,13 @@ const OrderSummary = () => {
         <PriceText type="total">Rs. {totalAmount}</PriceText>
       </SummaryItem>
 
-      {activeStep === 0 ? <CustomButton variant="contained" onClick={() => handlePlaceOrder(activeStep)}>
-        Place Order
-      </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(activeStep)}>
-       Go to Checkout
-      </CustomButton> : null}
+      {
+        activeStep === 0 ? <CustomButton variant="contained" onClick={handlePlaceOrder(0)}>
+          Place Order
+        </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(1)}>
+          Go to Checkout
+        </CustomButton> : null
+      }
     </Summary>
   );
 };

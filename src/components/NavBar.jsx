@@ -28,26 +28,33 @@ import {
   AccountBoxWrapper,
   MenuItem,
   PointsItem,
-  ItemText
+  ItemText,
+  NavText
 } from "./styles/Navbar";
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
 import Component from "./Search/Component";
+import { usePointsContext } from "../context/PointsContext";
 
 const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
+  "&:hover": {
+    color: "red"
+  },
   ...mobile({ fontSize: "12px" }),
   ...ScreenWith670px({ display: "none" })
 }));
 
-const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
+const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler, user }) => {
+  const { points } = usePointsContext();
   return (
     <>
       <MenuItemMyUser onClick={handleClick}>
         <PermIdentityOutlinedIcon sx={MenuIconStyles} />
+        <NavText>{user.displayName}</NavText>
       </MenuItemMyUser>
       <Menu
         id="customized-menu"
@@ -65,7 +72,7 @@ const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler }) => {
             color: "gold",
             fontSize: "16px"
           }} />
-          100
+          { points }
           </PointsItem>
         </MenuItem>
         <Divider sx={{
@@ -122,7 +129,8 @@ AccountBox.propTypes = {
   anchorEl: PropTypes.object,
   handleClose: PropTypes.func,
   handleClick: PropTypes.func,
-  onClickHandler: PropTypes.func
+  onClickHandler: PropTypes.func,
+  user: PropTypes.object
 }
 
 const NavBar = () => {
@@ -187,7 +195,7 @@ const NavBar = () => {
         <Right>
           <Component />
           {user ? (
-              <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler}/>
+              <AccountBox anchorEl={anchorEl} handleClose={handleClose} handleClick={handleClick} onClickHandler={onClickHandler} user={user}/>
           ) : (
             <>
               <Link to="/login">
@@ -200,15 +208,17 @@ const NavBar = () => {
               <Badge
                 badgeContent={quantity}
                 color="primary"
-                sx={{ marginRight: "10px" }}
+                sx={{
+                  marginRight: "10px",
+                  display: "flex",
+                  alignItems: "center"
+                }}
               >
                 <ShoppingCartOutlinedIcon sx={{
                   fontSize: "25px",
-                  cursor: "pointer",
-                  "&:hover": {
-                    color: "teal"
-                  }
+                  cursor: "pointer"
                 }}/>
+                <NavText>Cart</NavText>
               </Badge>
             </Link>
           </CartWrapper>
