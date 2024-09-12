@@ -4,6 +4,8 @@ import { Button } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
 import PropTypes from "prop-types";
+import { usePointsContext } from "../context/PointsContext";
+import { StyledButton } from "./styles/Product";
 
 // Styled components with modern design
 const Summary = styled.div`
@@ -103,6 +105,8 @@ const CustomButton = styled(Button)`
 // Main Component
 const OrderSummary = () => {
   const { cartData } = useCartContext();
+  const { points, setPoints, pointsToCash } = usePointsContext();
+  const [pointsDiscount, setPointsDiscount] = useState(0);
   const [discount] = useState(500);
   const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
@@ -119,6 +123,21 @@ const OrderSummary = () => {
     setTotalAmount(totalPrice); // Assuming no discount for now
   };
 
+  const useMaxPoints = () => {
+    const pointsDiscount = Math.round(totalAmount * 0.2);
+    console.log(pointsDiscount)
+    const cashedPoints = pointsToCash;
+    if (cashedPoints >= pointsDiscount) {
+      setPointsDiscount(pointsDiscount);
+      setTotalAmount(totalAmount => totalAmount - pointsDiscount);
+      setPoints(points => points - pointsDiscount * 10);
+    } else {
+      setPointsDiscount(points * 0.1);
+      setTotalAmount(totalAmount => totalAmount - cashedPoints);
+      setPoints(0);
+    }
+  }
+
   useEffect(() => {
     calculateTotalPrice();
   }, [cartData]);
@@ -134,6 +153,19 @@ const OrderSummary = () => {
       <SummaryItem>
         <span>Total MRP</span>
         <PriceText>Rs. {totalMRP}</PriceText>
+      </SummaryItem>
+
+      <SummaryItem>
+        <span>Points</span>
+        <PriceText>{points}</PriceText>
+        {
+          pointsDiscount !== 0 && <PriceText discount>
+            - Rs. {pointsDiscount}
+          </PriceText>
+        }
+        {
+          totalAmount && <StyledButton onClick={useMaxPoints}>Redeem</StyledButton>
+        }
       </SummaryItem>
 
       <SummaryItem>

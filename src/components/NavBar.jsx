@@ -34,6 +34,7 @@ import {
 import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
 import Component from "./Search/Component";
+import { usePointsContext } from "../context/PointsContext";
 
 const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
@@ -48,6 +49,7 @@ const MenuItemMyUser = styled("div")(() => ({
 }));
 
 const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler, user }) => {
+  const { points } = usePointsContext();
   return (
     <>
       <MenuItemMyUser onClick={handleClick}>
@@ -70,7 +72,7 @@ const AccountBox = ({ anchorEl, handleClose, handleClick, onClickHandler, user }
             color: "gold",
             fontSize: "16px"
           }} />
-          100
+          { points }
           </PointsItem>
         </MenuItem>
         <Divider sx={{
