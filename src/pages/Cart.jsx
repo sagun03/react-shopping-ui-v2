@@ -350,7 +350,7 @@ const Cart = () => {
         <link rel="canonical" href="/cart" />
       </Helmet>
       <Container>
-        <Announcement />
+        {/* <Announcement /> */}
         <Wrapper>
           {data?.products?.length === 0 || data.length === 0 ? (
             <Link to="/">

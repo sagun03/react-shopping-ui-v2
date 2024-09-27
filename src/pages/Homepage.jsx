@@ -15,6 +15,8 @@ import { Helmet } from "react-helmet-async"
 import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUserContext } from "../context/UserContext";
+import Banner from "../components/Banner";
+
 const Homepage = () => {
   const { user } = useUserContext()
   const { setCartData, cartData } = useCartContext();
@@ -74,6 +76,7 @@ const Homepage = () => {
         <Crousel />
         <FeaturedCategories />
         <PopularProducts />
+        <Banner />
         <Virtual />
         <SimpleMap />
         <NewsLetter />
