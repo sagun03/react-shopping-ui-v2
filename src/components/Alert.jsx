@@ -14,10 +14,10 @@ const Alert = ({ type, message, open, setOpen }) => {
     <Snackbar
       open={open}
       onClose={handleClose}
-      autoHideDuration={1500}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      autoHideDuration={2000}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
-      <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={type}>
+      <MuiAlert elevation={10} variant="filled" onClose={handleClose} severity={type}>
         {message}
       </MuiAlert>
     </Snackbar>

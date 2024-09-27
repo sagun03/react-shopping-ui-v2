@@ -1,142 +1,88 @@
-import React, { useState, useEffect, act } from "react";
-import styled from "styled-components";
-import { Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { TextField } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
-import PropTypes from "prop-types";
 import { usePointsContext } from "../context/PointsContext";
 import { StyledButton } from "./styles/Product";
+import moment from "moment/moment";
+import { useDispatch, useSelector } from "react-redux";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import {
+  Summary,
+  SummaryTitle,
+  SummaryItem,
+  PriceText,
+  DiscountLink,
+  CouponBadge,
+  CustomButton
+} from "./styles/orderSummary";
 
-// Styled components with modern design
-const Summary = styled.div`
-  border: 1px solid #e3e3e3;
-  border-radius: 8px;
-  padding: 30px;
-  background-color: #ffffff;
-  max-width: 400px;
-  // position: ${(props) => (props.isFixed ? "fixed" : "none")};
-  margin: 0px auto 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
-  flex:1;
-
-  &:hover {
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-
-  @media (max-width: 768px) {
-    max-width: 90%;
-    padding: 25px;
-  }
-`;
-
-const SummaryTitle = styled.h1`
-  font-weight: 600;
-  font-size: 1.8rem;
-  color: #111;
-  text-align: center;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #e3e3e3;
-  padding-bottom: 15px;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const SummaryItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  /* Vertically align text */
-  margin: 20px 0;
-  padding: 10px 0;
-  border-bottom: ${(props) => (props.type === "total" ? "none" : "1px solid #e3e3e3")};
-  font-weight: ${(props) => (props.type === "total" ? "700" : "400")};
-  font-size: ${(props) => (props.type === "total" ? "1.4rem" : "1.1rem")};
-  color: ${(props) => (props.type === "total" ? "#B12704" : "#565959")};
-
-  @media (max-width: 768px) {
-    font-size: ${(props) => (props.type === "total" ? "1.2rem" : "1rem")};
-    margin: 15px 0;
-  }
-`;
-
-const PriceText = styled.span`
-  color: ${(props) => (props.discount ? "#B12704" : "#111")};
-  margin-left: 15px; /* Provides spacing between text and price */
-  font-size: ${(props) => (props.type === "total" ? "1.4rem" : "1.1rem")};
-
-  @media (max-width: 768px) {
-    font-size: ${(props) => (props.type === "total" ? "1.2rem" : "1rem")};
-  }
-`;
-
-const DiscountLink = styled.span`
-  color: #007185;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-left: 15px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const CustomButton = styled(Button)`
-  width: 100%;
-  background-color: #f0c14b !important;
-  color: #111 !important;
-  font-weight: 700 !important;
-  font-size: 1.1rem !important;
-  margin-top: 30px;
-  padding: 12px !important;
-
-  &:hover {
-    background-color: #e7b32e !important;
-  }
-
-  @media (max-width: 768px) {
-    margin-top: 20px;
-    padding: 10px !important;
-    font-size: 1rem !important;
-  }
-`;
-
-// Main Component
 const OrderSummary = () => {
   const { cartData } = useCartContext();
   const { points, setPoints, pointsToCash } = usePointsContext();
+  const { activeStep, handleStep } = useStepperContext();
   const [pointsDiscount, setPointsDiscount] = useState(0);
-  const [discount] = useState(500);
-  const [couponDiscount] = useState(300);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-  const { activeStep, handleStep } = useStepperContext();
+  const [showCouponField, setShowCouponField] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
+
+  const banners = useSelector((state) => state.promotions.banners) || [];
+  const [discount] = useState(500);
 
   // Function to calculate total price
   const calculateTotalPrice = () => {
     const totalPrice = cartData?.products?.reduce((acc, item) => {
-      const price = item.productDetails.sizes[0].price; // Get the price of the first available size
-      return acc + price * item.quantity; // Calculate for each product based on quantity
+      const price = item.productDetails.sizes[0].price;
+      return acc + price * item.quantity;
     }, 0);
-    setTotalMRP(totalPrice);
-    setTotalAmount(totalPrice); // Assuming no discount for now
+    setTotalMRP(totalPrice || 0);
+    totalAmount === 0 && setTotalAmount(totalPrice);
   };
 
   const useMaxPoints = () => {
     const pointsDiscount = Math.round(totalAmount * 0.2);
-    console.log(pointsDiscount)
+    console.log(pointsDiscount);
     const cashedPoints = pointsToCash;
     if (cashedPoints >= pointsDiscount) {
       setPointsDiscount(pointsDiscount);
-      setTotalAmount(totalAmount => totalAmount - pointsDiscount);
-      setPoints(points => points - pointsDiscount * 10);
+      setTotalAmount((totalAmount) => totalAmount - pointsDiscount);
+      setPoints((points) => points - pointsDiscount * 10);
     } else {
       setPointsDiscount(points * 0.1);
-      setTotalAmount(totalAmount => totalAmount - cashedPoints);
+      setTotalAmount((totalAmount) => totalAmount - cashedPoints);
       setPoints(0);
     }
-  }
+  };
+
+  // Function to handle coupon code validation
+  const handleCouponValidation = (banners) => {
+    const banner = banners.find((b) => b.couponCode === couponCode);
+    const discountValue = validateCouponCode(couponCode, banner);
+    if (discountValue) {
+      setAppliedCoupon(discountValue);
+      console.log("discountValue", discountValue)
+      setTotalAmount(
+        (totalAmount) => totalAmount - totalAmount * (discountValue / 100)
+      );
+      setShowCouponField(false);
+      setErrorMessage("");
+    } else {
+      setErrorMessage("Invalid or expired coupon code.");
+    }
+  };
+  // Function to clear applied coupon
+  const clearCoupon = () => {
+    setTotalAmount(totalAmount => totalMRP * (appliedCoupon / 100) + totalAmount);
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setShowCouponField(true);
+    calculateTotalPrice();
+  };
 
   useEffect(() => {
     calculateTotalPrice();
@@ -155,45 +101,102 @@ const OrderSummary = () => {
         <PriceText>Rs. {totalMRP}</PriceText>
       </SummaryItem>
 
-      <SummaryItem>
-        <span>Points</span>
-        <PriceText>{points}</PriceText>
-        {
-          pointsDiscount !== 0 && <PriceText discount>
-            - Rs. {pointsDiscount}
-          </PriceText>
-        }
-        {
-          totalAmount && <StyledButton onClick={useMaxPoints}>Redeem</StyledButton>
-        }
-      </SummaryItem>
-
-      <SummaryItem>
-        <span>Discount</span>
-        <PriceText discount>- Rs. {discount}</PriceText>
-        <DiscountLink>See Details</DiscountLink>
-      </SummaryItem>
-
-      <SummaryItem>
-        <span>Coupon Discount</span>
-        <PriceText discount>- Rs. {couponDiscount}</PriceText>
-        <DiscountLink>Apply Coupon</DiscountLink>
-      </SummaryItem>
+      {totalMRP > 0 && (
+        <>
+          {" "}
+          <SummaryItem>
+            <span>Points</span>
+            <PriceText>{points}</PriceText>
+            {pointsDiscount !== 0 && (
+              <PriceText discount>- Rs. {pointsDiscount}</PriceText>
+            )}
+            {totalAmount && (
+              <StyledButton onClick={useMaxPoints}>Redeem Points</StyledButton>
+            )}
+          </SummaryItem>
+          {/* will revisit this later */}
+          {/* <SummaryItem>
+            <span>Discount</span>
+            <PriceText discount>- Rs. {discount}</PriceText>
+            <DiscountLink>See Details</DiscountLink>
+          </SummaryItem> */}
+          <SummaryItem>
+            <span>Coupon Discount</span>
+            {appliedCoupon ? (
+              <>
+                <PriceText discount>
+                  - Rs. {totalMRP * (appliedCoupon / 100)}
+                </PriceText>
+              </>
+            ) : (
+              <DiscountLink
+                onClick={() => setShowCouponField(!showCouponField)}
+              >
+                {showCouponField ? "Hide Coupon" : "Have a Coupon?"}
+              </DiscountLink>
+            )}
+          </SummaryItem>
+          {appliedCoupon && (
+            <SummaryItem>
+              <CouponBadge>
+                <CheckIcon /> Coupon Applied: {couponCode}
+                <ClearIcon
+                  style={{ marginLeft: "10px", cursor: "pointer" }}
+                  onClick={clearCoupon}
+                />
+              </CouponBadge>
+            </SummaryItem>
+          )}
+          {showCouponField && (
+            <SummaryItem>
+              <TextField
+                variant="outlined"
+                label="Enter Coupon"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                size="small"
+                error={!!errorMessage}
+                helperText={errorMessage}
+              />
+              <StyledButton onClick={() => handleCouponValidation(banners)}>
+                Apply
+              </StyledButton>
+            </SummaryItem>
+          )}
+        </>
+      )}
 
       <SummaryItem type="total">
         <span>Total Amount</span>
         <PriceText type="total">Rs. {totalAmount}</PriceText>
       </SummaryItem>
 
-      {
-        activeStep === 0 ? <CustomButton variant="contained" onClick={handlePlaceOrder(0)}>
+      {activeStep === 0 ? (
+        <CustomButton variant="contained" onClick={handlePlaceOrder(0)} disabled={totalMRP === 0}>
           Place Order
-        </CustomButton> : activeStep === 1 ? <CustomButton variant="contained" onClick={handlePlaceOrder(1)}>
+        </CustomButton>
+      ) : activeStep === 1 ? (
+        <CustomButton variant="contained" onClick={handlePlaceOrder(1)}>
           Go to Checkout
-        </CustomButton> : null
-      }
+        </CustomButton>
+      ) : null}
     </Summary>
   );
+};
+
+// Coupon validation function
+export const validateCouponCode = (couponCode, banner) => {
+  const currentDate = moment();
+  const startDate = moment(banner?.startDate);
+  const endDate = moment(banner?.endDate);
+
+  if (
+    couponCode === banner?.couponCode &&
+    currentDate.isBetween(startDate, endDate)
+  ) {
+    return banner.discount;
+  }
+  return null;
 };
 
 export default OrderSummary;
