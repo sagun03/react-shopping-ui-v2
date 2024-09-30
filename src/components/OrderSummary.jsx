@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@mui/material";
-import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
 import { usePointsContext } from "../context/PointsContext";
 import { StyledButton } from "./styles/Product";
