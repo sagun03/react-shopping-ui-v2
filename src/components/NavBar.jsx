@@ -14,7 +14,6 @@ import { useUserAuth } from "../context/UserAuthContext";
 import { useUserContext } from "../context/UserContext";
 import Alert from "./Alert";
 import { mobile, ScreenWith670px } from "../responsive";
-import { useCartContext } from "../context/cartContext";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import {
@@ -35,6 +34,7 @@ import logo from "../assets/logo.png";
 import PropTypes from "prop-types";
 import Component from "./Search/Component";
 import { usePointsContext } from "../context/PointsContext";
+import { useSelector } from "react-redux";
 
 const MenuItemMyUser = styled("div")(() => ({
   fontSize: "14px",
@@ -141,9 +141,8 @@ const NavBar = () => {
   const [loading, setLoading] = useState(false);
   // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
-  const { cartData, setCartData } = useCartContext();
-  const [quantity, setQuantity] = useState(0);
-
+  const { quantity, ...rest } = useSelector((state) => state.cart);
+  console.log(rest, "rest", quantity)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -152,16 +151,8 @@ const NavBar = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    console.log(user, "user")
-    if (cartData) {
-      setQuantity(cartData?.totalQuantity)
-    }
-  }, [cartData]);
-
   const onClickHandler = async (e) => {
     try {
-      setCartData([]);
       setAnchorEl(null);
       setLoading(true);
       e.preventDefault();
