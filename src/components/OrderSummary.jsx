@@ -19,7 +19,7 @@ import {
 } from "./styles/orderSummary";
 
 const OrderSummary = () => {
-  const { cartData } = useCartContext();
+  // const { cartData } = useCartContext();
   const { points, setPoints, pointsToCash } = usePointsContext();
   const { activeStep, handleStep } = useStepperContext();
   const [pointsDiscount, setPointsDiscount] = useState(0);
@@ -30,18 +30,32 @@ const OrderSummary = () => {
   const [couponCode, setCouponCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
+  const cartData = useSelector((state) => state.cart);
 
   const banners = useSelector((state) => state.promotions.banners) || [];
   const [discount] = useState(500);
 
+  useEffect(() => {
+    const savedCouponCode = localStorage.getItem("appliedCouponCode");
+    const savedDiscount = localStorage.getItem("appliedCouponDiscount");
+
+    if (savedCouponCode && savedDiscount) {
+      setCouponCode(savedCouponCode);
+      setAppliedCoupon(parseFloat(savedDiscount));
+    }
+  }, []);
+
   // Function to calculate total price
   const calculateTotalPrice = () => {
-    const totalPrice = cartData?.products?.reduce((acc, item) => {
-      const price = item.productDetails.sizes[0].price;
-      return acc + price * item.quantity;
-    }, 0);
+    const totalPrice = cartData?.total;
     setTotalMRP(totalPrice || 0);
-    totalAmount === 0 && setTotalAmount(totalPrice);
+    if (appliedCoupon) {
+      setTotalAmount(
+        totalPrice - totalPrice * (1 - appliedCoupon / 100)
+      );
+    } else {
+      setTotalAmount(totalPrice);
+    }
   };
 
   const useMaxPoints = () => {
@@ -65,7 +79,8 @@ const OrderSummary = () => {
     const discountValue = validateCouponCode(couponCode, banner);
     if (discountValue) {
       setAppliedCoupon(discountValue);
-      console.log("discountValue", discountValue)
+      localStorage.setItem("appliedCouponCode", couponCode);
+      localStorage.setItem("appliedCouponDiscount", discountValue);
       setTotalAmount(
         (totalAmount) => totalAmount - totalAmount * (discountValue / 100)
       );
@@ -75,18 +90,21 @@ const OrderSummary = () => {
       setErrorMessage("Invalid or expired coupon code.");
     }
   };
+
   // Function to clear applied coupon
   const clearCoupon = () => {
     setTotalAmount(totalAmount => totalMRP * (appliedCoupon / 100) + totalAmount);
     setAppliedCoupon(null);
     setCouponCode("");
     setShowCouponField(true);
+    localStorage.removeItem("appliedCouponCode");
+    localStorage.removeItem("appliedCouponDiscount");
     calculateTotalPrice();
   };
 
   useEffect(() => {
     calculateTotalPrice();
-  }, [cartData]);
+  }, [cartData, appliedCoupon]);
 
   const handlePlaceOrder = (step) => () => {
     handleStep(step)();
