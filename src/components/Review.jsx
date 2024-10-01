@@ -26,112 +26,6 @@ const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0]);
-  const review = [
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    },
-    {
-      _id: "66bd261992d427cdaec24ef5",
-      userID: "507f1f77bcf86cd799439013",
-      productId: "66a95400ab4a781270bab637",
-      rating: 3,
-      description: "I really loved this product. It exceeded my expectations.",
-      title: "Average product!",
-      name: "Chaman",
-      createdAt: "2024-08-14T12:34:56.000Z",
-      isApproved: false,
-      updatedAt: "2024-08-14T21:48:09.618Z",
-      __v: 0
-    }
-  ]
   const {
     data: reviewData,
     isLoading: isReviewsLoading,
@@ -234,7 +128,7 @@ const Review = ({ productId }) => {
         </RatingWrapper>
         </RatingContainer>
         <StyledList>
-          {review.map((review, index) => (
+          {reviews.map((review, index) => (
             <StyledListItem key={index}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Avatar src={review.photoUrl} alt={review.name} />
