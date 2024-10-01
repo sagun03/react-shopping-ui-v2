@@ -10,7 +10,6 @@ import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";
 import { useDataContext } from "../context/DataContext";
-import { useCreateCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
 import Review from "../components/Review"; // Import Review component
 
@@ -248,11 +247,11 @@ const Product = () => {
             <AddContainer>
               <AmountContainer>
                 <IconButton disabled={quantity === 1}>
-                  <Remove onClick={() => handleQuantity("dec")} />
+                  <Remove onClick={() => handleQuantity("dec")} style={{ height: "2rem", width: "2rem" }} />
                 </IconButton>
                 <Amount>{quantity}</Amount>
                 <IconButton>
-                  <Add onClick={() => handleQuantity("add")} />
+                  <Add onClick={() => handleQuantity("add")} style={{ height: "2rem", width: "2rem" }} />
                 </IconButton>
               </AmountContainer>
             </AddContainer>
@@ -277,7 +276,7 @@ const Product = () => {
       </Wrapper>
       <Divider sx={{ marginTop: "4rem" }} />
       <SimilarProducts currentProduct={product} />
-      <Divider sx={{ marginTop: "4rem" }} />
+      {/* <Divider sx={{ marginTop: "4rem" }} /> */}
       <Review
         productId={product.id}
         userId={user?.uid}
