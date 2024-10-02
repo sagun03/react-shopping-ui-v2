@@ -146,7 +146,7 @@ const CartMockup = () => {
         const createdObjectForCart = {
           userId: cartData?.userId,
           Products: sampleCartData.products.map(value => ({
-            productID: value?.productDetails?.id,
+            productId: value?.productDetails?.id,
             quantity: value.quantity,
             unitPrice: value?.productDetails?.sizes[0]?.price,
             size: value?.productDetails?.sizes[0]?.size

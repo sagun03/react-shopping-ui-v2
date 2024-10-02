@@ -24,9 +24,11 @@ import {
   DiscountText
 } from "./styles/ProductRangeCard";
 // import { useUserAuth } from "../context/UserAuthContext";
-import { useCreateCart } from "../hooks/useCart";
-import { useUserContext } from "../context/UserContext";
+// import { useCreateCart } from "../hooks/useCart";
+// import { useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProducts } from "../redux/cartRedux";
 
 const ProductRangeCard = ({
   name,
@@ -37,28 +39,24 @@ const ProductRangeCard = ({
   inStock,
   averageRating = 0,
   ratingCount = 0,
-  discountPercentage = 5
+  discountPercentage = 5,
+  description
 }) => {
-  // const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
-  // const userAuth = useUserAuth();
-  const { user } = useUserContext();
-  const { mutate: createCart } = useCreateCart();
+  const dispatch = useDispatch();
+
   const handleClick = () => {
     const productObject = {
-      userId: user?.uid,
-      Products: [
-        {
-          productID: id,
-          quantity: 1,
-          unitPrice: price,
-          size
-        }
-      ]
-    };
-
-    createCart({ cartDetails: productObject, userID: user?.uid, setOpenAlert });
+      productId: id,
+      quantity: 1,
+      unitPrice: price,
+      size,
+      name,
+      image: images[0],
+      description
+    }
+    dispatch(addProducts(productObject));
   };
 
   const handleNavigate = () => {

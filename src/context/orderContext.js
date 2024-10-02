@@ -14,5 +14,5 @@ export const useOrderContext = () => {
   return useContext(OrderContext);
 };
 OrderProvider.propTypes = {
-  children: PropTypes.node.isRequired // Validate that children is passed and is a valid React node
+  children: PropTypes.node.isRequired
 };

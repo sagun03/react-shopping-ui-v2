@@ -14,7 +14,11 @@ import {
   RatingSection,
   RatingBreakdown,
   StyledList,
-  StyledListItem
+  StyledListItem,
+  RatingWrapper,
+  CustomDivider,
+  Wrapper,
+  RatingContainer
 } from "../components/styles/Review";
 import { useReviews } from "../hooks/useReview";
 import StarIcon from "@mui/icons-material/Star";
@@ -73,7 +77,6 @@ const Review = ({ productId }) => {
       </ReviewContainer>
     );
   }
-
   return (
     <ReviewContainer>
       <Typography variant="h4" sx={{ fontWeight: "bold" }} gutterBottom>
@@ -200,10 +203,58 @@ const Review = ({ productId }) => {
             >
               {review.description}
             </Typography>
-            <Divider sx={{ mt: 2 }} />
-          </StyledListItem>
-        ))}
-      </StyledList>
+          ) : (
+            <Typography variant="body1" sx={{ padding: "10px" }}>
+              No reviews yet. Be the first to review this product!
+            </Typography>
+          )}
+        </RatingWrapper>
+        </RatingContainer>
+        <StyledList>
+          {reviews.map((review, index) => (
+            <StyledListItem key={index}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Avatar src={review.photoUrl} alt={review.name} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start"
+                  }}
+                >
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    {review.title}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                    {review.rating.toFixed(1)}
+                    <Rating
+                      value={review.rating}
+                      precision={0.5}
+                      readOnly
+                      size="small"
+                      sx={{ ml: 0.5 }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: "500", mt: 0.5 }}
+                  >
+                    {review.name} •{" "}
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography
+                variant="body1"
+                sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
+              >
+                {review.description}
+              </Typography>
+              <Divider sx={{ mt: 2 }} />
+            </StyledListItem>
+          ))}
+        </StyledList>
+      </Wrapper>
     </ReviewContainer>
   );
 };

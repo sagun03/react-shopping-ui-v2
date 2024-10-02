@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   min-height: 85vh;
   height: 85vh;
   gap: 4rem;
-  ${mobile({ padding: "10px", flexDirection: "column" })}
+  ${mobile({ padding: "10px", flexDirection: "column", gap: "2rem" })}
   ${ScreenWith960px({ padding: "10px", minHeight: "100vh", flexDirection: "column", height: "auto" })}
 `;
 
@@ -146,8 +146,9 @@ const AmountContainer = styled.div`
 `;
 
 const Amount = styled.span`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
   border-radius: 10px;
   border: 1px solid rgb(250,142,8);
   display: flex;
@@ -223,7 +224,7 @@ const CarouselContainer = styled.div`
   height: 100%;
   justify-content: center;
   ${ScreenWith960px({ height: "600px", width: "100%" })}
-  ${mobile({ height: "350px" })}
+  ${mobile({ height: "550px" })}
 `;
 
 const ThumbnailContainer = styled.div`
@@ -261,7 +262,7 @@ const Thumbnail = styled.img`
 `;
 
 const ZoomImage = styled.img`
-  width: 70%;
+  width: 95%;
   height: auto;
   object-fit: contain;
   border-radius: 15px;
@@ -286,7 +287,7 @@ const PriceContainer = styled.div`
 const DiscountedPrice = styled.span`
   font-size: 1.75rem;
   font-weight: bold;
-  color: #e53935;
+  // color: #e53935;
   margin-right: 10px;
   ${mobile({ fontSize: "1.8rem" })}
 `;

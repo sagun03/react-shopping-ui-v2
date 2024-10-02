@@ -1,11 +1,10 @@
-import { styled } from "@mui/material";
+import { Divider, styled as muiStyled } from "@mui/material";
 import List from "@mui/material/List";
+import styled from "styled-components";
+import { mobile, ScreenWith670px, ScreenWith960px } from "../../responsive";
 
 // Container for the review section
-export const ReviewContainer = styled("div")(({ theme }) => ({
-  padding: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
-  paddingRight: theme.spacing(4),
+export const ReviewContainer = muiStyled("div")(({ theme }) => ({
   marginTop: theme.spacing(4),
   maxWidth: "70%",
   margin: "4rem auto",
@@ -29,9 +28,8 @@ export const ReviewContainer = styled("div")(({ theme }) => ({
 }));
 
 // Overall rating and star breakdown
-export const RatingSection = styled("div")(({ theme }) => ({
+export const RatingSection = muiStyled("div")(({ theme }) => ({
   display: "flex",
-  alignItems: "flex-start",
   flexDirection: "column",
   marginBottom: theme.spacing(2),
   fontSize: "1rem", // Base font size
@@ -47,10 +45,11 @@ export const RatingSection = styled("div")(({ theme }) => ({
 }));
 
 // Progress bars for rating counts
-export const RatingBreakdown = styled("div")(({ theme }) => ({
+export const RatingBreakdown = muiStyled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   width: "25rem",
+  marginTop: theme.spacing(1.5),
   gap: theme.spacing(1),
   fontSize: "1rem", // Base font size
   "@media only screen and (max-width: 650px)": {
@@ -64,7 +63,7 @@ export const RatingBreakdown = styled("div")(({ theme }) => ({
 }));
 
 // Styled list for reviews
-export const StyledList = styled("div")(({ theme }) => ({
+export const StyledList = muiStyled("div")(({ theme }) => ({
   width: "100%",
   border: "none", // Removed border
   marginLeft: theme.spacing(2),
@@ -88,7 +87,7 @@ export const StyledList = styled("div")(({ theme }) => ({
   }
 }));
 
-export const StyledListItem = styled(List)(({ theme }) => ({
+export const StyledListItem = muiStyled(List)(({ theme }) => ({
   border: "none", // Removed border
   gap: "3rem",
   fontSize: "1rem", // Base font size
@@ -109,3 +108,44 @@ export const StyledListItem = styled(List)(({ theme }) => ({
     fontSize: "0.75rem" // Even smaller font size for very small screens
   }
 }));
+
+export const RatingWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: rem;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 2rem;
+  align-items: center;
+  ${mobile({ flexDirection: "column" })}
+   ${ScreenWith670px({ alignItems: "center" })}
+  ${ScreenWith960px({ flexDirection: "column", width: "20rem" })}
+`;
+
+export const CustomDivider = styled.hr`
+  width: 100%;
+  border: ${({ orientation }) =>
+    orientation === "horizontal"
+      ? "1px solid rgba(0, 0, 0, 0.12)"
+      : "1px solid rgba(0, 0, 0, 0.12)"};
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  ${mobile({ flexDirection: "column" })}
+  ${ScreenWith670px({ flexDirection: "column" })}
+`;
+
+export const RatingContainer = styled.div`
+  position: sticky;
+  top: 10%;
+  height: max-content;
+
+  ${mobile({ position: "static", top: "auto", height: "auto" })}
+  ${ScreenWith670px({ display: "flex", top: "auto", height: "auto", alignItems: "center", justifyContent: "center" })}
+
+`;

@@ -10,7 +10,6 @@ import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";
 import { useDataContext } from "../context/DataContext";
-import { useCreateCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
 import Review from "../components/Review"; // Import Review component
 
@@ -49,6 +48,8 @@ import {
 } from "../components/styles/Product";
 import SimilarProducts from "../components/SimilarProducts";
 import { Icon } from "../components/styles/ProductRangeCard";
+import { useDispatch } from "react-redux";
+import { addProducts } from "../redux/cartRedux";
 
 const Product = () => {
   const { user } = useUserContext();
@@ -62,9 +63,9 @@ const Product = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { products } = useDataContext();
-  const { mutate: createCart } = useCreateCart();
   const urlSize = localStorage.getItem("size");
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (id) {
@@ -95,22 +96,18 @@ const Product = () => {
   }, [product, id]);
 
   const handleClick = () => {
+    console.log("product", product, selectedSize);
     const productObject = {
-      userId: user?.uid,
-      Products: [
-        {
-          productID: product?.id,
-          quantity,
-          unitPrice: selectedSize?.price,
-          size
-        }
-      ]
+      productId: product?.id,
+      quantity,
+      unitPrice: selectedSize?.price,
+      size: selectedSize?.size,
+      name: product?.name,
+      image: selectedSize?.images[0],
+      description: product?.description
     };
-    createCart({
-      cartDetails: productObject,
-      userID: user?.uid,
-      setOpenAlert
-    });
+
+    dispatch(addProducts(productObject));
   };
 
   const handleQuantity = (type) => {
@@ -151,23 +148,22 @@ const Product = () => {
         )}
         <ImgContainer>
           <ThumbnailContainer>
-            {selectedSize
-              ?.images.map((img, index) => (
-                <Thumbnail
-                  key={index}
-                  src={img}
-                  alt={`Thumbnail ${index}`}
-                  onClick={() => setSelectedImage(img)}
-                  active={selectedImage === img}
-                />
-              ))}
+            {selectedSize?.images.map((img, index) => (
+              <Thumbnail
+                key={index}
+                src={img}
+                alt={`Thumbnail ${index}`}
+                onClick={() => setSelectedImage(img)}
+                active={selectedImage === img}
+              />
+            ))}
           </ThumbnailContainer>
           <CarouselContainer>
             <ZoomImage src={selectedImage} alt={product.name} />
           </CarouselContainer>
         </ImgContainer>
         <InfoContainer>
-          <LeftInfoContainer >
+          <LeftInfoContainer>
             <Title>{product.name}</Title>
             <Divider
               sx={{ marginTop: "1.5rem", borderBottomWidth: "medium" }}
@@ -214,14 +210,14 @@ const Product = () => {
               )}
             </Desc>
             <PriceContainer>
-            <DiscountPercentageContainer>
-              <Price>Rs. {selectedSize?.price}</Price>
-               <DiscountedPrice>
+              <DiscountPercentageContainer>
+                <Price>Rs. {selectedSize?.price}</Price>
+                <DiscountedPrice>
                   Rs.{" "}
                   {selectedSize?.price - selectedSize?.price * (discount / 100)}
                 </DiscountedPrice>
-                </DiscountPercentageContainer>
-                <DiscountText>{discount}% OFF</DiscountText>
+              </DiscountPercentageContainer>
+              <DiscountText>{discount}% OFF</DiscountText>
             </PriceContainer>
             {product.sizes && product.sizes.length > 0 && (
               <>
@@ -251,11 +247,11 @@ const Product = () => {
             <AddContainer>
               <AmountContainer>
                 <IconButton disabled={quantity === 1}>
-                  <Remove onClick={() => handleQuantity("dec")} />
+                  <Remove onClick={() => handleQuantity("dec")} style={{ height: "2rem", width: "2rem" }} />
                 </IconButton>
                 <Amount>{quantity}</Amount>
                 <IconButton>
-                  <Add onClick={() => handleQuantity("add")} />
+                  <Add onClick={() => handleQuantity("add")} style={{ height: "2rem", width: "2rem" }} />
                 </IconButton>
               </AmountContainer>
             </AddContainer>
@@ -280,7 +276,7 @@ const Product = () => {
       </Wrapper>
       <Divider sx={{ marginTop: "4rem" }} />
       <SimilarProducts currentProduct={product} />
-      <Divider sx={{ marginTop: "4rem" }} />
+      {/* <Divider sx={{ marginTop: "4rem" }} /> */}
       <Review
         productId={product.id}
         userId={user?.uid}

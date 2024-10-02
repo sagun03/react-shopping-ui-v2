@@ -1,6 +1,5 @@
 import { Add, Remove, Close } from "@mui/icons-material";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
 import { mobile, ScreenWith670px } from "../responsive";
 import { Fragment, useEffect, useState } from "react";
 import addToCart from "./images/addToCart.png";
@@ -8,15 +7,15 @@ import { Link } from "react-router-dom";
 import { IconButton, Typography, Button } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
-import { useCartContext } from "../context/cartContext";
-import { useUpdateCart, useDeleteCart, useDeleteProductCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
 import { useStepperContext } from "../context/StepperContext";
 import { truncateDescription } from "../utils/helper";
-const Container = styled.div``;
+import { useSelector, useDispatch } from "react-redux";
+import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
 
+const Container = styled.div``;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
-  margin-right: 8px; /* Space between checkbox and label */
+  margin-right: 8px;
   width: 20px;
   height: 20px;
   appearance: none;
@@ -24,22 +23,23 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })`
   border-radius: 4px;
   cursor: pointer;
   position: relative;
+  border: 2px solid #ccc;
 
   &:checked {
-    background-color: teal; /* Color when checked */
-    border-color: teal;
+    background-color: red;
+    border-color: red;
   }
 
   &:checked::after {
     content: '';
     position: absolute;
-    left: 6px;
-    top: 2px;
+    left: 50%;
+    top: 30%;
     width: 8px;
     height: 14px;
     border: solid white;
     border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 `;
 
@@ -206,22 +206,15 @@ const Hr = styled.hr`
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
   const { user } = useUserContext()
-  const { cartData } = useCartContext();
-  const [data, setData] = useState({});
+  // const { cartData } = useCartContext();
   const { activeStep } = useStepperContext()
+  const cartData = useSelector((state) => state.cart);
+  const dispatch = useDispatch()
 
-  const { mutate: updateCart } = useUpdateCart();
-  const { mutate: deleteCart } = useDeleteCart();
-  const { mutate: deleteProductCart } = useDeleteProductCart()
+  // const { mutate: updateCart } = useUpdateCart();
+  // const { mutate: deleteCart } = useDeleteCart();
+  // const { mutate: deleteProductCart } = useDeleteProductCart()
   const [checkedItems, setCheckedItems] = useState({});
-
-  useEffect(() => {
-    console.log(cartData, "cartData")
-    if (cartData) {
-      // setCartData(dataFetched);
-      setData(cartData);
-    }
-  }, [cartData]);
 
   useEffect(() => {
     window?.scrollTo(0, 0);
@@ -233,105 +226,46 @@ const Cart = () => {
       ...checkedItems,
       [key]: !checkedItems[key]
     };
+
     // Update selectAll if all items are selected
-    const allItemsChecked = data.products.every((item) => {
-      const itemId = item?.productDetails?.id;
-      const itemSize = item?.productDetails?.sizes?.[0]?.size;
-      return itemId && itemSize ? newCheckedItems[`${itemId}-${itemSize}`] : false;
+    const allItemsChecked = cartData.products.every((item) => {
+      const key = `${item.productId}-${item.size}`;
+      return newCheckedItems[key];
     });
 
     setCheckedItems(newCheckedItems);
     setSelectAll(allItemsChecked);
   };
 
-  // useEffect(() => {
-  //   // Set all items as checked or unchecked based on selectAll state
-  //   const newCheckedItems = data?.products?.reduce((acc, item) => {
-  //     const itemId = item.productDetails?.id;
-  //     const itemSize = item?.productDetails?.sizes[0]?.size;
-  //     if (itemId && itemSize) {
-  //       acc[`${itemId}-${itemSize}`] = selectAll;
-  //     }
-  //     return acc;
-  //   }, {});
-  //   setCheckedItems(newCheckedItems);
-  // }, [selectAll, data.products]);
-
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
-    // Generate new checked items state based on selectAll
-    const newCheckedItems = data.products.reduce((acc, item) => {
-      const itemId = item.productDetails?.id;
-      const itemSize = item?.productDetails?.sizes?.[0]?.size;
-      if (itemId && itemSize) {
-        acc[`${itemId}-${itemSize}`] = newSelectAll;
-      }
+    const newCheckedItems = cartData.products.reduce((acc, item) => {
+      const key = `${item.productId}-${item.size}`;
+      acc[key] = newSelectAll;
       return acc;
     }, {});
-    setSelectAll(newSelectAll);
+
     setCheckedItems(newCheckedItems);
+    setSelectAll(newSelectAll);
   };
 
   const handleClick = (type, item, id = "") => {
-    let sampleCartData;
-    let singleNull = false
     if (type === "dec") {
-      sampleCartData = {
-        ...data,
-        products: data.products
-          .map(value => {
-            console.log(value, "value")
-            if (value?.productDetails?.id === id && value.quantity > 1 && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
-              return { ...value, quantity: value.quantity - 1 };
-            } else if (value?.productDetails?.id === id && value.quantity === 1 && value?.productDetails?.sizes[0].size === item?.productDetails?.sizes[0]?.size) {
-              singleNull = !singleNull
-              return null;
-            }
-            return value;
-          })
-          .filter(value => value !== null)
-      };
+      dispatch(decreaseQuantity({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     } else {
-      sampleCartData = {
-        ...data,
-        products: data.products.map(value => {
-          if (value?.productDetails?.id === id && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
-            return { ...value, quantity: value.quantity + 1 };
-          }
-          return value;
-        })
-      };
-    }
-    if (singleNull) {
-      deleteProductCart({ CartID: sampleCartData?.CartID, productId: id, userID: user?.uid, size: item?.productDetails?.sizes[0]?.size })
-      singleNull = false
-    } else {
-      if (sampleCartData?.products?.length === 0) {
-        deleteCart({ CartID: sampleCartData?.CartID, userID: user?.uid });
-      } else {
-        const createdObjectForCart = {
-          userId: cartData?.userId,
-          Products: sampleCartData.products.map(value => ({
-            productID: value?.productDetails?.id,
-            quantity: value.quantity,
-            unitPrice: value?.productDetails?.sizes[0]?.price,
-            size: value?.productDetails?.sizes[0]?.size
-          }))
-        };
-        updateCart({ CartID: sampleCartData?.CartID, cartDetails: createdObjectForCart, userID: user?.uid });
-      }
+      dispatch(addProducts({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     }
   };
 
   const handleRemoveItem = (id, size) => {
-    console.log("insisissisi")
-    deleteProductCart({ CartID: data?.CartID, productId: id, userID: user?.uid, size })
+    dispatch(removeProducts({ productId: id, size }));
   };
+
   const handleRemoveAll = () => {
     Object.keys(checkedItems).forEach((key) => {
       if (checkedItems[key]) {
         const [productId, size] = key.split("-");
-        deleteProductCart({ CartID: data?.CartID, productId, userID: user?.uid, size });
+        dispatch(removeProducts({ productId, size }));
       }
     });
     setCheckedItems({});
@@ -343,6 +277,7 @@ const Cart = () => {
     console.log(checkedItems, "checkedItems")
   }, []);
 
+  console.log(cartData, "cartData", checkedItems, checkedItems.length);
   return (
     <>
       <Helmet>
@@ -350,16 +285,15 @@ const Cart = () => {
         <link rel="canonical" href="/cart" />
       </Helmet>
       <Container>
-        <Announcement />
         <Wrapper>
-          {data?.products?.length === 0 || data.length === 0 ? (
+          {cartData?.products?.length === 0 || cartData.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
             null
           )}
-          {data?.products?.length === 0 || data.length === 0 ? (
+          {cartData?.products?.length === 0 || cartData.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
@@ -371,12 +305,11 @@ const Cart = () => {
                     <TopButton>Continue Shopping</TopButton>
                   </Link>
                   <ProductSize>
-                    <b>Shopping Bag ( {data?.totalQuantity} )</b>
+                    <b>Shopping Bag ( {cartData?.quantity} )</b>
                   </ProductSize>
                 </Top>
                 <Info>
                   <Fragment>
-
                     <CheckboxesWrapper>
                       <SelectAllContainer>
                         <Checkbox
@@ -390,16 +323,16 @@ const Cart = () => {
                           variant="outlined"
                           color="error"
                           onClick={handleRemoveAll}
-                          disabled={checkedItems == null}
+                          disabled={Object.values(checkedItems).every((value) => !value)}
                         >
                           Remove Selected
                         </Button>
                       </SelectAllContainer>
                     </CheckboxesWrapper>
-                    {data?.products?.map((item) => {
-                      const itemId = item.productDetails?.id;
-                      const itemSize = item?.productDetails?.sizes[0]?.size;
-                      if (!itemId || !itemSize) return null; // Skip rendering if missing properties
+                    {cartData?.products?.map((item) => {
+                      const itemId = item.productId;
+                      const itemSize = item?.size;
+                      if (!itemId || !itemSize) return null;
                       const key = `${itemId}-${itemSize}`;
                       return (
                         <Product key={key}>
@@ -410,24 +343,24 @@ const Cart = () => {
                           />
                           <ProductDetail>
                             <Image
-                              src={item?.productDetails?.sizes[0]?.images[0]}
-                              alt={item?.productDetails?.name}
+                              src={item?.image}
+                              alt={item?.name}
                             />
                             <Details>
                               <ProductName>
-                                <b>Product:</b> {item?.productDetails?.name}
+                                <b>Product:</b> {item?.name}
                               </ProductName>
                               <ProductSize>
-                                <b>Description:</b> {truncateDescription(item?.productDetails?.description, 100)}
+                                <b>Description:</b> {truncateDescription(item?.description || "", 100)}
                               </ProductSize>
                               <ProductSize>
-                                <b>Size:</b> {item?.productDetails?.sizes?.[0]?.size}
+                                <b>Size:</b> {item?.size}
                               </ProductSize>
                               <ProductPrice>
-                                <b>Rs.</b> {item?.productDetails?.sizes[0]?.price * item?.quantity}
+                                <b>Rs.</b> {item?.unitPrice * item?.quantity}
                               </ProductPrice>
                               <ProductPrice2>
-                                <b>Rs.</b> {((item?.productDetails?.sizes[0]?.price * item?.quantity) + 0.0).toFixed(2)}
+                                <b>Rs.</b> {((item?.unitPrice * item?.quantity) + 0.0).toFixed(2)}
                               </ProductPrice2>
                             </Details>
                           </ProductDetail>
@@ -448,7 +381,6 @@ const Cart = () => {
                     })}
                   </Fragment>
                 </Info>
-                {/* <OrderSummary /> */}
               </Bottom>
             </>
           )}
