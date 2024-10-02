@@ -17,11 +17,15 @@ import {
   StyledListItem
 } from "../components/styles/Review";
 import { useReviews } from "../hooks/useReview";
+import StarIcon from "@mui/icons-material/Star";
 
 const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0]);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [totalReviews, setTotalReviews] = useState(0); // For review count
+  const [oneStarReviews, setOneStarReviews] = useState(0);
 
   const {
     data: reviewData,
@@ -45,6 +49,11 @@ const Review = ({ productId }) => {
         counts[5 - Math.round(review.rating)]++;
       });
       setRatingCounts(counts);
+
+      // Calculate total ratings and total reviews
+      setTotalRatings(reviewData.length);
+      setTotalReviews(reviewData.length); // Assuming each review has a rating
+      setOneStarReviews(counts[4]); // 1-star ratings are at index 4
     }
   }, [reviewData]);
 
@@ -68,38 +77,78 @@ const Review = ({ productId }) => {
   return (
     <ReviewContainer>
       <Typography variant="h4" sx={{ fontWeight: "bold" }} gutterBottom>
-        Customer Reviews
+        Ratings & Reviews
       </Typography>
       {reviews.length > 0 ? (
         <>
-          <RatingSection>
-            <Typography variant="h5">
-              Overall Rating: {averageRating.toFixed(1)}
-            </Typography>
-            <Rating
-              value={averageRating}
-              precision={0.1}
-              readOnly
-              sx={{ ml: 1 }}
-            />
-            <Typography variant="h6" sx={{ ml: 1 }}>
-              {getRatingLabel(averageRating)}
-            </Typography>
-          </RatingSection>
-          <Divider sx={{ my: 2 }} />
-          <RatingBreakdown>
-            {ratingCounts.map((count, index) => (
-              <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body2">{5 - index} star</Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={count > 0 ? (count / reviews.length) * 100 : 0}
-                  sx={{ mx: 1, flex: 1 }}
-                />
-                <Typography variant="body2">{count}</Typography>
-              </Box>
-            ))}
-          </RatingBreakdown>
+          <div
+            style={{
+              display: "flex",
+              paddingLeft: "30px",
+              justifyContent: "space-between",
+              gap: "50px",
+              width: "fit-content"
+            }}
+          >
+            <RatingSection>
+              <Typography variant="h5">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column", // Stacking items vertically
+                    gap: "5px",
+                    alignItems: "center"
+                  }}
+                >
+                  <Typography variant="h4" sx={{ ml: 0 }}>
+                   Overall: {getRatingLabel(averageRating)}
+                  </Typography>
+                  {/* Display the star rating next to the text */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px"
+                    }}
+                  >
+                    <Typography variant="h3">
+                      {averageRating.toFixed(1)}
+                    </Typography>
+                    <StarIcon fontSize="large" />
+                  </div>
+                </div>
+              </Typography>
+
+              {/* Display total ratings and reviews */}
+              <Typography variant="h5" sx={{ marginTop: "20px" }}>
+                {totalRatings} ratings & {totalReviews} reviews
+              </Typography>
+            </RatingSection>
+            <Divider orientation="vertical" flexItem />
+            <RatingBreakdown>
+              {ratingCounts.map((count, index) => (
+                <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="body2">
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center"
+                      }}
+                    >
+                      {5 - index} <StarIcon fontSize="medium" />
+                    </div>
+                  </Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={count > 0 ? (count / reviews.length) * 100 : 0}
+                    sx={{ mx: 1, flex: 1, borderRadius: 5 }}
+                  />
+                  <Typography variant="body2">{count}</Typography>
+                </Box>
+              ))}
+            </RatingBreakdown>
+          </div>
         </>
       ) : isReviewsLoading ? (
         <Typography variant="body1" sx={{ padding: "10px" }}>
@@ -110,6 +159,7 @@ const Review = ({ productId }) => {
           No reviews yet. Be the first to review this product!
         </Typography>
       )}
+      <Divider sx={{ mt: 2 }} />
       <StyledList>
         {reviews.map((review, index) => (
           <StyledListItem key={index}>
@@ -122,7 +172,7 @@ const Review = ({ productId }) => {
                   alignItems: "flex-start"
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                   {review.title}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
@@ -145,8 +195,8 @@ const Review = ({ productId }) => {
               </Box>
             </Box>
             <Typography
-              variant="body1"
-              sx={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
+              variant="h6"
+              sx={{ marginTop: "0.3rem", marginLeft: "3rem" }}
             >
               {review.description}
             </Typography>

@@ -1,7 +1,7 @@
 import { Button, Link } from "@mui/material";
 import { mobile, tablet, ScreenWith670px, ScreenWith960px } from "../../responsive";
 import styled from "styled-components";
-import { AddShoppingCart } from "@mui/icons-material";
+import { AddShoppingCart, Margin } from "@mui/icons-material";
 
 const Container = styled.div`
   margin-top: 75px;
@@ -20,16 +20,17 @@ const Wrapper = styled.div`
 
 const Image = styled.img`
   width: 60%;
-  max-height: 250px;
+  max-height: 150px;
   object-fit: contain;
-  ${mobile({ maxHeight: "200px", width: "90%" })}
+  ${mobile({ maxHeight: "200px", width: "90%", paddingTop: "30px" })}
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
-  padding: 20px;
-  ${ScreenWith670px({ padding: "0px 10px 0px 50px" })}
-  ${mobile({ padding: "20px" })}
+  padding-top: 40px;
+  margin-right: 50px;
+  ${ScreenWith670px({ padding: "0px 10px 0px 20px" })} /* Reduced padding */
+  ${mobile({ padding: "10px", marginBottom: "20px" })} /* Reduced padding and margin */
   position: relative;
   ${ScreenWith960px({ height: "600px" })}
 `;
@@ -49,7 +50,7 @@ const Desc = styled.p`
 `;
 
 const Price = styled.div`
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 400;
   color: #333;
   text-decoration: line-through;
@@ -205,10 +206,12 @@ const ImgContainer = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 10px;
-  gap: 4rem;
+  padding: 0px;
+  margin-left: 30px;
+  gap: 2rem; /* Reduced gap for mobile */
   align-items: center;
-  ${ScreenWith960px({ flexDirection: "column-reverse", gap: "2rem" })}
+  ${ScreenWith960px({ flexDirection: "column-reverse", gap: "1.5rem" })} /* Adjust gap */
+  ${mobile({ height: "400px", paddingTop: "20px", gap: "1rem" })} /* Further reduced gap for mobile */
 `;
 
 const CarouselContainer = styled.div`
@@ -281,7 +284,7 @@ const PriceContainer = styled.div`
 `;
 
 const DiscountedPrice = styled.span`
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
   color: #e53935;
   margin-right: 10px;
@@ -289,7 +292,7 @@ const DiscountedPrice = styled.span`
 `;
 
 const DiscountText = styled.span`
-  font-size: 2.2rem;
+  font-size: 2.0rem;
   color: green;
   padding: 2px 15px;
   font-weight: bold;
@@ -347,10 +350,10 @@ const AddToCartIcon = styled(AddShoppingCart)`
 
 const LeftInfoContainer = styled.div`
   overflow-y: scroll;
-  height: 85%;
+  height: 100%;
   ${ScreenWith960px({ height: "650px" })}
   ${tablet({ height: "750px" })}
-  ${mobile({ height: "fit-content", overflowY: "unset", marginBottom: "30px" })}
+  ${mobile({ height: "fit-content", overflowY: "unset", marginBottom: "20px" })}
 `;
 
 const DiscountPercentageContainer = styled.div`
