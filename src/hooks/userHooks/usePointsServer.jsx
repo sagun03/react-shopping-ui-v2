@@ -4,7 +4,7 @@ import { getUserPoints, createPoints, updatePoints } from "../../services/userSe
 
 export const useGetPoints = (payload) => {
   return useQuery({
-    queryKey: `${payload.uid}$:user_points`,
+    queryKey: ["user_points"],
     queryFn: () => getUserPoints(payload)
   })
 };
@@ -17,7 +17,8 @@ export const useCreatePoints = () => {
     },
     onError: (error) => {
       console.error(error);
-    }
+    },
+    invalidates: ["user_points"]
   });
 }
 
@@ -29,6 +30,7 @@ export const useUpdatePoints = (payload) => {
     },
     onError: (error) => {
       console.error(error);
-    }
+    },
+    invalidates: [`${payload.uid}$:user_points`]
   });
 }

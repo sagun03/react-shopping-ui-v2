@@ -21,6 +21,7 @@ import {
   RatingContainer
 } from "../components/styles/Review";
 import { useReviews } from "../hooks/useReview";
+import StarIcon from "@mui/icons-material/Star";
 
 const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
