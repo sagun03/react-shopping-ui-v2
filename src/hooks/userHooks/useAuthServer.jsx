@@ -2,14 +2,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { login, register, logout } from "../../services/authServices";
 import { useUserContext } from "../../context/UserContext";
+import { set } from "zod";
 
 export const useLogin = () => {
-  const { setError } = useUserContext();
+  const { setError, setIsNewUser } = useUserContext();
   return useMutation({
     mutationFn: (userData) => login(userData),
     onSuccess: (data) => {
       setError(null);
-      console.log(data);
+      setIsNewUser(data.data.newUser);
     },
     onError: (error) => {
       setError(error.message);
@@ -18,12 +19,12 @@ export const useLogin = () => {
 };
 
 export const useRegister = () => {
-  const { setError } = useUserContext();
+  const { setError, setIsNewUser } = useUserContext();
   return useMutation({
     mutationFn: (userData) => register(userData),
     onSuccess: (data) => {
       setError(null);
-      console.log(data);
+      setIsNewUser(data.data.newUser);
     },
     onError: (error) => {
       setError(error.message);

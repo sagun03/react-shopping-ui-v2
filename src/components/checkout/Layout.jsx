@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
           <CartDetail>
             <div style={{
               position: "sticky",
-              top: "30%"
+              top: "20%"
             }}>
               <OrderSummary />
             </div>

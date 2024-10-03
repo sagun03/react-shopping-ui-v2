@@ -17,6 +17,7 @@ import {
   StyledListItem
 } from "../components/styles/Review";
 import { useReviews } from "../hooks/useReview";
+import StarIcon from "@mui/icons-material/Star";
 
 const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);
@@ -72,34 +73,62 @@ const Review = ({ productId }) => {
       </Typography>
       {reviews.length > 0 ? (
         <>
+        <div style={{
+          display: "flex",
+          paddingLeft: "30px",
+          justifyContent: "space-between",
+          gap: "50px",
+          width: "fit-content"
+        }}>
           <RatingSection>
             <Typography variant="h5">
-              Overall Rating: {averageRating.toFixed(1)}
+            <div style={
+                {
+                  display: "flex",
+                  gap: "5px",
+                  alignItems: "center"
+                }
+              }>
+              {averageRating.toFixed(1)}
+              <StarIcon fontSize="large"/>
+            </div>
+              {/* Overall Rating: {averageRating.toFixed(1)} */}
             </Typography>
-            <Rating
+            {/* <Rating
               value={averageRating}
               precision={0.1}
               readOnly
               sx={{ ml: 1 }}
-            />
-            <Typography variant="h6" sx={{ ml: 1 }}>
+            /> */}
+            {/* <Typography variant="h6" sx={{ ml: 1 }}>
               {getRatingLabel(averageRating)}
-            </Typography>
+            </Typography> */}
           </RatingSection>
-          <Divider sx={{ my: 2 }} />
+          <Divider orientation="vertical" flexItem />
           <RatingBreakdown>
             {ratingCounts.map((count, index) => (
               <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body2">{5 - index} star</Typography>
+                <Typography variant="body2">
+                  <div style={
+                    {
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center"
+                    }
+                  }>
+                    {5 - index} <StarIcon fontSize="small"/>
+                  </div>
+                </Typography>
                 <LinearProgress
                   variant="determinate"
                   value={count > 0 ? (count / reviews.length) * 100 : 0}
-                  sx={{ mx: 1, flex: 1 }}
+                  sx={{ mx: 1, flex: 1, borderRadius: 5, backgroundColor: "grey.300" }}
                 />
                 <Typography variant="body2">{count}</Typography>
               </Box>
             ))}
           </RatingBreakdown>
+          </div>
         </>
       ) : isReviewsLoading ? (
         <Typography variant="body1" sx={{ padding: "10px" }}>
