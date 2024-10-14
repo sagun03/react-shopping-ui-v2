@@ -54,8 +54,10 @@ export const ButtonStyles = {
   marginTop: "10px",
   "&:hover": {
     width: "99%",
-    height: "clamp(28px, 4.8vw, 48px)",
-    backgroundColor: "black"
+    height: "clamp(28px, 5vw, 50px)",
+    backgroundColor: "transparent",
+    color: "black",
+    border: "1px solid black"
   }
 }
 
@@ -85,9 +87,9 @@ export const ChipStyles = {
   border: "1px solid rgba(0, 0, 0, 0.5)",
   color: "rgba(0, 0, 0, 0.5)",
   "&:hover": {
-    color: "#008080",
-    border: "1px solid #008080",
-    backgroundColor: "rgba(0, 128, 128, 0.1)"
+    color: "White",
+    border: "1px solid #F44336",
+    backgroundColor: "#F44336"
   }
 }
 
