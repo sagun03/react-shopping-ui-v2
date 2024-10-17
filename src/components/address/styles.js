@@ -115,6 +115,7 @@ export const ErrorBoxContainer = styled.div`
   background-color: rgba(255, 0, 0, 0.1);
   border-radius: 5px;
   padding: 5px;
+  margin-block: 10px;
 `
 export const InnerWrapper = styled.div`
   display: flex;
