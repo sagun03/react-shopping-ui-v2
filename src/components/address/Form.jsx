@@ -89,7 +89,7 @@ const Form = ({ index, closeModal }) => {
     const data = {
       ...state.contact,
       ...state.address,
-      pref: pref,
+      pref,
       defaultAddress: state.defaultAddress
     }
     return data;
@@ -212,18 +212,18 @@ const Form = ({ index, closeModal }) => {
         <ChipGroup>
           <Button variant="outlined" sx={ pref === "HOME" ? {
             ...ChipStyles,
-            color: "#008080",
-            border: "1px solid #008080",
-            backgroundColor: "rgba(0, 128, 128, 0.1)"
+            color: "white",
+            border: "1px solid #FF7961",
+            backgroundColor: "#FF7961"
           } : ChipStyles} onClick={() => {
             setPref("HOME");
             dispatch({ type: "UPDATE_PREF", value: "HOME" })
           }}> Home </Button>
           <Button variant="outlined" sx={ pref === "WORK" ? {
             ...ChipStyles,
-            color: "#008080",
-            border: "1px solid #008080",
-            backgroundColor: "rgba(0, 128, 128, 0.1)"
+            color: "white",
+            border: "1px solid #FF7961",
+            backgroundColor: "#FF7961"
           } : ChipStyles} onClick={() => {
             setPref("WORK");
             dispatch({ type: "UPDATE_PREF", value: "WORK" })
@@ -237,7 +237,7 @@ const Form = ({ index, closeModal }) => {
           onChange={(e) => {
             dispatch({ type: "UPDATE_DEFAULT", value: e.target.checked })
           }}
-          sx={{ color: "#008080 !important" }}
+          sx={{ color: "#F44336 !important" }}
           />
           <CommonText>Make This my default Address</CommonText>
         </CheckBoxContainer>
@@ -245,13 +245,13 @@ const Form = ({ index, closeModal }) => {
       {
         index >= 0 ? (
           <ButtonGroup>
-            <SaveButton type="submit" name="Update" styles={{ backgroundColor: "#008080", ...ButtonStyles }}/>
-            <CancelButton onClick={handleDelete} name="Delete" styles={{ backgroundColor: "#FF6347", ...ButtonStyles }}/>
+            <SaveButton type="submit" name="Update" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
+            <CancelButton onClick={handleDelete} name="Delete" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
           </ButtonGroup>
         ) : (
           <ButtonGroup>
-            <SaveButton type="submit" name="Save" styles={{ backgroundColor: "#008080", ...ButtonStyles }}/>
-            <CancelButton onClick={closeModal} name="Cancel" styles={{ backgroundColor: "#FF6347", ...ButtonStyles }}/>
+            <SaveButton type="submit" name="Save" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
+            <CancelButton onClick={closeModal} name="Cancel" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
           </ButtonGroup>
         )
       }

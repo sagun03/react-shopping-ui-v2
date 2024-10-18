@@ -6,7 +6,6 @@ import Form from "./Form";
 import { useAddressContext } from "./DataProvider";
 import PropTypes from "prop-types";
 import AddressCard from "./AddressCard";
-import { Button } from "style-components";
 
 const modalRoot = document.createElement("div");
 const AddressModal = ({ children }) => {
@@ -31,6 +30,14 @@ const AddressPanel = () => {
   const [showModal, setShowModal] = useState(false);
   const [index, setIndex] = useState(0);
   const [newAddress, setNewAddress] = useState(false);
+  useEffect(() => {
+    if (address.length === 0) {
+      setNewAddress(true);
+    } else {
+      setNewAddress(false);
+    }
+  }, [address]);
+
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
 
