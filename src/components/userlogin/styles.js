@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { classes } from "mui-tel-input"
+import styled, { keyframes } from "styled-components";
+import { classes } from "mui-tel-input";
+import { mobile, ScreenWith1200px, ScreenWith1470px, ScreenWith670px } from "../../responsive";
 
 export const OverlayWrapper = styled.div`
   width: 100vw;
@@ -14,7 +15,7 @@ export const OverlayWrapper = styled.div`
     top: 0;
     height: 100vh;
     width: 300vw;
-    background: linear-gradient(180deg, #2BB8FF, #1A2999);
+    background: linear-gradient(180deg, #2bb8ff, #1a2999);
     transition: 1s ease-in-out;
     z-index: 6;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -54,8 +55,28 @@ export const OverlayWrapper = styled.div`
 
 export const Text = styled.div`
   @media (max-width: 500px) {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
+`;
+
+const zoomIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+export const LogoImg = styled.img`
+  height: 100px;
+  width: 100px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  filter: brightness(1.3);
+  animation: ${zoomIn} 1s ease-in-out;
 `;
 
 export const Container = styled.div`
@@ -72,7 +93,7 @@ export const Container = styled.div`
     border-radius: 10px !important;
     margin-bottom: 15px;
   }
-  
+
   @keyframes moveDesktop {
     0% {
       transform: translate(150px, 0);
@@ -80,8 +101,8 @@ export const Container = styled.div`
     100% {
       transform: translate(0, 0);
     }
-  } 
-  
+  }
+
   @keyframes moveMobile {
     0% {
       transform: translate(-150px, 0);
@@ -96,7 +117,7 @@ export const Container = styled.div`
     animation: moveDesktop 0.5s ease-in-out;
   }
   @media (max-width: 500px) {
-    transform: scale(0.8);
+    transform: scale(0.85);
     transition: transform 0.5s ease-in-out;
     animation: moveMobile 0.5s ease-in-out;
   }
@@ -110,9 +131,9 @@ export const LinkWrappper = styled.button`
   cursor: pointer;
   text-decoration: underline;
   border: none;
+  margin-top: 10px;
 
   @media (max-width: 500px) {
-    margin-top: 5px;
     margin-bottom: 15px;
     font-size: 1.1em;
 
@@ -123,25 +144,54 @@ export const LinkWrappper = styled.button`
       margin-bottom: 5px;
     }
   }
-`
+`;
+
+const fadeInSlideUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const Greet = styled.div`
   width: 50%;
-  height: 100vh;
+  height: 70vh;
   position: relative;
   display: flex;
   z-index: 10;
   align-items: center;
   justify-content: center;
-  font-size: 3em;  
+  font-size: 3em;
   font-weight: 700;
   color: white;
+  display: flex;
+  flex-direction: column;
+  animation: ${fadeInSlideUp} 1s ease-in-out;
 
   @media (max-width: 500px) {
     width: 100%;
+    height: 40vh;
     font-size: 2em;
     text-align: top;
   }
-`
+`;
+export const WelcomeSubtext = styled.p`
+  font-size: 1.4rem;
+  backgroundCOlor: #2bb8ff;
+  margin-top: 10px;
+  text-align: center;
+  padding: 0 20px;
+  
+  ${mobile({ fontSize: ".4rem" })}
+  ${ScreenWith670px({ fontSize: ".6rem" })}
+  ${ScreenWith1200px({ fontSize: ".8rem" })}
+  ${ScreenWith1470px({ fontSize: "1rem" })}
+`;
+
 export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -152,26 +202,26 @@ export const DetailWrapper = styled.div`
   position: absolute;
   z-index: 10;
   transition: 1s ease-in-out;
-  
+
   @media (max-width: 500px) {
     top: none;
     bottom: 0 !important;
     width: 100vw;
-    height: 40vh;
+    height: 55vh;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     background: white;
 
     &.expandedXL {
-      height: 50vh;
+      height: 55vh;
     }
   }
-  
+
   @media (min-width: 500px) {
     top: 0;
     right: 0;
   }
-`
+`;
 
 export const FormWrapper = styled.form`
   width: 100%;
@@ -180,7 +230,6 @@ export const FormWrapper = styled.form`
   justify-content: center;
   align-items: center;
 
-
   @keyframes moveDesktop {
     0% {
       transform: translate(150px, 0);
@@ -188,8 +237,8 @@ export const FormWrapper = styled.form`
     100% {
       transform: translate(0, 0);
     }
-  } 
-  
+  }
+
   @keyframes moveMobile {
     0% {
       transform: translate(-150px, 0);
@@ -205,11 +254,11 @@ export const FormWrapper = styled.form`
   }
 
   @media (max-width: 500px) {
-    transform: scale(0.8);
+    transform: scale(0.85);
     transition: transform 0.5s ease-in-out;
     animation: moveMobile 0.5s ease-in-out;
   }
-`
+`;
 
 export const InputWrapper = styled.input`
   width: 100%;
@@ -220,7 +269,7 @@ export const InputWrapper = styled.input`
   font-size: 1.1em;
   border-radius: 10px;
   margin-bottom: 15px;
-`
+`;
 
 export const ButtonWrapper = styled.button`
   width: calc(100% + 20px);
@@ -232,7 +281,8 @@ export const ButtonWrapper = styled.button`
   color: white;
   font-weight: 500;
   cursor: pointer;
-`
+  margin-top: 15px;
+`;
 
 export const QuickGroup = styled.div`
   display: flex;
@@ -244,7 +294,7 @@ export const QuickGroup = styled.div`
     margin-top: -20px;
     transform: scale(0.8);
   }
-`
+`;
 
 export const GroupIcon = styled.div`
   width: 40px;
@@ -261,7 +311,7 @@ export const GroupIcon = styled.div`
     background-color: #2668c6;
     color: white;
   }
-`
+`;
 
 export const InnerWrapper = styled.div`
   display: flex;
@@ -273,35 +323,33 @@ export const InnerWrapper = styled.div`
   border-radius: 2em;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
-  height: 230px;
-  
-  &.expanded {
-    height: 260px;
+  height: 270px;
 
+  &.expanded {
+    height: 310px;
+    gap: 10px;
     @media (max-width: 500px) {
-      height: 200px !important;
+      height: 300px !important;
       padding-bottom: 30px;
     }
   }
 
-   &.expandedXL {
-    height: 350px;
+  &.expandedXL {
+    height: 390px;
 
     @media (max-width: 500px) {
-      height: 270px !important;
-      padding-top: 5px;
+      height: 300px !important;
       padding-bottom: 30px;
     }
-
   }
 
   @media (max-width: 500px) {
-    height: 150px;
+    height: 190px;
     width: 70%;
   }
 
   transition: height 0.5s ease-in-out;
-`
+`;
 
 export const ModalContainer = styled.div`
   position: fixed;
@@ -312,7 +360,7 @@ export const ModalContainer = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 10;
-`
+`;
 
 export const ModalChild = styled.div`
   width: 20%;
@@ -332,7 +380,7 @@ export const ModalChild = styled.div`
     width: 80%;
     height: 15%;
   }
-`
+`;
 export const CloseButton = styled.button`
   width: 100%;
   height: 40px;
@@ -343,4 +391,4 @@ export const CloseButton = styled.button`
   color: white;
   font-weight: 500;
   cursor: pointer;
-`
+`;
