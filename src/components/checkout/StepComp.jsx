@@ -23,7 +23,7 @@ const StepComp = () => {
           </span>
         ) : (
           <>
-            <Connector key={index} ownerState={{ completed: completed, i: index }}/>
+            <Connector key={index} ownerState={{ completed, i: index }}/>
             <span onClick={handleClick(index)} key={ index }>
               <StepCompContainer key={index}>
                 <IconLabel active={activeStep === index} completed={completed.has(index)} icon={stepIcons[index]} />
