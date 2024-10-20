@@ -27,6 +27,7 @@ export const useUpdateCart = () => {
 
   return useMutation({
     mutationFn: async ({ CartID, cartDetails }) => {
+      console.log(CartID, "CartID")
       if (!CartID) {
         throw new Error("CartID is required");
       }
@@ -52,19 +53,19 @@ export const useCreateCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ cartDetails }) => {
+    mutationFn: async (cartDetails) => {
+      console.log(cartDetails, "cartDetails");
+      // Directly call createCartProducts with cartDetails
       return createCartProducts(cartDetails);
     },
     onError: (error) => {
       console.error("Error creating cart:", error);
+      // Optionally, show a notification here
     },
-    onSuccess: (_, { userID, setOpenAlert }) => {
-      console.log("Cart created successfully");
-      setOpenAlert(true);
-      // Ensure the query is invalidated and refetched
-      queryClient.invalidateQueries({
-        queryKey: ["cart", userID] // Invalidate with `shouldFetchCartUpdate` as true
-      });
+    onSuccess: (data, variables) => {
+      console.log("Cart created successfully:", data);
+      // Optionally, you can invalidate queries or show a success alert
+      queryClient.invalidateQueries(["cart", variables?.userId]);
     }
   });
 };
@@ -95,8 +96,8 @@ export const useDeleteProductCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ CartID, productId, size }) => {
-      return deleteProductCart(CartID, productId, size);
+    mutationFn: async ({ CartID, cartDetails }) => {
+      return deleteProductCart(CartID, cartDetails);
     },
     onError: (error) => {
       console.error("Error deleting product from cart:", error);

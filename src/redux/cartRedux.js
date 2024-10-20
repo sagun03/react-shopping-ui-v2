@@ -6,23 +6,25 @@ const cartSlice = createSlice({
     userId: null,
     products: [],
     quantity: 0,
-    total: 0
+    total: 0,
+    lastQuantity: 0,
+    cartResponse: []
   },
   reducers: {
     setUser: (state, action) => {
       state.userId = action.payload.userId;
     },
     addProducts: (state, action) => {
-      const { productId, quantity, unitPrice, size, name, image, description } = action.payload;
+      const { productID, quantity, unitPrice, size, name, image, description } = action.payload;
       const existingProduct = state.products.find(
-        (item) => item.productId === productId && item.size === size
+        (item) => item.productID === productID && item.size === size
       );
       console.log(existingProduct, "existingProduct", action.payload);
       if (existingProduct) {
         existingProduct.quantity += quantity;
       } else {
         state.products.push({
-          productId,
+          productID,
           quantity,
           unitPrice,
           size,
@@ -32,6 +34,8 @@ const cartSlice = createSlice({
         });
       }
       console.log(action.payload, "action.payload");
+      console.log(state.products, ">>>>>>>>>?????????")
+      state.lastQuantity = state.quantity
       state.quantity += quantity;
       state.total += unitPrice * quantity;
     },
@@ -40,6 +44,7 @@ const cartSlice = createSlice({
       const existingProduct = state.products.find(
         (item) => item.productId === productId && item.size === size
       );
+      console.log(existingProduct, "existingProduct")
 
       if (existingProduct) {
         state.total -= existingProduct.unitPrice; // Update total
@@ -68,13 +73,28 @@ const cartSlice = createSlice({
         );
       }
     },
+    setCartResponse: (state, action) => {
+      console.log(action, "dattatata")
+      state.cartResponse = action.payload
+      state.quantity = action.payload.totalQuantity
+      state.lastQuantity = state.quantity
+    },
     clearCart: (state) => {
       state.products = [];
+    },
+    clearCartResponse: (state) => {
       state.quantity = 0;
-      state.total = 0;
+      state.cartResponse = {}
+    },
+    setCart: (state, action) => {
+      const data = action.payload;
+      console.log(data, "datatatatataReduyxxxxx")
+      // state.quantity = data?.totalQuantity;
+      // state.lastQuantity = data?.totalQuantity
+      // state.cartResponse = data;
     }
   }
 });
 
-export const { setUser, addProducts, removeProducts, clearCart, decreaseQuantity } = cartSlice.actions;
+export const { setUser, addProducts, removeProducts, clearCart, decreaseQuantity, setCartResponse, setCart, clearCartResponse } = cartSlice.actions;
 export default cartSlice.reducer;

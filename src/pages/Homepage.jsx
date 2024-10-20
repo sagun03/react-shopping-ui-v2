@@ -24,6 +24,7 @@ const Homepage = () => {
   const dataFetched = useFetchCartData(user);
 
   useEffect(() => {
+    console.log(dataFetched, "dataFetched")
     if (cartData.length === 0 && dataFetched && user) {
       setCartData(dataFetched);
     }

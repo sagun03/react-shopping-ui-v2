@@ -48,13 +48,10 @@ const ProductRangeCard = ({
 
   const handleClick = () => {
     const productObject = {
-      productId: id,
+      productID: id,
       quantity: 1,
       unitPrice: price,
-      size,
-      name,
-      image: images[0],
-      description
+      size
     }
     dispatch(addProducts(productObject));
   };
