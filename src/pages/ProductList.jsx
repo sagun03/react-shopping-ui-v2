@@ -15,7 +15,7 @@ const ProductList = () => {
       <NavBar />
       <Announcement />
       <ProductsRange />
-      <BottomNav />
+      {/* <BottomNav /> */}
     </>
   )
 }

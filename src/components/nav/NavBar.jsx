@@ -40,6 +40,8 @@ import LoginIcon from "@mui/icons-material/Login";
 import styled from "styled-components";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import CustomDrawer from "./CustomeDrawer";
 
 const menu = ["Home", "Products", "About Us", "Contact Us"];
 
@@ -232,10 +234,10 @@ const NavBar = () => {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={toggleDrawer(true)}
+            onClick={toggleDrawer(!anchor)}
             sx={{ color: "white" }}
           >
-            <MenuIcon />
+            {anchor ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
           </DrawerContaienr>
           <Link to="/">
@@ -323,14 +325,18 @@ const NavBar = () => {
       <Backdrop open={loading} onClick={() => setLoading(false)}>
         <CircularProgress color="primary" />
       </Backdrop>
-      <SwipeableDrawer
+      {/* <SwipeableDrawer
         open={anchor}
         anchor="left"
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
+        sx={{
+          top: "65px"
+        }}
       >
         <div>Hello</div>
-      </SwipeableDrawer>
+      </SwipeableDrawer> */}
+      <CustomDrawer anchor={anchor} toggleDrawer={toggleDrawer} />
     </Container>
   );
 };
