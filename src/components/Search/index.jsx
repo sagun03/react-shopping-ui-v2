@@ -8,6 +8,7 @@ import {
 import SearchBox from "./SearchBox";
 import ReactDOM from "react-dom";
 import propTypes from "prop-types";
+import { NavText } from "../styles/Navbar";
 
 const SearchModal = ({ children }) => {
   const modalRoot = document.body;
@@ -28,7 +29,7 @@ SearchModal.propTypes = {
   children: propTypes.node
 }
 
-const Component = () => {
+const Search = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -39,10 +40,8 @@ const Component = () => {
   return (
     <>
     <SearchContainer onClick={handleOpen}>
-      <SearchIcon sx={{
-        fontSize: "20px"
-      }}/>
-      search
+      <SearchIcon />
+      <NavText>Search</NavText>
     </SearchContainer>
     {open &&
       <SearchModal>
@@ -55,4 +54,4 @@ const Component = () => {
   );
 }
 
-export default Component;
+export default Search;

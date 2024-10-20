@@ -5,7 +5,7 @@ import { Add, Remove } from "@mui/icons-material";
 import Loader from "../components/Loader";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";

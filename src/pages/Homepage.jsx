@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 // import Announcement from "../components/Announcement";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 // import Products from "../components/Products";
 import FeaturedCategories from "../components/FeaturedCategories";
@@ -81,7 +81,7 @@ const Homepage = () => {
         <SimpleMap />
         <NewsLetter />
         <Footer />
-        <BottomNav />
+        {/* <BottomNav /> */}
       </div>
     </>
   );

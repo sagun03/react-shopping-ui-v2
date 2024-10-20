@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "../components/NavBar";
+import Navbar from "../components/nav/NavBar";
 import Announcement from "../components/Announcement";
 import { UserProfileContainer, TopContainer } from "../components/styles/UserProfile";
 import ProfilePanelSwitcher from "../components/ProfilePanelSwitcher";
