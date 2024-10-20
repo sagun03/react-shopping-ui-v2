@@ -11,8 +11,8 @@ import { useUserContext } from "../context/UserContext";
 import { useStepperContext } from "../context/StepperContext";
 import { truncateDescription } from "../utils/helper";
 import { useSelector, useDispatch } from "react-redux";
-import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
-
+import { addProducts, decreaseQuantity, removeProducts, setCartResponse, clearCart } from "../redux/cartRedux";
+import { useCreateCart, useUpdateCart, useDeleteProductCart } from "../hooks/useCart";
 const Container = styled.div``;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
   margin-right: 8px;
@@ -211,15 +211,40 @@ const Cart = () => {
   const cartData = useSelector((state) => state.cart);
   const dispatch = useDispatch()
 
-  // const { mutate: updateCart } = useUpdateCart();
+  const { mutate: createCart } = useCreateCart();
+  const { mutate: updateCart } = useUpdateCart();
+  const { mutate: deleteProductCart } = useDeleteProductCart();
   // const { mutate: deleteCart } = useDeleteCart();
-  // const { mutate: deleteProductCart } = useDeleteProductCart()
   const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
     window?.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    // Check if quantity has changed
+    console.log(cartData, "datatataaa", cartData?.quantity !== cartData?.lastQuantity)
+    if (cartData && cartData?.quantity !== cartData?.lastQuantity) {
+      console.log("Cart data changed", cartData);
+
+      // Prepare cartDetails object
+      const cartDetails = {
+        userId: user?.uid,
+        Products: cartData?.products
+      };
+      // Pass dispatch to handleCartCreation
+      createCart(cartDetails, {
+        onSuccess: (data) => {
+          console.log("Cart created successfully:", data);
+          dispatch(setCartResponse(data))
+          dispatch(clearCart())
+        },
+        onError: (error) => {
+          console.error("Error creating cart:", error);
+        }
+      });
+    }
+  }, []); // Include dependencies
   const handleCheckboxChange = (itemId, itemSize) => {
     const key = `${itemId}-${itemSize}`;
     const newCheckedItems = {
@@ -249,16 +274,72 @@ const Cart = () => {
     setSelectAll(newSelectAll);
   };
 
+  const handleCartUpdate = (CartID, cartDetails, onSuccessMessage) => {
+    updateCart({ CartID, cartDetails }, {
+      onSuccess: (data) => {
+        console.log(onSuccessMessage, data);
+        dispatch(setCartResponse(data));
+        dispatch(clearCart());
+      },
+      onError: (error) => {
+        console.error("Error updating cart:", error);
+      }
+    });
+  };
+
   const handleClick = (type, item, id = "") => {
+    const CartID = cartData?.cartResponse?.CartID;
+    const productDetails = item?.productDetails;
+
+    if (!CartID || !productDetails) return;
+
+    const cartDetails = {
+      userId: user?.uid,
+      Products: [{
+        productID: productDetails.id,
+        unitPrice: productDetails.sizes[0].price,
+        size: productDetails.sizes[0].size,
+        quantity: type === "dec" ? item?.quantity - 1 : item?.quantity + 1
+      }]
+    };
+
     if (type === "dec") {
-      dispatch(decreaseQuantity({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(decreaseQuantity({ productID: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+
+      if (item.quantity === 1) {
+        deleteProductCart({ CartID, cartDetails: { productId: productDetails.id, size: productDetails.sizes[0].size } }, {
+          onSuccess: (data) => {
+            console.log("Cart item deleted successfully:", data);
+            dispatch(setCartResponse(data));
+            dispatch(clearCart());
+          },
+          onError: (error) => {
+            console.error("Error deleting cart item:", error);
+          }
+        });
+      } else {
+        handleCartUpdate(CartID, cartDetails, "Cart updated successfully (decrement).");
+      }
     } else {
-      dispatch(addProducts({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(addProducts({ productID: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      handleCartUpdate(CartID, cartDetails, "Cart updated successfully (increment).");
     }
   };
 
-  const handleRemoveItem = (id, size) => {
-    dispatch(removeProducts({ productId: id, size }));
+  const handleRemoveItem = (item, id, size) => {
+    const CartID = cartData?.cartResponse?.CartID;
+    const productDetails = item?.productDetails;
+    dispatch(decreaseQuantity({ productID: id, size: item?.size, quantity: item?.quantity, unitPrice: item?.unitPrice }));
+    deleteProductCart({ CartID, cartDetails: { productId: productDetails.id, size: productDetails.sizes[0].size } }, {
+      onSuccess: (data) => {
+        console.log("Cart item deleted successfully:", data);
+        dispatch(setCartResponse(data));
+        dispatch(clearCart());
+      },
+      onError: (error) => {
+        console.error("Error deleting cart item:", error);
+      }
+    });
   };
 
   const handleRemoveAll = () => {
@@ -274,10 +355,9 @@ const Cart = () => {
 
   useEffect(() => {
     console.log(activeStep, "activeStepssss");
-    console.log(checkedItems, "checkedItems")
+    console.log(checkedItems, "checkedItems");
+    console.log(cartData, "cartData")
   }, []);
-
-  console.log(cartData, "cartData", checkedItems, checkedItems.length);
   return (
     <>
       <Helmet>
@@ -293,7 +373,7 @@ const Cart = () => {
           ) : (
             null
           )}
-          {cartData?.products?.length === 0 || cartData.length === 0 ? (
+          {cartData?.cartResponse?.products?.length === 0 || cartData.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
@@ -329,38 +409,39 @@ const Cart = () => {
                         </Button>
                       </SelectAllContainer>
                     </CheckboxesWrapper>
-                    {cartData?.products?.map((item) => {
-                      const itemId = item.productId;
+                    {cartData?.cartResponse?.products?.map((item) => {
+                      const product = item?.productDetails;
+                      const itemId = product?.id;
                       const itemSize = item?.size;
-                      if (!itemId || !itemSize) return null;
+                      // console.log(item.productDetails.sizes[0].images[0], "item?.productDetails?.size[0]?.images[0]")
+
                       const key = `${itemId}-${itemSize}`;
+
                       return (
                         <Product key={key}>
-                          <CloseIcon onClick={() => handleRemoveItem(itemId, itemSize)} />
+                          <CloseIcon onClick={() => handleRemoveItem(item, itemId, itemSize)} />
                           <Checkbox
                             checked={checkedItems[key] || false}
                             onChange={() => handleCheckboxChange(itemId, itemSize)}
                           />
                           <ProductDetail>
-                            <Image
-                              src={item?.image}
-                              alt={item?.name}
-                            />
+                            {/* Render the image and name of the product */}
+                            <Image src={item.productDetails.sizes[0].images[0]} alt={product?.name} />
                             <Details>
                               <ProductName>
-                                <b>Product:</b> {item?.name}
+                                <b>Product:</b> {product?.name}
                               </ProductName>
                               <ProductSize>
-                                <b>Description:</b> {truncateDescription(item?.description || "", 100)}
+                                <b>Description:</b> {truncateDescription(product?.description || "", 100)}
                               </ProductSize>
                               <ProductSize>
-                                <b>Size:</b> {item?.size}
+                                <b>Size:</b> {item?.productDetails?.sizes[0]?.size}
                               </ProductSize>
                               <ProductPrice>
-                                <b>Rs.</b> {item?.unitPrice * item?.quantity}
+                                <b>Rs.</b> {item?.productDetails?.sizes[0]?.price * item?.quantity}
                               </ProductPrice>
                               <ProductPrice2>
-                                <b>Rs.</b> {((item?.unitPrice * item?.quantity) + 0.0).toFixed(2)}
+                                <b>Rs.</b> {((item?.productDetails?.sizes[0]?.price * item?.quantity) + 0.0).toFixed(2)}
                               </ProductPrice2>
                             </Details>
                           </ProductDetail>

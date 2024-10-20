@@ -120,7 +120,7 @@ const ProductsRange = () => {
             <ProductHeaderCount>
               Browse Products ({flattenedAndSortedProducts.length})
             </ProductHeaderCount>
-            <ProductHeaderLeft>
+            <ProductHeaderLeft>\
               <ProductHeaderLeftContent>
                 <HeaderLeftSelect>
                   <Select

@@ -98,13 +98,10 @@ const Product = () => {
   const handleClick = () => {
     console.log("product", product, selectedSize);
     const productObject = {
-      productId: product?.id,
+      productID: product?.id,
       quantity,
       unitPrice: selectedSize?.price,
-      size: selectedSize?.size,
-      name: product?.name,
-      image: selectedSize?.images[0],
-      description: product?.description
+      size: selectedSize?.size
     };
 
     dispatch(addProducts(productObject));

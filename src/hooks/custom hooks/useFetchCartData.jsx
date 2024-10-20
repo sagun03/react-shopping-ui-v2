@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../useCart";
 import { useCartContext } from "../../context/cartContext";
+import { clearCart, setCart } from "../../redux/cartRedux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useFetchCartData = (user) => {
+  const dispatch = useDispatch();
   const [dataFetched, setDataFetched] = useState(null);
-  const { cartData, setCartData, setIsCartData } = useCartContext();
+  const cartData = useSelector((state) => state.cart);
 
   // Only call useCart if cartData is not available
   const shouldFetchCart = cartData.length === 0;
@@ -13,13 +16,12 @@ const useFetchCartData = (user) => {
   const { data: cartItemsData, isLoading } = useCart(user, shouldFetchCart);
 
   useEffect(() => {
-    if (!isLoading && cartItemsData && cartData.length === 0) {
-      console.log("Setting cart items data:", cartItemsData);
-      setDataFetched(cartItemsData);
-      setIsCartData(true)
-      setCartData(cartItemsData); // Update the context with the fetched data
-    }
-  }, [cartItemsData, isLoading, cartData.length, setCartData]);
+    // dispatch(clearCart())
+
+    console.log("Setting cart items data:", cartItemsData, cartData);
+    console.log(cartItemsData?.products?.length !== cartData?.cartResponse?.products?.length)
+    dispatch(setCart(cartItemsData))
+  }, [cartItemsData, isLoading, cartData.length]);
 
   return dataFetched;
 };

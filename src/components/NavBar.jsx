@@ -16,6 +16,7 @@ import Alert from "./Alert";
 import { mobile, ScreenWith670px } from "../responsive";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { clearCartResponse } from "../redux/cartRedux";
 import {
   LogoImg,
   Wrapper,
@@ -141,8 +142,7 @@ const NavBar = () => {
   const [loading, setLoading] = useState(false);
   // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
-  const { quantity, ...rest } = useSelector((state) => state.cart);
-  console.log(rest, "rest", quantity)
+  const { quantity } = useSelector((state) => state.cart);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

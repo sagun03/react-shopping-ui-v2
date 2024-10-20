@@ -30,6 +30,7 @@ export const updateCartProducts = async (CartID, cartDetails) => {
 };
 
 export const createCartProducts = async (cartDetails) => {
+  console.log(cartDetails, "detiallsss")
   const { userId, Products } = cartDetails;
   return makeApiRequest("POST", "/cart", { userId, Products });
 };
@@ -42,6 +43,7 @@ export const deleteCart = async (CartID) => {
   return makeApiRequest("DELETE", `/cart/${CartID}`);
 };
 
-export const deleteProductCart = async (CartID, productId, size) => {
+export const deleteProductCart = async (CartID, cartDetails) => {
+  const { productId, size } = cartDetails;
   return makeApiRequest("DELETE", `/cart/cartProduct/${CartID}`, { productId, size });
 };
