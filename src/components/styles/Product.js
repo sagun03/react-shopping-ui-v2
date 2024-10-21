@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   min-height: 85vh;
   height: 85vh;
   gap: 4rem;
-  ${mobile({ padding: "10px", flexDirection: "column", gap: "2rem" })}
+  ${mobile({ padding: "10px", flexDirection: "column", gap: ".5rem" })}
   ${ScreenWith960px({ padding: "10px", minHeight: "100vh", flexDirection: "column", height: "auto" })}
 `;
 
@@ -209,19 +209,19 @@ const ImgContainer = styled.div`
   padding: 10px;
   gap: 4rem;
   align-items: center;
-  ${ScreenWith960px({ flexDirection: "column-reverse", gap: "2rem" })}
+  ${ScreenWith960px({ flexDirection: "column-reverse", gap: "1rem" })}
 `;
 
 const CarouselContainer = styled.div`
   display: flex;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   flex-direction: column;
   align-items: center;
   height: 100%;
   justify-content: center;
   ${ScreenWith960px({ height: "600px", width: "100%" })}
-  ${mobile({ height: "550px" })}
+  ${mobile({ height: "400px" })}
 `;
 
 const ThumbnailContainer = styled.div`
@@ -259,7 +259,7 @@ const Thumbnail = styled.img`
 `;
 
 const ZoomImage = styled.img`
-  width: 95%;
+  width: 85%;
   height: auto;
   object-fit: contain;
   border-radius: 15px;

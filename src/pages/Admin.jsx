@@ -2,7 +2,7 @@ import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import { useEffect, useCallback, useState } from "react";
 import { db } from "../firebase";
 import { Button, TextField } from "@mui/material";

@@ -2,13 +2,13 @@ import { Wrapper, InnerWrapper, CartDetail, CartDetailMobile, LeftPanel } from "
 import { Divider } from "@mui/material";
 import { DividerStyles } from "./styles";
 import StepperBox from "./StepperBox";
-import NavBar from "../NavBar";
 import Announcement from "../Announcement";
 import NewsLetter from "../NewsLetter";
 import Footer from "../Footer";
 import BottomNav from "../BottomNav";
 import PropTypes from "prop-types";
 import OrderSummary from "../OrderSummary";
+import NavBar from "../nav/NavBar";
 
 const Layout = ({ children }) => {
   return (

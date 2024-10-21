@@ -5,7 +5,7 @@ import { Add, Remove } from "@mui/icons-material";
 import Loader from "../components/Loader";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";
@@ -129,162 +129,177 @@ const Product = () => {
     return <p>Product not found.</p>;
   }
 
-  if (isLoading) {
-    return <Loader />;
-  }
   const discount = product.discountPercentage || 5;
   return (
     <Container>
       <Announcement />
       <NavBar />
-      <Wrapper>
-        {openAlert && (
-          <Alert
-            open={openAlert}
-            type={"success"}
-            message={"Your Product has been added to the cart."}
-            setOpen={setOpenAlert}
-          />
-        )}
-        <ImgContainer>
-          <ThumbnailContainer>
-            {selectedSize?.images.map((img, index) => (
-              <Thumbnail
-                key={index}
-                src={img}
-                alt={`Thumbnail ${index}`}
-                onClick={() => setSelectedImage(img)}
-                active={selectedImage === img}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Wrapper>
+            {openAlert && (
+              <Alert
+                open={openAlert}
+                type={"success"}
+                message={"Your Product has been added to the cart."}
+                setOpen={setOpenAlert}
               />
-            ))}
-          </ThumbnailContainer>
-          <CarouselContainer>
-            <ZoomImage src={selectedImage} alt={product.name} />
-          </CarouselContainer>
-        </ImgContainer>
-        <InfoContainer>
-          <LeftInfoContainer>
-            <Title>{product.name}</Title>
-            <Divider
-              sx={{ marginTop: "1.5rem", borderBottomWidth: "medium" }}
-            />
-            <OverallRatingContainer>
-              <RatingStars>
-                {[...Array(5)].map((_, index) => (
-                  <span
-                    key={index}
-                    style={{
-                      color: index < product.averageRating ? "black" : "grey"
-                    }}
-                  >
-                    {index < product.averageRating ? "★" : "☆"}
-                  </span>
-                ))}
-                <span
-                  style={{
-                    color: "grey",
-                    fontSize: "1.5rem",
-                    marginLeft: ".5rem"
-                  }}
-                >
-                  ({product.ratingCount})
-                </span>
-              </RatingStars>
-            </OverallRatingContainer>
-            <Desc>
-              {showFullDescription
-                ? product.description
-                : `${product.description?.substring(0, 300)}...`}
-              {product.description && product.description.length > 300 && (
-                <span
-                  style={{
-                    textDecoration: "underline",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    marginLeft: "10px"
-                  }}
-                  onClick={() => setShowFullDescription(!showFullDescription)}
-                >
-                  {showFullDescription ? "Show less" : "Read full description"}
-                </span>
-              )}
-            </Desc>
-            <PriceContainer>
-              <DiscountPercentageContainer>
-                <Price>Rs. {selectedSize?.price}</Price>
-                <DiscountedPrice>
-                  Rs.{" "}
-                  {selectedSize?.price - selectedSize?.price * (discount / 100)}
-                </DiscountedPrice>
-              </DiscountPercentageContainer>
-              <DiscountText>{discount}% OFF</DiscountText>
-            </PriceContainer>
-            {product.sizes && product.sizes.length > 0 && (
-              <>
-                <FilterContainer>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "1rem"
-                    }}
-                  >
-                    <Filter>
-                      <FilterTitle>Size: </FilterTitle>
-                      <FilterSize value={size} onChange={handleSizeChange}>
-                        {product.sizes?.map((s, index) => (
-                          <FilterSizeOption key={index} value={s.size}>
-                            {s.size}
-                          </FilterSizeOption>
-                        ))}
-                      </FilterSize>
-                    </Filter>
-                  </div>
-                </FilterContainer>
-              </>
             )}
-            <AddContainer>
-              <AmountContainer>
-                <IconButton disabled={quantity === 1}>
-                  <Remove onClick={() => handleQuantity("dec")} style={{ height: "2rem", width: "2rem" }} />
-                </IconButton>
-                <Amount>{quantity}</Amount>
-                <IconButton>
-                  <Add onClick={() => handleQuantity("add")} style={{ height: "2rem", width: "2rem" }} />
-                </IconButton>
-              </AmountContainer>
-            </AddContainer>
-          </LeftInfoContainer>
-          <ButtonContainer>
-            <Divider
-              sx={{ marginBottom: "1.5rem", borderBottomWidth: "medium" }}
-            />
-            <ButtonWrapper>
-              <StyledLink to="/cart">
-                <CustomButton variant="border">GO TO CART</CustomButton>
-              </StyledLink>
-              <CustomButton onClick={handleClick}>
-                ADD TO CART{" "}
-                <Icon>
-                  <AddToCartIcon />
-                </Icon>
-              </CustomButton>
-            </ButtonWrapper>
-          </ButtonContainer>
-        </InfoContainer>
-      </Wrapper>
-      <Divider sx={{ marginTop: "4rem" }} />
-      <SimilarProducts currentProduct={product} />
-      {/* <Divider sx={{ marginTop: "4rem" }} /> */}
-      <Review
-        productId={product.id}
-        userId={user?.uid}
-        userName={user?.displayName}
-      />
-      <NewsLetter />
-      <Footer />
-      <BottomNav />
+            <ImgContainer>
+              <ThumbnailContainer>
+                {selectedSize?.images.map((img, index) => (
+                  <Thumbnail
+                    key={index}
+                    src={img}
+                    alt={`Thumbnail ${index}`}
+                    onClick={() => setSelectedImage(img)}
+                    active={selectedImage === img}
+                  />
+                ))}
+              </ThumbnailContainer>
+              <CarouselContainer>
+                <ZoomImage src={selectedImage} alt={product.name} />
+              </CarouselContainer>
+            </ImgContainer>
+            <InfoContainer>
+              <LeftInfoContainer>
+                <Title>{product.name}</Title>
+                <Divider
+                  sx={{ marginTop: "1.5rem", borderBottomWidth: "medium" }}
+                />
+                <OverallRatingContainer>
+                  <RatingStars>
+                    {[...Array(5)].map((_, index) => (
+                      <span
+                        key={index}
+                        style={{
+                          color:
+                            index < product.averageRating ? "black" : "grey"
+                        }}
+                      >
+                        {index < product.averageRating ? "★" : "☆"}
+                      </span>
+                    ))}
+                    <span
+                      style={{
+                        color: "grey",
+                        fontSize: "1.5rem",
+                        marginLeft: ".5rem"
+                      }}
+                    >
+                      ({product.ratingCount})
+                    </span>
+                  </RatingStars>
+                </OverallRatingContainer>
+                <Desc>
+                  {showFullDescription
+                    ? product.description
+                    : `${product.description?.substring(0, 300)}...`}
+                  {product.description && product.description.length > 300 && (
+                    <span
+                      style={{
+                        textDecoration: "underline",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        marginLeft: "10px"
+                      }}
+                      onClick={() =>
+                        setShowFullDescription(!showFullDescription)
+                      }
+                    >
+                      {showFullDescription
+                        ? "Show less"
+                        : "Read full description"}
+                    </span>
+                  )}
+                </Desc>
+                <PriceContainer>
+                  <DiscountPercentageContainer>
+                    <Price>Rs. {selectedSize?.price}</Price>
+                    <DiscountedPrice>
+                      Rs.{" "}
+                      {selectedSize?.price -
+                        selectedSize?.price * (discount / 100)}
+                    </DiscountedPrice>
+                  </DiscountPercentageContainer>
+                  <DiscountText>{discount}% OFF</DiscountText>
+                </PriceContainer>
+                {product.sizes && product.sizes.length > 0 && (
+                  <>
+                    <FilterContainer>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: "1rem"
+                        }}
+                      >
+                        <Filter>
+                          <FilterTitle>Size: </FilterTitle>
+                          <FilterSize value={size} onChange={handleSizeChange}>
+                            {product.sizes?.map((s, index) => (
+                              <FilterSizeOption key={index} value={s.size}>
+                                {s.size}
+                              </FilterSizeOption>
+                            ))}
+                          </FilterSize>
+                        </Filter>
+                      </div>
+                    </FilterContainer>
+                  </>
+                )}
+                <AddContainer>
+                  <AmountContainer>
+                    <IconButton disabled={quantity === 1}>
+                      <Remove
+                        onClick={() => handleQuantity("dec")}
+                        style={{ height: "2rem", width: "2rem" }}
+                      />
+                    </IconButton>
+                    <Amount>{quantity}</Amount>
+                    <IconButton>
+                      <Add
+                        onClick={() => handleQuantity("add")}
+                        style={{ height: "2rem", width: "2rem" }}
+                      />
+                    </IconButton>
+                  </AmountContainer>
+                </AddContainer>
+              </LeftInfoContainer>
+              <ButtonContainer>
+                <Divider
+                  sx={{ marginBottom: "1.5rem", borderBottomWidth: "medium" }}
+                />
+                <ButtonWrapper>
+                  <StyledLink to="/cart">
+                    <CustomButton variant="border">GO TO CART</CustomButton>
+                  </StyledLink>
+                  <CustomButton onClick={handleClick}>
+                    ADD TO CART{" "}
+                    <Icon>
+                      <AddToCartIcon />
+                    </Icon>
+                  </CustomButton>
+                </ButtonWrapper>
+              </ButtonContainer>
+            </InfoContainer>
+          </Wrapper>
+          <Divider sx={{ marginTop: "4rem" }} />
+          <SimilarProducts currentProduct={product} />
+          {/* <Divider sx={{ marginTop: "4rem" }} /> */}
+          <Review
+            productId={product.id}
+            userId={user?.uid}
+            userName={user?.displayName}
+          />
+          <NewsLetter />
+          <Footer />
+        </>
+      )}
+      {/* <BottomNav /> */}
     </Container>
   );
 };

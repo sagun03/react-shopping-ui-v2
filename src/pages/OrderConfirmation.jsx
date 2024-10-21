@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import Announcement from "../components/Announcement";
 import { useDataContext } from "../context/DataContext";
 import { flattenProductSizes, truncateDescription } from "../utils/helper";

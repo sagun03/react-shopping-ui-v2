@@ -31,7 +31,8 @@ import { fetchPromotionalBanner } from "./services/bannerService";
 import { useDispatch, useSelector } from "react-redux";
 import { setBanners } from "./redux/bannerRedux";
 import UserLogin from "./pages/UserLogin";
-const Home = React.lazy(() => import("./pages/Homepage"));
+import Home from "./pages/Homepage";
+// const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -63,9 +64,7 @@ const App = () => {
                         <Route
                           path="/"
                           element={
-                            <Suspense fallback={<Loader />}>
-                              <Home />
-                            </Suspense>
+                            <Home />
                           }
                         />
                         <Route path="/product/:id" element={<Product />} />
