@@ -179,7 +179,7 @@ The project is structured to ensure scalability and maintainability:
 
 ## 📜 License
 
-This project is licensed under the MIT License. For more information, see the LICENSE file.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ## 📞 Contact
 
@@ -191,10 +191,11 @@ We would like to acknowledge and thank the following contributors for their valu
 
 | Name          | GitHub Link                        | Avatar                                        |
 |---------------|------------------------------------|-----------------------------------------------|
-| Sagun Saluja  | [sagun03](https://github.com/sagun03) | ![Sagun's Avatar](https://github.com/sagun03.png)  |
-| Aseem         | [Aseem4091](https://github.com/Aseem4091) | ![Aseem's Avatar](https://github.com/Aseem4091.png) |
-| Danny MB      | [dembar](https://github.com/dembar) | ![Danny's Avatar](https://github.com/dembar.png)   |
-| Nitin Bawa    | [git-nitin01](https://github.com/git-nitin01) | ![Nitin's Avatar](https://github.com/git-nitin01.png) |
-| Yug Bandhara  | [YugBandhara](https://github.com/YugBandhara) | ![Yug's Avatar](https://github.com/YugBandhara.png) |
+ |
+| Aseem         | [Aseem4091](https://github.com/Aseem4091) | [<img src="https://github.com/Aseem4091.png" width="60"  />](https://github.com/Aseem4091.png) |
+| Danny MB      | [dembar](https://github.com/dembar) | [<img src="https://github.com/dembar.png" width="60"  />](https://github.com/dembar.png)   |
+| Nitin Bawa    | [git-nitin01](https://github.com/git-nitin01) | [<img src="https://github.com/git-nitin01.png" width="60"  />](https://github.com/git-nitin01.png) |
+| Yug Bandhara  | [YugBandhara](https://github.com/YugBandhara) | [<img src="https://github.com/YugBandhara.png" width="60"  />](https://github.com/YugBandhara.png) |
+| Sagun Saluja  | [sagun03](https://github.com/sagun03) | [<img src="https://github.com/sagun03.png" width="60"  />](https://github.com/sagun03.png) 
 
 ---
