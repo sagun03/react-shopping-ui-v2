@@ -1,70 +1,180 @@
-# Getting Started with Create React App
+# 🌟 JK Total Washing and Cleaning Solution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**JK Total Washing and Cleaning Solution** is a client-side ecommerce platform that provides a modern and intuitive shopping experience for a wide range of washing and cleaning products. This project leverages cutting-edge technologies to deliver fast, scalable, and responsive solutions.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Tech Stack
 
-### `yarn start`
+The project is built using the following technologies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **⚛️ React**: A JavaScript library for building dynamic user interfaces.
+- **🔄 TanStack Query**: Managing asynchronous server-state and caching.
+- **🎨 MUI (Material UI)**: A customizable component library for modern UI.
+- **🛠️ Redux**: Global state management to handle complex application logic.
+- **🔥 Firebase**: Provides authentication and real-time database features.
+- **💅 Styled-Components**: CSS-in-JS library for styling components.
+- **✅ Zod**: Schema validation for forms and APIs.
+- **📱 SwiperJS**: Creating modern touch sliders.
+- **📦 Other Utilities**: Enhancing development efficiency and performance.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `yarn test`
+## 📂 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Follow these instructions to set up the project locally:
 
-### `yarn build`
+### **Prerequisites**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Node.js** version 16 or higher. To verify your Node.js version, run the following in your terminal:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  ```bash
+  node -v
+  ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Setup Instructions
 
-### `yarn eject`
+### **Clone the repository:**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    ```bash
+    git clone https://github.com/sagun03/react-shopping-ui-v2.git
+    ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Navigate into the project directory:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+    cd react-shopping-ui-v2
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Install dependencies:
 
-## Learn More
+```bash
+    npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Setup environment variables:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Copy ```.env.example``` to create a ```.env``` file.
+- Add necessary keys (e.g., Firebase credentials, API keys) in the ```.env``` file.
 
-### Code Splitting
+### Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+    npm start
+```
 
-### Analyzing the Bundle Size
+> ⚠️ **Note:** You may need the backend server running to fetch data from the API.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Open ```http://localhost:3000``` in your browser to view the application.
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🤝 Contribution Guidelines
 
-### Advanced Configuration
+We welcome contributions! Here’s the step-by-step process to contribute:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### **1. Create a New Branch**
 
-### Deployment
+- **Feature branches**: `feat/jk-{ticket-number}` (e.g., `feat/jk-66`)
+- **Bugfix branches**: `bug/jk-{ticket-number}` (e.g., `bug/jk-77`)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### **2. Make Your Changes**
 
-### `yarn build` fails to minify
+After making changes, stage them with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git add .
+```
+
+### **3Commit Your Changes**
+
+Follow the commit message format:
+
+- **Example:**
+
+```bash
+git commit -m "jk-121: Disabled checkout button when no address is added"
+```
+
+### **4Push Your Branch**
+
+Push the branch to the remote repository:
+
+```bash
+   git push origin {your-branch-name}
+```
+
+## 💻 Code Style
+
+Please follow the code style to maintain consistency:
+
+### 1. Custom Hooks
+
+To handle fetching and mutations (data operations), use custom hooks with React Query. This helps in separating concerns and keeping the code clean.
+
+**Example:**
+
+```javascript
+import { useQuery } from '@tanstack/react-query';
+
+export const useFetchData = (params) => {
+  return useQuery(['dataKey', params], () => fetchData(params));
+};
+```
+
+## 2. Redux for State Management
+
+Use Redux to manage application-wide states like the shopping cart, user data, and more.
+
+**Example:**
+
+```javascript
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: { items: [], total: 0 },
+  reducers: {
+    addProduct: (state, action) => {
+      state.items.push(action.payload);
+      state.total += action.payload.price;
+    },
+  },
+});
+```
+
+## 3. Organizing Services
+
+Place all API-related calls in the services folder, keeping the components clean from business logic.
+
+**Example:**
+
+```javascript
+export const fetchReviews = async (productId) => {
+  const response = await apiClient.get(`/reviews/${productId}`);
+  return response.data;
+};
+```
+
+## 🔧 Project Structure
+
+The project is structured to ensure scalability and maintainability:
+
+```bash
+/src
+  ├── components    
+  │   ├── common          # Reusable common components
+  │   ├── pagewise        # Components specific to each page
+  │   ├── styles          # Component-specific styles
+  │   └── index.js        # Export everything from the components folder
+  ├── pages               # Page-specific components and logic
+  ├── store               # Redux slices and store configuration
+  ├── services            # API calls and service functions
+  ├── styles              # Global styles and theming
+  ├── utils               # Utility functions and helpers
+```
+
+## 📜 License
+
+This project is licensed under the MIT License. For more information, see the LICENSE file.
+
+## 📞 Contact
+
+If you have any questions or need support, feel free to contact us at [support@example.com](mailto:support@example.com).
