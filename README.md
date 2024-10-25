@@ -20,6 +20,12 @@ The project is built using the following technologies:
 
 ---
 
+## 🎨 Design
+
+You can view the project's design on Figma: [Figma Design](https://www.figma.com/design/tyHViRpbWEsDjaCgDLicJ2/Relume-(Community)?node-id=1-4141&node-type=frame&t=22zkYgtDMUgXrmto-0)
+
+---
+
 ## 📂 Getting Started
 
 Follow these instructions to set up the project locally:
@@ -177,4 +183,18 @@ This project is licensed under the MIT License. For more information, see the LI
 
 ## 📞 Contact
 
-If you have any questions or need support, feel free to contact us at [support@example.com](mailto:support@example.com).
+If you have any questions or need support, feel free to contact us at [sagunsaluja13@gmail.com](mailto:sagunsaluja13@gmail.com).
+
+## 🤗 Contributors
+
+We would like to acknowledge and thank the following contributors for their valuable input and collaboration:
+
+| Name          | GitHub Link                        | Avatar                                        |
+|---------------|------------------------------------|-----------------------------------------------|
+| Sagun Saluja  | [sagun03](https://github.com/sagun03) | ![Sagun's Avatar](https://github.com/sagun03.png)  |
+| Aseem         | [Aseem4091](https://github.com/Aseem4091) | ![Aseem's Avatar](https://github.com/Aseem4091.png) |
+| Danny MB      | [dembar](https://github.com/dembar) | ![Danny's Avatar](https://github.com/dembar.png)   |
+| Nitin Bawa    | [git-nitin01](https://github.com/git-nitin01) | ![Nitin's Avatar](https://github.com/git-nitin01.png) |
+| Yug Bandhara  | [YugBandhara](https://github.com/YugBandhara) | ![Yug's Avatar](https://github.com/YugBandhara.png) |
+
+---
