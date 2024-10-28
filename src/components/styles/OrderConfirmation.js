@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { mobile, ScreenWith670px } from "../../responsive";
 
 const Container = styled.div`
   display: flex;
@@ -109,6 +110,7 @@ const Info = styled.div`
   display: flex;
   text-align: left;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   margin-bottom: 20px;
   margin-top: 20px;
@@ -125,6 +127,10 @@ const Info = styled.div`
     gap: 20px;
     flex-direction: column;
     display: flex;
+    min-width: 600px;
+    ${ScreenWith670px({
+      minWidth: "20px"
+    })}
   }
 `;
 

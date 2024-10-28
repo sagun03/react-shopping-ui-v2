@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
       </Wrapper>
       <NewsLetter />
       <Footer />
-      <BottomNav />
     </>
   );
 };
