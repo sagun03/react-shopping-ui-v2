@@ -1,10 +1,10 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 import NavBar from "../components/nav/NavBar";
 import Announcement from "../components/Announcement";
 import { useDataContext } from "../context/DataContext";
-import { flattenProductSizes, truncateDescription } from "../utils/helper";
+import { flattenOrderProducts, flattenProductSizes, truncateDescription } from "../utils/helper";
 import {
   Details,
   Image,
@@ -31,19 +31,34 @@ import {
   OrderSummaryTitle,
   SectionButtonContainer
 } from "../components/styles/OrderConfirmation";
+import { useOrderByOrderId } from "../hooks/useOrder";
+import { SkeletonLoader } from "../components";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../redux/cartRedux";
 
 const OrderConfirmationPage = () => {
-  const location = useLocation();
-  const orderId = new URLSearchParams(location.search).get("orderId");
-  const { products } = useDataContext();
-  // fetch the products using this orderId from the database
-  // le say for now we have "66a918100a2d154787af2b7f" product with any orderId
-  // need to replace this with actual orderId and product id associated with it
-  const filterProduct = flattenProductSizes(
-    products.filter((product) => product.id === "66a918100a2d154787af2b7f")
-  );
+  const { orderid: orderId } = useParams();
+  const dispatch = useDispatch();
+  const { data, isLoading, isError } = useOrderByOrderId(orderId);
+  const orderProducts = flattenOrderProducts(data?.products || []);
 
-  console.log("filterProduct", filterProduct);
+  useEffect(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    if (params.has("payment_intent") || params.has("payment_intent_client_secret")) {
+      // Delete the payment_intent parameter
+      params.delete("payment_intent");
+      params.delete("payment_intent_client_secret");
+
+      const newUrl = `${location.pathname}?${params.toString()}`;
+
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
 
   return (
     <>
@@ -51,7 +66,7 @@ const OrderConfirmationPage = () => {
       <Announcement />
       <Container>
         <Title>Order Confirmation</Title>
-        {orderId && <OrderId>Your order ID is: {orderId}</OrderId>}
+        {orderId && <OrderId>Your order ID is : {orderId}</OrderId>}
         <Message>
           Thank you for your purchase! You will receive an email confirmation
           shortly.
@@ -66,30 +81,47 @@ const OrderConfirmationPage = () => {
         <Info>
         <OrderSummaryTitle>Order Summary</OrderSummaryTitle>
           <div>
-          {filterProduct.map((product, index) => (
-            <ProductDetail key={index}>
-              <Image src={product?.images[0]} alt={product?.name} />
-              <Details>
-                <ProductName>
-                  <b>Product:</b> {product?.name}
-                </ProductName>
-                <ProductSize>
-                  <b>Description:</b>{" "}
-                  {truncateDescription(product?.description, 100)}
-                </ProductSize>
-                <ProductSize>
-                  <b>Size:</b> {product?.size}
-                </ProductSize>
-                <ProductPrice>
-                  <b>Rs.</b> {product?.price * (product?.quantity || 2)}
-                </ProductPrice>
-                <ProductPrice2>
-                  <b> Rs.</b>{" "}
-                  {((product?.price - (product?.price * (product.discountPercentage || 5 / 100))) * (product?.quantity || 2) + 0.0).toFixed(2)}
-                </ProductPrice2>
-              </Details>
-            </ProductDetail>
-          ))}
+          {isLoading ? (
+              <SkeletonLoader
+              count={5}
+              height={80}
+              type="rectangle"
+              skeletonProps={{
+                text: true,
+                textWidth1: "60%",
+                textWidth2: "40%"
+              }}
+            />
+          ) : (
+            orderProducts && orderProducts.map((product, index) => (
+                <ProductDetail key={index}>
+                  <Image src={product?.images[0]} alt={product?.name} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product?.name}
+                    </ProductName>
+                    <ProductSize>
+                      <b>Description:</b>{" "}
+                      {truncateDescription(product?.description, 100)}
+                    </ProductSize>
+                    <ProductSize>
+                      <b>Size:</b> {product?.size}
+                    </ProductSize>
+                    <ProductPrice>
+                      <b>Rs.</b> {(product?.price * (product?.quantity || 1)).toFixed(2)}
+                    </ProductPrice>
+                    <ProductPrice2>
+                      <b> Rs.</b>
+                      {(
+                        (product?.price -
+                        (product?.price * (product.discountPercentage || 0) / 100)) *
+                        (product?.quantity || 1)
+                      ).toFixed(2)}
+                    </ProductPrice2>
+                  </Details>
+                </ProductDetail>
+            ))
+          )}
           </div>
         </Info>
         <AdditionalSection>

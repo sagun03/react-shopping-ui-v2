@@ -1,65 +1,90 @@
 import React, { useState } from "react";
-import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import styled from "styled-components";
-// import Layout from "../../components/checkout/Layout";
+import { PaymentElement, useElements } from "@stripe/react-stripe-js";
 import { PanelContainer } from "../../components/address/styles";
+import {
+  Form,
+  FormGroup,
+  Label,
+  InputWrapper,
+  Input,
+  Button,
+  ErrorMessage
+} from "../../components/styles/Payment";
+import { usePayment } from "../../hooks/usePayment";
+import { useSelector } from "react-redux";
+import { useUserContext } from "../../context/UserContext";
+import { useAddressContext } from "../../components/address/DataProvider";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-const Payment = () => {
-  const stripe = useStripe();
-  const elements = useElements();
+const PaymentComponent = () => {
+  const { total: amount, products } = useSelector((state) => state.cart);
+  const { user } = useUserContext();
+  const { selectedAddress = 0, address } = useAddressContext();
+  const pointsUsed = 0; // need to take care when points are implemented
+  console.log("user", user, "total", amount, selectedAddress, address);
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const elements = useElements();
+  const addresId = address[selectedAddress]?._id;
+  const formattedProducts = products.map((product) => ({
+    productID: product.productId,
+    Quantity: product.quantity,
+    UnitPrice: product.unitPrice,
+    subTotal: (product.unitPrice * product.quantity).toFixed(2),
+    size: product.size
+  }));
+  const {
+    createPaymentIntent,
+    isInitializingPayment,
+    isPaymentInitiated,
+    isError,
+    error
+  } = usePayment(amount, user, formattedProducts, pointsUsed, addresId);
 
-  const handleSubmit = async (event) => {
-    const amount = Math.round(2000.94 * 100);
-    event.preventDefault();
-    if (!stripe || !elements) {
-      // Stripe.js or clientSecret has not loaded yet
+  const handleEmailChange = (e) => setEmailInput(e.target.value);
+
+  const handlePaymentClick = async (e) => {
+    e.preventDefault();
+
+    if (!emailInput) {
+      setErrorMessage("Please enter your email.");
       return;
     }
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      // setErrorMessage(submitError);
-      return;
-    }
 
-    const res = await fetch("http://localhost:4000/jk/payment/createPayment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount // Pass the amount here
-      })
-    });
-    const data = await res.json();
-    const clientSecret = data.data.clientSecret
-    // Use the clientSecret and Elements instance to confirm the setup
-    const { error } = await stripe.confirmPayment({
-      elements,
-      clientSecret,
-      confirmParams: {
-        return_url: "http://localhost:3000/orderconfirmation/1233"
+    setErrorMessage("");
+    // Only initiate payment if it hasn't already been initiated
+    if (!isPaymentInitiated) {
+      try {
+        // Submit the PaymentElement
+        const { error } = await elements.submit();
+
+        if (error) {
+          console.error("Error submitting payment element:", error);
+          setErrorMessage(
+            "Payment method submission failed. Please try again."
+          );
+          return;
+        }
+
+        // Proceed to create the payment intent
+        createPaymentIntent();
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setErrorMessage("An unexpected error occurred. Please try again.");
       }
-    });
-
-    if (error) {
-      setErrorMessage(error.message);
-      console.log("[error]", error);
-    } else {
-      setErrorMessage("");
-      // Payment succeeded, handle accordingly
-      console.log("Payment confirmed");
     }
   };
 
   return (
+    <>
       <PanelContainer>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handlePaymentClick}>
           <FormGroup>
             <Label htmlFor="email-input">Email</Label>
             <InputWrapper>
               <Input
                 value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
+                onChange={handleEmailChange}
                 type="email"
                 id="email-input"
                 placeholder="johndoe@gmail.com"
@@ -67,93 +92,25 @@ const Payment = () => {
               />
             </InputWrapper>
           </FormGroup>
-          <PaymentElement/>
+
+          <PaymentElement />
+
+          {isError && <ErrorMessage>{error?.message}</ErrorMessage>}
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-          <Button type="submit" disabled={!stripe || !elements || !emailInput }>
-            Pay
+
+          <Button
+            type="submit"
+            disabled={isInitializingPayment || isPaymentInitiated}
+          >
+            {isInitializingPayment ? "Processing..." : "Pay"}
           </Button>
         </Form>
       </PanelContainer>
+      <Backdrop open={isPaymentInitiated} sx={{ zIndex: 999999 }}>
+        <CircularProgress sx={{ color: "#022E70" }} />
+      </Backdrop>
+    </>
   );
 };
 
-// Styled Components
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  padding: 2rem;
-  width: 100%;
-  max-width: 700px;
-  height: 380px;
-  margin: 0px 10px 0 auto;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 1.5rem;
-  width: 100%;
-`;
-
-const Label = styled.label`
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 16px;
-  font-weight: 600;
-  color: #212529;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  padding: 14px;
-  max-width: 100%;
-  background-color: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #ced4da;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-size: 16px;
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-`;
-
-const Button = styled.button`
-  background-color: #007bff;
-  color: #ffffff;
-  font-weight: bold;
-  border-radius: 10px;
-  padding: 14px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 18px;
-  width: 100%;
-  margin-top: 1rem; /* Adjust spacing */
-  text-align: center;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:disabled {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-  }
-`;
-
-const ErrorMessage = styled.div`
-  color: #dc3545;
-  margin-top: 1rem;
-  font-size: 14px;
-`;
-
-export default Payment;
+export default PaymentComponent;
