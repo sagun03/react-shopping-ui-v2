@@ -21,7 +21,7 @@ import { useAddressContext } from "../components/address/DataProvider";
 
 const OrderSummary = () => {
   // const { cartData } = useCartContext();
-  const { address, defaultIndex } = useAddressContext();
+  const { selectedAddress } = useAddressContext();
   const { points, setPoints, pointsToCash } = usePointsContext();
   const { activeStep, handleStep } = useStepperContext();
   const [pointsDiscount, setPointsDiscount] = useState(0);
@@ -196,7 +196,7 @@ const OrderSummary = () => {
           Place Order
         </CustomButton>
       ) : activeStep === 1 ? (
-          <CustomButton variant="contained" onClick={handlePlaceOrder(1)} disabled={defaultIndex === null || address.length === 0}>
+          <CustomButton variant="contained" onClick={handlePlaceOrder(1)} disabled={selectedAddress < 0 || selectedAddress == null}>
               Go to Checkout
           </CustomButton>
       ) : null}

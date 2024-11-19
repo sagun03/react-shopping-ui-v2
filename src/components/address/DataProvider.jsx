@@ -73,7 +73,6 @@ const AddressProvider = ({ children }) => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [defaultIndex, setDefaultIndex] = useState(null);
   const [submit, setSubmit] = useState(false)
-  // const [newAddress, setNewAddress] = useState(false);
   useEffect(() => {
     if (data) {
       setAddress([...data.data.addressData]);
@@ -104,8 +103,6 @@ const AddressProvider = ({ children }) => {
         defaultIndex,
         setDefaultIndex,
         refetch
-        // newAddress,
-        // setNewAddress
       }
     }>
       {children}

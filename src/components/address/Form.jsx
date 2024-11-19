@@ -30,6 +30,7 @@ const Form = ({ index, closeModal }) => {
     address,
     setAddress,
     selectedAddress,
+    setSelectedAddress,
     setDefaultIndex,
     addAddressMutation: add,
     updateAddressMutation: update,
@@ -144,6 +145,7 @@ const Form = ({ index, closeModal }) => {
   const handleDelete = () => {
     remove.mutate({ uid: user.uid, token: user.accessToken, id: address[index]._id });
     setAddress(address.filter((_, i) => i !== index));
+    setSelectedAddress(null)
     closeModal();
   }
 
