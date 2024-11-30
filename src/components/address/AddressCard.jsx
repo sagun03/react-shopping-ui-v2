@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { useAddressContext } from "./DataProvider";
+import React from "react";
+// import { useAddressContext } from "./DataProvider";
 import { AddCard, InnerHeading, StyledRadio } from "./styles";
 
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const AddressCard = ({ index }) => {
-  const { address, selectedAddress, setSelectedAddress } = useAddressContext();
+  // const { address, selectedAddress, setSelectedAddress } = useAddressContext();
+  const address = useSelector((state) => state.address.address);
+  const selectedAddress = useSelector((state) => state.address.selectedAddress);
+  const setSelectedAddress = useSelector((state) => state.address.setSelectedAddress);
+
   return (
     <AddCard>
       <InnerHeading>

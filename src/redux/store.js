@@ -1,5 +1,14 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-import cartReducer from "./cartRedux"
+// import cartReducer from "./cartRedux"
+import cartReducer from "./port/cartSlice"
+import userReducer from "./port/userSlice"
+import orderReducer from "./port/orderSlice"
+import pointReducer from "./port/pointSlice"
+import productReducer from "./port/productSlice"
+import addressReducer from "./port/addressSlice"
+import stepperReducer from "./port/stepperSlice"
+import setTransform from "./custom"
+
 import {
   persistStore,
   persistReducer,
@@ -17,9 +26,20 @@ import couponReducer from "./couponSlice";
 const persistConfig = {
   key: "root",
   version: 1,
-  storage
+  storage,
+  transforms: [setTransform]
 }
-const rootReducer = combineReducers({ cart: cartReducer, promotions: promotionalBannerReducer, coupon: couponReducer })
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  promotions: promotionalBannerReducer,
+  coupon: couponReducer,
+  user: userReducer,
+  order: orderReducer,
+  point: pointReducer,
+  product: productReducer,
+  address: addressReducer,
+  stepper: stepperReducer
+})
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
@@ -27,9 +47,7 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-      }
+      serializableCheck: false // Disable the serializable check
     })
 })
 export default store

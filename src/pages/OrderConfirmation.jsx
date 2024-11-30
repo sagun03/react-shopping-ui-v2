@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import NavBar from "../components/nav/NavBar";
 import Announcement from "../components/Announcement";
-import { useDataContext } from "../context/DataContext";
-import { flattenOrderProducts, flattenProductSizes, truncateDescription } from "../utils/helper";
+import { flattenOrderProducts, truncateDescription } from "../utils/helper";
 import {
   Details,
   Image,
@@ -47,14 +45,14 @@ const OrderConfirmationPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(window.location.search);
 
     if (params.has("payment_intent") || params.has("payment_intent_client_secret")) {
       // Delete the payment_intent parameter
       params.delete("payment_intent");
       params.delete("payment_intent_client_secret");
 
-      const newUrl = `${location.pathname}?${params.toString()}`;
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
 
       window.history.replaceState({}, document.title, newUrl);
     }

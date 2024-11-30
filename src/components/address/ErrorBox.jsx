@@ -3,9 +3,10 @@ import { ErrorBoxContainer } from "./styles";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import PropTypes from "prop-types";
 import { useAddressContext } from "./DataProvider";
+import { useSelector } from "react-redux";
 
 const ErrorBox = ({ errors }) => {
-  const { submit } = useAddressContext();
+  const submit = useSelector((state) => state.address.submit);
   return (
     submit &&
     <ErrorBoxContainer>

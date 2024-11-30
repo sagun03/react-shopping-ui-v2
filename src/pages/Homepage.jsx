@@ -1,33 +1,37 @@
 import React, { useEffect } from "react";
-// import Announcement from "../components/Announcement";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
 import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
-// import Products from "../components/Products";
 import FeaturedCategories from "../components/FeaturedCategories";
 import Virtual from "../components/Virtual";
 import Crousel from "../components/Crousel";
 import SimpleMap from "../components/Map";
 import Announcement from "../components/Announcement";
-import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async"
-import { useCartContext } from "../context/cartContext";
+// import { useCartContext } from "../context/cartContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
-import { useUserContext } from "../context/UserContext";
+// import { useUserContext } from "../context/UserContext";
 import Banner from "../components/Banner";
+import { useSelector, useDispatch } from "react-redux";
+import { setCartData } from "../redux/port/cartSlice";
 
 const Homepage = () => {
-  const { user } = useUserContext()
-  const { setCartData, cartData } = useCartContext();
+  const dispatch = useDispatch();
+  // const { user } = useUserContext()
+  const user = useSelector((state) => state.user.currentUser);
+  console.log("user", user)
+  // const { setCartData, cartData } = useCartContext();
 
-  const dataFetched = useFetchCartData(user);
+  const cartData = useSelector((state) => state.cart.cartData);
+  // const dataFetched = useFetchCartData(user);
 
-  useEffect(() => {
-    if (cartData.length === 0 && dataFetched && user) {
-      setCartData(dataFetched);
-    }
-  }, [cartData, dataFetched, setCartData]);
+  // useEffect(() => {
+  //   if (cartData.length === 0 && dataFetched && user) {
+  //     dispatch(setCartData(dataFetched));
+  //   }
+  // }, [cartData, dataFetched, setCartData]);
+
   return (
     <>
       <Helmet>

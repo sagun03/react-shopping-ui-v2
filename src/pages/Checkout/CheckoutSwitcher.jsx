@@ -1,24 +1,25 @@
 import React, { useEffect } from "react";
-import { useStepperContext } from "../../context/StepperContext";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import PropTypes from "prop-types";
-import { AddressProvider } from "../../components/address/DataProvider";
 
 const CheckoutSwitcher = ({ children }) => {
-  const { activeStep, stepLinks } = useStepperContext();
   const navigate = useNavigate();
+
+  // Select activeStep and stepLinks from Redux store
+  const { activeStep, steps } = useSelector((state) => state.stepper);
+
   useEffect(() => {
-    navigate(stepLinks[activeStep]);
-  }, [activeStep, navigate]);
-  return (
-    <AddressProvider>
-      {children}
-    </AddressProvider>
-  )
-}
+    if (steps[activeStep]?.link) {
+      navigate(steps[activeStep].link);
+    }
+  }, [activeStep, navigate, steps]);
+
+  return <>{children}</>;
+};
 
 CheckoutSwitcher.propTypes = {
   children: PropTypes.node.isRequired
-}
+};
 
 export default CheckoutSwitcher;

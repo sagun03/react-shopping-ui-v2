@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { TextField } from "@mui/material";
 import { useCartContext } from "../context/cartContext";
 import { useStepperContext } from "../context/StepperContext";
@@ -17,11 +17,17 @@ import {
   CouponBadge,
   CustomButton
 } from "./styles/orderSummary";
+import { setPoints } from "../redux/port/pointSlice";
+import { handleStep } from "../redux/port/stepperSlice";
 
 const OrderSummary = () => {
   // const { cartData } = useCartContext();
-  const { points, setPoints, pointsToCash } = usePointsContext();
-  const { activeStep, handleStep } = useStepperContext();
+  // const { points, setPoints, pointsToCash } = usePointsContext();
+  // const { activeStep, handleStep } = useStepperContext();
+  const dispatch = useDispatch();
+  const { points, pointsToCash } = useSelector((state) => state.point);
+  const { activeStep } = useSelector((state) => state.stepper);
+
   const [pointsDiscount, setPointsDiscount] = useState(0);
   const [totalMRP, setTotalMRP] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -29,11 +35,15 @@ const OrderSummary = () => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const dispatch = useDispatch();
-  const cartData = useSelector((state) => state.cart);
+  const cartData = useSelector((state) => state.cart.cartData);
+  const total = useMemo(() => {
+    return cartData.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
+  }, [cartData]);
+
+  console.log(total);
 
   const banners = useSelector((state) => state.promotions.banners) || [];
-  const [discount] = useState(500);
+  // const [discount] = useState(500);
 
   useEffect(() => {
     const savedCouponCode = localStorage.getItem("appliedCouponCode");
@@ -47,7 +57,7 @@ const OrderSummary = () => {
 
   // Function to calculate total price
   const calculateTotalPrice = () => {
-    const totalPrice = cartData?.total;
+    const totalPrice = total;
     setTotalMRP(totalPrice || 0);
     if (appliedCoupon) {
       setTotalAmount(
@@ -65,7 +75,7 @@ const OrderSummary = () => {
     if (cashedPoints >= pointsDiscount) {
       setPointsDiscount(pointsDiscount);
       setTotalAmount((totalAmount) => totalAmount - pointsDiscount);
-      setPoints((points) => points - pointsDiscount * 10);
+      dispatch(setPoints((points) => points - pointsDiscount * 10));
     } else {
       setPointsDiscount(points * 0.1);
       setTotalAmount((totalAmount) => totalAmount - cashedPoints);
@@ -107,7 +117,7 @@ const OrderSummary = () => {
   }, [cartData, appliedCoupon]);
 
   const handlePlaceOrder = (step) => () => {
-    handleStep(step)();
+    dispatch(handleStep(step));
   };
 
   return (

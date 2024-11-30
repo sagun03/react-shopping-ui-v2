@@ -85,7 +85,8 @@ const AccountBox = ({
   onClickHandler,
   user
 }) => {
-  const { points } = usePointsContext();
+  // const { points } = usePointsContext();
+  const points = useSelector((state) => state.point.points);
   return (
     <>
       <MenuItemMyUser selected={Boolean(anchorEl)} onClick={handleClick}>
@@ -179,10 +180,11 @@ AccountBox.propTypes = {
 };
 
 const NavBar = () => {
-  const { user } = useUserContext();
+  // const { user } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
-  const { logOut } = useUserAuth();
+  const logout = useUserAuth();
   const [loading, setLoading] = useState(false);
   // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
@@ -202,7 +204,7 @@ const NavBar = () => {
       setAnchorEl(null);
       setLoading(true);
       e.preventDefault();
-      await logOut();
+      await logout();
       setTimeout(() => {
         setLoading(false);
         window.location.href = "/";

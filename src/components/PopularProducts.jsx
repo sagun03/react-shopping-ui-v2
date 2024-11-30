@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import "./styles.css";
@@ -9,9 +9,12 @@ import AnimateIn from "../customeHooks/AnimateIn";
 import { Container, HeadingContainer, EffectCardHeading } from "./styles/PopularProduct";
 import { useDataContext } from "../context/DataContext";
 import PopularProductItem from "./PopularProductItem";
+import { useSelector } from "react-redux";
 
 const PopularProducts = () => {
-  const { products } = useDataContext();
+  // const { products } = useDataContext();
+
+  const products = useSelector((state) => state.product.products);
 
   const popularProducts = products
     .filter((item) => item.isPopular === true)

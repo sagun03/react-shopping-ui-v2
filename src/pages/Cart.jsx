@@ -12,6 +12,7 @@ import { useStepperContext } from "../context/StepperContext";
 import { truncateDescription } from "../utils/helper";
 import { useSelector, useDispatch } from "react-redux";
 import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
+import { removeFromCart } from "../redux/port/cartSlice";
 
 const Container = styled.div``;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
@@ -205,10 +206,12 @@ const Hr = styled.hr`
 
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
-  const { user } = useUserContext()
+  // const { user } = useUserContext()
   // const { cartData } = useCartContext();
-  const { activeStep } = useStepperContext()
-  const cartData = useSelector((state) => state.cart);
+  // const { activeStep } = useStepperContext()
+  // const user = useSelector((state) => state.user.currentUser);
+  const { activeStep } = useSelector((state) => state.stepper);
+  const cartData = useSelector((state) => state.cart.cartData);
   const dispatch = useDispatch()
 
   // const { mutate: updateCart } = useUpdateCart();
@@ -251,31 +254,26 @@ const Cart = () => {
 
   const handleClick = (type, item, id = "") => {
     if (type === "dec") {
-      dispatch(decreaseQuantity({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(removeFromCart({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     } else {
-      dispatch(addProducts({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(addToCart({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     }
   };
 
   const handleRemoveItem = (id, size) => {
-    dispatch(removeProducts({ productId: id, size }));
+    dispatch(removeFromCart({ productId: id, size }));
   };
 
   const handleRemoveAll = () => {
     Object.keys(checkedItems).forEach((key) => {
       if (checkedItems[key]) {
         const [productId, size] = key.split("-");
-        dispatch(removeProducts({ productId, size }));
+        dispatch(removeFromCart({ productId, size }));
       }
     });
     setCheckedItems({});
     setSelectAll(false);
   };
-
-  useEffect(() => {
-    console.log(activeStep, "activeStepssss");
-    console.log(checkedItems, "checkedItems")
-  }, []);
 
   console.log(cartData, "cartData", checkedItems, checkedItems.length);
   return (
@@ -286,14 +284,14 @@ const Cart = () => {
       </Helmet>
       <Container>
         <Wrapper>
-          {cartData?.products?.length === 0 || cartData.length === 0 ? (
+          {cartData?.length === 0 || cartData.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
             null
           )}
-          {cartData?.products?.length === 0 || cartData.length === 0 ? (
+          {cartData?.length === 0 || cartData.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
@@ -329,7 +327,7 @@ const Cart = () => {
                         </Button>
                       </SelectAllContainer>
                     </CheckboxesWrapper>
-                    {cartData?.products?.map((item) => {
+                    {cartData?.map((item) => {
                       const itemId = item.productId;
                       const itemSize = item?.size;
                       if (!itemId || !itemSize) return null;

@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ModalContainer, ModalChild, CloseButton } from "./styles";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { setError } from "../../redux/port/userSlice";
 
 const Modal = ({ children }) => {
   const modalRoot = document.body;
@@ -26,12 +28,15 @@ const Modal = ({ children }) => {
   );
 }
 
-const ErrorModal = ({ error, setError }) => {
+const ErrorModal = () => {
+  const error = useSelector((state) => state.user.error);
+  const dispatch = useDispatch();
+
   return (
     error && (
       <Modal>
         <p>{error}</p>
-        <CloseButton onClick={() => setError(null)}>Close</CloseButton>
+        <CloseButton onClick={() => dispatchEvent(setError(null))}>Close</CloseButton>
       </Modal>
     )
   );

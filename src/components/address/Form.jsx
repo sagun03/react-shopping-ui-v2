@@ -12,150 +12,158 @@ import {
   ButtonGroup
 } from "./styles";
 import { TextInput } from "./InputField";
-import { useAddressContext } from "./DataProvider";
 import { SaveButton, CancelButton } from "../EditButtons";
 import { Button, Checkbox } from "@mui/material";
 import propTypes from "prop-types";
-import { useUserContext } from "../../context/UserContext";
-import { useStepperContext } from "../../context/StepperContext";
+import { useSelector, useDispatch } from "react-redux";
 import ErrorBox from "./ErrorBox";
 import { performValidations } from "./validations";
+import {
+  updateContact,
+  updateAddressField,
+  updatePref,
+  updateDefaultAddress,
+  resetState,
+  setSubmit,
+  addNewAddress,
+  updateExistingAddress,
+  removeAddress,
+  setAddressList,
+  setDefaultIndex
+} from "../../redux/port/addressSlice";
 
 const Form = ({ index, closeModal }) => {
-  const { setActiveStep } = useStepperContext()
-  const {
-    state,
-    setSubmit,
-    dispatch,
-    address,
-    setAddress,
-    selectedAddress,
-    setDefaultIndex,
-    addAddressMutation: add,
-    updateAddressMutation: update,
-    deleteAddressMutation: remove
-  } = useAddressContext();
-  const { user } = useUserContext();
-  const [pref, setPref] = useState("HOME");
+  const dispatch = useDispatch();
+
+  const { contact, address, pref, defaultAddress, submit, addressList, selectedAddress } = useSelector(
+    (state) => state.address
+  );
+  const { user } = useSelector((state) => state.user);
+
+  const [localPref, setLocalPref] = useState("HOME");
   const [error, setError] = useState({ state: false, message: "" });
 
   const errorFields = useMemo(() => {
     const fields = {};
     if (error.message) {
-      error.message.forEach(obj => {
+      error.message.forEach((obj) => {
         fields[obj.path[0]] = obj.message;
-      })
+      });
     }
     return fields;
-  }, [error])
+  }, [error]);
 
   const handleChange = (type, field) => (e) => {
-    setSubmit(false);
-    dispatch({
-      type: `UPDATE_${type.toUpperCase()}`,
-      field,
-      value: e.target.value
-    });
-  }
+    dispatch(setSubmit(false));
+    if (type === "contact") {
+      dispatch(updateContact({ field, value: e.target.value }));
+    } else {
+      dispatch(updateAddressField({ field, value: e.target.value }));
+    }
+  };
 
   useEffect(() => {
     if (index >= 0) {
-      for (const key in address[index]) {
-        dispatch({
-          type: "UPDATE_CONTACT",
-          field: key,
-          value: address[index][key]
-        });
-        dispatch({
-          type: "UPDATE_ADDRESS",
-          field: key,
-          value: address[index][key]
-        });
-        dispatch({
-          type: "UPDATE_PREF",
-          value: address[index].pref
-        });
-        dispatch({
-          type: "UPDATE_DEFAULT",
-          value: address[index].defaultAddress
-        });
+      const currentAddress = addressList[index];
+      for (const key in currentAddress) {
+        dispatch(updateContact({ field: key, value: currentAddress[key] }));
+        dispatch(updateAddressField({ field: key, value: currentAddress[key] }));
+        dispatch(updatePref(currentAddress.pref));
+        dispatch(updateDefaultAddress(currentAddress.defaultAddress));
       }
     } else {
-      dispatch({ type: "RESET" });
+      dispatch(resetState());
     }
-  }, [selectedAddress])
+  }, [selectedAddress, index, addressList, dispatch]);
 
   const flattenData = () => {
-    const data = {
-      ...state.contact,
-      ...state.address,
-      pref,
-      defaultAddress: state.defaultAddress
-    }
-    return data;
-  }
+    return {
+      ...contact,
+      ...address,
+      pref: localPref,
+      defaultAddress
+    };
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmit(true);
+    dispatch(setSubmit(true));
     const eventDesc = e.nativeEvent.submitter.innerText;
-    const vRes = performValidations(state);
-    console.log("isValid", vRes.isValid);
-    vRes.errors && console.log("error", vRes.errors);
-    vRes.data && console.log("data", vRes.data);
+    const vRes = performValidations({ contact, address, pref, defaultAddress });
 
     if (vRes.isValid) {
-      setActiveStep(2)
       console.log("Validation passed");
       setError({ state: false, message: "" });
+
       if (eventDesc === "SAVE") {
-        console.log(flattenData());
-        add.mutate({ token: user.accessToken, ...flattenData() });
-        if (add.error) {
+        const data = flattenData();
+        dispatch(
+          addNewAddress({
+            address: data,
+            uid: user.uid,
+            token: user.accessToken
+          })
+        ).then(() => {
+          dispatch(setAddressList([...addressList, data]));
           closeModal();
-          return;
-        }
-        setAddress([...address, flattenData()]);
-        console.log("Data submitted", address);
+        });
       }
+
       if (eventDesc === "UPDATE") {
         const updatedData = {
           token: user.accessToken,
           uid: user.uid,
-          _id: address[index]._id,
+          _id: addressList[index]._id,
           ...flattenData()
-        }
-        update.mutate(updatedData);
-        if (updatedData.defaultAddress) {
-          setDefaultIndex(index);
-          setAddress(address.map((element, i) => i === index ? updatedData : { ...element, defaultAddress: false }));
-        } else {
-          setAddress(address.map((element, i) => i === index ? updatedData : element));
-        }
-        console.log("Data updated", state);
+        };
+        dispatch(updateExistingAddress(updatedData)).then(() => {
+          if (updatedData.defaultAddress) {
+            dispatch(setDefaultIndex(index));
+            dispatch(
+              setAddressList(
+                addressList.map((element, i) =>
+                  i === index ? updatedData : { ...element, defaultAddress: false }
+                )
+              )
+            );
+          } else {
+            dispatch(
+              setAddressList(
+                addressList.map((element, i) => (i === index ? updatedData : element))
+              )
+            );
+          }
+          closeModal();
+        });
       }
-      closeModal();
     } else {
       console.log("Validation failed");
       setError({ state: true, message: vRes.errors });
     }
-  }
+  };
 
   const handleDelete = () => {
-    remove.mutate({ uid: user.uid, token: user.accessToken, id: address[index]._id });
-    setAddress(address.filter((_, i) => i !== index));
-    closeModal();
-  }
+    dispatch(
+      removeAddress({
+        uid: user.uid,
+        token: user.accessToken,
+        id: addressList[index]._id
+      })
+    ).then(() => {
+      dispatch(setAddressList(addressList.filter((_, i) => i !== index)));
+      closeModal();
+    });
+  };
 
   return (
     <AddressForm onSubmit={handleSubmit} noValidate>
-      { error.state && <ErrorBox errors={errorFields} /> }
+      {error.state && <ErrorBox errors={errorFields} />}
       <InputContainer>
         <InnerHeading>CONTACT DETAILS</InnerHeading>
         <TextInput
           label="Name"
           name="name"
-          value={state.contact.name}
+          value={contact.name}
           required
           autocomplete="name"
           onChange={handleChange("contact", "name")}
@@ -163,7 +171,7 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="Mobile"
           name="mobile"
-          value={state.contact.mobile}
+          value={contact.mobile}
           required
           autocomplete="tel"
           onChange={handleChange("contact", "mobile")}
@@ -175,7 +183,7 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="Street"
           name="street"
-          value={state.address.street}
+          value={address.street}
           required
           autocomplete="street-address"
           onChange={handleChange("address", "street")}
@@ -183,7 +191,7 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="City"
           name="city"
-          value={state.address.city}
+          value={address.city}
           required
           autocomplete="address-level2"
           onChange={handleChange("address", "city")}
@@ -192,7 +200,7 @@ const Form = ({ index, closeModal }) => {
           <TextInput
             label="State"
             name="state"
-            value={state.address.state}
+            value={address.state}
             required
             autocomplete="address-level1"
             onChange={handleChange("address", "state")}
@@ -200,68 +208,105 @@ const Form = ({ index, closeModal }) => {
           <TextInput
             label="Pincode"
             name="pincode"
-            value={state.address.pincode}
+            value={address.pincode}
             required
             autocomplete="postal-code"
             onChange={handleChange("address", "pincode")}
           />
         </SmallButtonGroup>
       </InputContainer>
+
       <InputContainer>
         <InnerHeading>SAVE ADDRESS AS</InnerHeading>
         <ChipGroup>
-          <Button variant="outlined" sx={ pref === "HOME" ? {
-            ...ChipStyles,
-            color: "white",
-            border: "1px solid #FF7961",
-            backgroundColor: "#FF7961"
-          } : ChipStyles} onClick={() => {
-            setPref("HOME");
-            dispatch({ type: "UPDATE_PREF", value: "HOME" })
-          }}> Home </Button>
-          <Button variant="outlined" sx={ pref === "WORK" ? {
-            ...ChipStyles,
-            color: "white",
-            border: "1px solid #FF7961",
-            backgroundColor: "#FF7961"
-          } : ChipStyles} onClick={() => {
-            setPref("WORK");
-            dispatch({ type: "UPDATE_PREF", value: "WORK" })
-          }}> Work </Button>
+          <Button
+            variant="outlined"
+            sx={
+              localPref === "HOME"
+                ? {
+                    ...ChipStyles,
+                    color: "white",
+                    border: "1px solid #FF7961",
+                    backgroundColor: "#FF7961"
+                  }
+                : ChipStyles
+            }
+            onClick={() => {
+              setLocalPref("HOME");
+              dispatch(updatePref("HOME"));
+            }}
+          >
+            Home
+          </Button>
+          <Button
+            variant="outlined"
+            sx={
+              localPref === "WORK"
+                ? {
+                    ...ChipStyles,
+                    color: "white",
+                    border: "1px solid #FF7961",
+                    backgroundColor: "#FF7961"
+                  }
+                : ChipStyles
+            }
+            onClick={() => {
+              setLocalPref("WORK");
+              dispatch(updatePref("WORK"));
+            }}
+          >
+            Work
+          </Button>
         </ChipGroup>
       </InputContainer>
+
       <InputContainer>
         <CheckBoxContainer>
           <Checkbox
-          checked={state.defaultAddress}
-          onChange={(e) => {
-            dispatch({ type: "UPDATE_DEFAULT", value: e.target.checked })
-          }}
-          sx={{ color: "#F44336 !important" }}
+            checked={defaultAddress}
+            onChange={(e) => {
+              dispatch(updateDefaultAddress(e.target.checked));
+            }}
+            sx={{ color: "#F44336 !important" }}
           />
           <CommonText>Make This my default Address</CommonText>
         </CheckBoxContainer>
-      </ InputContainer>
-      {
-        index >= 0 ? (
-          <ButtonGroup>
-            <SaveButton type="submit" name="Update" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
-            <CancelButton onClick={handleDelete} name="Delete" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
-          </ButtonGroup>
-        ) : (
-          <ButtonGroup>
-            <SaveButton type="submit" name="Save" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
-            <CancelButton onClick={closeModal} name="Cancel" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
-          </ButtonGroup>
-        )
-      }
+      </InputContainer>
+
+      {index >= 0 ? (
+        <ButtonGroup>
+          <SaveButton
+            type="submit"
+            name="Update"
+            styles={{ backgroundColor: "#F44336", ...ButtonStyles }}
+          />
+          <CancelButton
+            onClick={handleDelete}
+            name="Delete"
+            styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}
+          />
+        </ButtonGroup>
+      ) : (
+        <ButtonGroup>
+          <SaveButton
+            type="submit"
+            name="Save"
+            styles={{ backgroundColor: "#F44336", ...ButtonStyles }}
+          />
+          <CancelButton
+            onClick={closeModal}
+            name="Cancel"
+            styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}
+          />
+        </ButtonGroup>
+      )}
     </AddressForm>
-  )
-}
+  );
+};
 
 Form.propTypes = {
   index: propTypes.number,
   closeModal: propTypes.func
-}
+};
 
 export default Form;

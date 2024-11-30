@@ -12,11 +12,13 @@ import {
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useDataContext } from "../../context/DataContext";
+// import { useDataContext } from "../../context/DataContext";
 import { CATEGORY_MENU, flattenProductSizes } from "../../utils/helper";
+import { useSelector } from "react-redux";
 
 const CustomDrawer = ({ anchor, toggleDrawer }) => {
-  const { products } = useDataContext();
+  // const { products } = useDataContext();
+  const products = useSelector((state) => state.product.products);
   const flattenedProducts = flattenProductSizes(products);
 
   const [openProducts, setOpenProducts] = useState(false);
