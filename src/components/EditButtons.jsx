@@ -1,60 +1,61 @@
-import { StyledButton } from "./styles/ProfilePanel";
+// import { StyledButton } from "./styles/ProfilePanel";
+import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import PropTypes from "prop-types";
 
-export const SaveButton = ({ type, name }) => {
+export const SaveButton = ({ type, name, styles }) => {
   return (
-    <StyledButton
+    <Button
       variant="contained"
-      color="primary"
       type={type}
       startIcon={<SaveIcon />}
+      sx={styles}
     >
       {name}
-    </StyledButton>
+    </Button>
   )
 };
 
-SaveButton.propTypes = {
-  type: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
-};
-
-export const CancelButton = ({ onClick, name }) => {
+export const CancelButton = ({ onClick, name, styles }) => {
   return (
-    <StyledButton
+    <Button
       variant="contained"
       color="error"
       type="button"
       startIcon={<HighlightOffIcon />}
       onClick={onClick}
+      sx={styles}
     >
       {name}
-    </StyledButton>
+    </Button>
   )
 }
 
-export const EditButton = ({ onClick, name }) => {
+export const EditButton = ({ onClick, name, styles }) => {
   return (
-    <StyledButton
+    <Button
       variant="contained"
       color="secondary"
       type="button"
       startIcon={<EditIcon />}
       onClick={onClick}
+      sx={styles}
     >
       {name}
-    </StyledButton>
+    </Button>
   )
 }
 
 // proptype validation
 const buttonPropType = {
   onClick: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  styles: PropTypes.object,
+  type: PropTypes.string
 };
 
+SaveButton.propTypes = buttonPropType;
 CancelButton.propTypes = buttonPropType;
 EditButton.propTypes = buttonPropType;

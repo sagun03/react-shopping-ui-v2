@@ -42,6 +42,6 @@ export const deleteCart = async (CartID) => {
   return makeApiRequest("DELETE", `/cart/${CartID}`);
 };
 
-export const deleteProductCart = async (CartID, productId) => {
-  return makeApiRequest("DELETE", `/cart/cartProduct/${CartID}`, { productId });
+export const deleteProductCart = async (CartID, productId, size) => {
+  return makeApiRequest("DELETE", `/cart/cartProduct/${CartID}`, { productId, size });
 };

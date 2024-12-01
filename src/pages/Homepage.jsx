@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // import Announcement from "../components/Announcement";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 // import Products from "../components/Products";
 import FeaturedCategories from "../components/FeaturedCategories";
@@ -13,13 +13,12 @@ import Announcement from "../components/Announcement";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async"
 import { useCartContext } from "../context/cartContext";
-import { useCart } from "../hooks/useCart";
-import { useUserAuth } from "../context/UserAuthContext";
 import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
 import { useUserContext } from "../context/UserContext";
+import Banner from "../components/Banner";
+
 const Homepage = () => {
   const { user } = useUserContext()
-  const userAuth = useUserAuth();
   const { setCartData, cartData } = useCartContext();
 
   const dataFetched = useFetchCartData(user);
@@ -77,11 +76,12 @@ const Homepage = () => {
         <Crousel />
         <FeaturedCategories />
         <PopularProducts />
+        <Banner />
         <Virtual />
         <SimpleMap />
         <NewsLetter />
         <Footer />
-        <BottomNav />
+        {/* <BottomNav /> */}
       </div>
     </>
   );

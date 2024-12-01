@@ -1,10 +1,5 @@
 import React from "react";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import NewsLetter from "../components/NewsLetter";
-import WhatsappOrder from "../components/WhatsppOrder";
-import BottomNav from "../components/BottomNav";
+import CheckoutSwitcher from "./Checkout/CheckoutSwitcher";
 import { Helmet } from "react-helmet-async";
 
 const Checkout = () => {
@@ -14,12 +9,7 @@ const Checkout = () => {
         <title>Checkout</title>
         <link rel="canonical" href="/checkout" />
       </Helmet>
-      <Announcement />
-      <NavBar />
-      <WhatsappOrder />
-      <NewsLetter />
-      <Footer />
-      <BottomNav />
+      <CheckoutSwitcher />
     </>
   );
 };

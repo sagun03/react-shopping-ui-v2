@@ -95,7 +95,7 @@ export const SideBarButton = muiStyled(Button)(
     border: "1px solid lightgray !important",
     color: "black !important",
     ":hover": {
-      backgroundColor: "rgba(0, 128, 128, 0.8) !important",
+      backgroundColor: "red !important",
       color: "white !important"
     },
     [theme.breakpoints.up("xs")]: {

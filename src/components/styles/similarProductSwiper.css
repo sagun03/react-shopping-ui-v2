@@ -12,6 +12,9 @@
     color: #fff !important;
     border: 2px solid #fff !important;
     transition: background-color 0.4s ease, transform 0.4s ease !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }
 
 .swiper-button-next {
@@ -22,17 +25,75 @@
     left: 10px !important;
 }
 
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    transform: translateY(-50%) scale(1.1) !important;
+}
+
 .swiper-container {
     position: relative !important;
 }
 
-
-.swiper-button-next, .swiper-button-prev {
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+/* Pseudo-elements for arrow icons */
+.swiper-button-next:after, 
+.swiper-rtl .swiper-button-prev:after {
+    font-size: 24px !important;
+    color: #fff !important;
 }
 
-.swiper-button-next:hover, .swiper-button-prev:hover {
-    transform: translateY(-50%) scale(1.1) !important;
+.swiper-button-prev:after, 
+.swiper-rtl .swiper-button-next:after {
+    font-size: 24px !important;
+    color: #fff !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .swiper-button-next, .swiper-button-prev {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 20px !important;
+    }
+    .swiper-button-next:after, 
+    .swiper-rtl .swiper-button-prev:after,
+    .swiper-button-prev:after, 
+    .swiper-rtl .swiper-button-next:after {
+        font-size: 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .swiper-button-next, .swiper-button-prev {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 18px !important;
+    }
+    .swiper-button-next:after, 
+    .swiper-rtl .swiper-button-prev:after,
+    .swiper-button-prev:after, 
+    .swiper-rtl .swiper-button-next:after {
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .swiper-button-next, .swiper-button-prev {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 16px !important;
+    }
+    
+    .swiper-button-next {
+        right: 5px !important;
+    }
+    
+    .swiper-button-prev {
+        left: 5px !important;
+    }
+
+    .swiper-button-next:after, 
+    .swiper-rtl .swiper-button-prev:after,
+    .swiper-button-prev:after, 
+    .swiper-rtl .swiper-button-next:after {
+        font-size: 16px !important;
+    }
 }

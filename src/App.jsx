@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 // import Product from "./pages/Product";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Register from "./pages/Register";
@@ -20,42 +20,76 @@ import { UserContextProvider } from "./context/UserContext";
 import UserProfile from "./pages/UserProfile";
 import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
-
-const Home = React.lazy(() => import("./pages/Homepage"));
+import AddressSwitch from "./pages/Checkout/AddressSwitch";
+import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
+import CartSwitch from "./pages/Checkout/CartSwitch";
+import { StepperProvider } from "./context/StepperContext";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import { AddressProvider } from "./components/address/DataProvider";
+import { PointsContextProvider } from "./context/PointsContext";
+import { fetchPromotionalBanner } from "./services/bannerService";
+import { useDispatch, useSelector } from "react-redux";
+import { setBanners } from "./redux/bannerRedux";
+import UserLogin from "./pages/UserLogin";
+import Home from "./pages/Homepage";
+// const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
 
 const App = () => {
+  const banners = useSelector((state) => state.promotions.banners) || [];
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getBanners = async () => {
+      const promotionalBanners = await fetchPromotionalBanner();
+      console.log("promotionalBanners", promotionalBanners);
+      dispatch(setBanners([promotionalBanners]));
+    };
+    if (banners.length === 0) getBanners();
+  }, [dispatch, banners.length]);
+  console.log("banners", banners)
+
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary>
         <UserContextProvider>
           <UserAuthContextProvider>
+            <AddressProvider>
             <DataProvider>
               <CartProvider>
-                <Router>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={
-                        <Suspense fallback={<Loader />}>
-                          <Home />
-                        </Suspense>
-                      }
-                    />
-                    <Route path="/product/:id" element={<Product />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/phonesignup" element={<PhoneSignUp />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/products" element={<ProductList />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/profile" element={<UserProfile />} />
-                  </Routes>
-                </Router>
+                <StepperProvider>
+                  <PointsContextProvider>
+                    <Router>
+                      <Routes>
+                        <Route
+                          path="/"
+                          element={
+                            <Home />
+                          }
+                        />
+                        <Route path="/product/:id" element={<Product />} />
+                        <Route path="/cart" element={<Cart />} />
+                        {/* <Route path="/login" element={<Login />} /> */}
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/phonesignup" element={<PhoneSignUp />} />
+                        <Route path="/orders" element={<Orders />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/products" element={<ProductList />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/profile" element={<UserProfile />} />
+                        <Route path="/checkout/address" element={<AddressSwitch />} />
+                        <Route path="/checkout/payment" element={<PaymentSwitch />} />
+                        <Route path="/checkout/cart" element={<CartSwitch />} />
+                        <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
+                        <Route path="/login" element={<UserLogin />} />
+                        {/* <Route path="/PaymentWithElements" element={<PaymentWithElements />} /> */}
+                      </Routes>
+                    </Router>
+                  </PointsContextProvider>
+                </StepperProvider>
               </CartProvider>
             </DataProvider>
+            </AddressProvider>
           </UserAuthContextProvider>
         </UserContextProvider>
       </ErrorBoundary>

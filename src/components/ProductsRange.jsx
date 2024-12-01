@@ -37,7 +37,7 @@ const ProductsRange = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
   const [searchTerm, setSearchTerm] = useState("");
-  const [isFiltered, setIsFiltered] = useState(false);
+  const [, setIsFiltered] = useState(false);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {

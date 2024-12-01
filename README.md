@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# 🌟 JK Total Washing and Cleaning Solution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**JK Total Washing and Cleaning Solution** is a client-side ecommerce platform that provides a modern and intuitive shopping experience for a wide range of washing and cleaning products. This project leverages cutting-edge technologies to deliver fast, scalable, and responsive solutions.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Tech Stack
 
-### `yarn start`
+The project is built using the following technologies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **⚛️ React**: A JavaScript library for building dynamic user interfaces.
+- **🔄 TanStack Query**: Managing asynchronous server-state and caching.
+- **🎨 MUI (Material UI)**: A customizable component library for modern UI.
+- **🛠️ Redux**: Global state management to handle complex application logic.
+- **🔥 Firebase**: Provides authentication and real-time database features.
+- **💅 Styled-Components**: CSS-in-JS library for styling components.
+- **✅ Zod**: Schema validation for forms and APIs.
+- **📱 SwiperJS**: Creating modern touch sliders.
+- **📦 Other Utilities**: Enhancing development efficiency and performance.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `yarn test`
+## 🎨 Design
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can view the project's design on Figma: [Figma Design](https://www.figma.com/design/tyHViRpbWEsDjaCgDLicJ2/Relume-(Community)?node-id=1-4141&node-type=frame&t=22zkYgtDMUgXrmto-0)
 
-### `yarn build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📂 Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Follow these instructions to set up the project locally:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### **Prerequisites**
 
-### `yarn eject`
+- **Node.js** version 16 or higher. To verify your Node.js version, run the following in your terminal:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```bash
+  node -v
+  ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Setup Instructions
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### **Clone the repository:**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    ```bash
+    git clone https://github.com/sagun03/react-shopping-ui-v2.git
+    ```
 
-## Learn More
+### Navigate into the project directory:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+    cd react-shopping-ui-v2
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Install dependencies:
 
-### Code Splitting
+```bash
+    npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Setup environment variables:
 
-### Analyzing the Bundle Size
+- Copy ```.env.example``` to create a ```.env``` file.
+- Add necessary keys (e.g., Firebase credentials, API keys) in the ```.env``` file.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Start the development server:
 
-### Making a Progressive Web App
+```bash
+    npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+> ⚠️ **Note:** You may need the backend server running to fetch data from the API.
 
-### Advanced Configuration
+### Open ```http://localhost:3000``` in your browser to view the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+## 🤝 Contribution Guidelines
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+We welcome contributions! Here’s the step-by-step process to contribute:
 
-### `yarn build` fails to minify
+### **1. Create a New Branch**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Feature branches**: `feat/jk-{ticket-number}` (e.g., `feat/jk-66`)
+- **Bugfix branches**: `bug/jk-{ticket-number}` (e.g., `bug/jk-77`)
+
+### **2. Make Your Changes**
+
+After making changes, stage them with:
+
+```bash
+git add .
+```
+
+### **3Commit Your Changes**
+
+Follow the commit message format:
+
+- **Example:**
+
+```bash
+git commit -m "jk-121: Disabled checkout button when no address is added"
+```
+
+### **4Push Your Branch**
+
+Push the branch to the remote repository:
+
+```bash
+   git push origin {your-branch-name}
+```
+
+## 💻 Code Style
+
+Please follow the code style to maintain consistency:
+
+### 1. Custom Hooks
+
+To handle fetching and mutations (data operations), use custom hooks with React Query. This helps in separating concerns and keeping the code clean.
+
+**Example:**
+
+```javascript
+import { useQuery } from '@tanstack/react-query';
+
+export const useFetchData = (params) => {
+  return useQuery(['dataKey', params], () => fetchData(params));
+};
+```
+
+## 2. Redux for State Management
+
+Use Redux to manage application-wide states like the shopping cart, user data, and more.
+
+**Example:**
+
+```javascript
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: { items: [], total: 0 },
+  reducers: {
+    addProduct: (state, action) => {
+      state.items.push(action.payload);
+      state.total += action.payload.price;
+    },
+  },
+});
+```
+
+## 3. Organizing Services
+
+Place all API-related calls in the services folder, keeping the components clean from business logic.
+
+**Example:**
+
+```javascript
+export const fetchReviews = async (productId) => {
+  const response = await apiClient.get(`/reviews/${productId}`);
+  return response.data;
+};
+```
+
+## 🔧 Project Structure
+
+The project is structured to ensure scalability and maintainability:
+
+```bash
+/src
+  ├── components    
+  │   ├── common          # Reusable common components
+  │   ├── pagewise        # Components specific to each page
+  │   ├── styles          # Component-specific styles
+  │   └── index.js        # Export everything from the components folder
+  ├── pages               # Page-specific components and logic
+  ├── store               # Redux slices and store configuration
+  ├── services            # API calls and service functions
+  ├── styles              # Global styles and theming
+  ├── utils               # Utility functions and helpers
+```
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+
+## 📞 Contact
+
+If you have any questions or need support, feel free to contact us at [sagunsaluja13@gmail.com](mailto:sagunsaluja13@gmail.com).
+
+## 🤗 Contributors
+
+We would like to acknowledge and thank the following contributors for their valuable input and collaboration:
+
+| Name          | GitHub Link                        | Avatar                                        |
+|---------------|------------------------------------|-----------------------------------------------|
+ |
+| Aseem         | [Aseem4091](https://github.com/Aseem4091) | [<img src="https://github.com/Aseem4091.png" width="60"  />](https://github.com/Aseem4091.png) |
+| Danny MB      | [dembar](https://github.com/dembar) | [<img src="https://github.com/dembar.png" width="60"  />](https://github.com/dembar.png)   |
+| Nitin Bawa    | [git-nitin01](https://github.com/git-nitin01) | [<img src="https://github.com/git-nitin01.png" width="60"  />](https://github.com/git-nitin01.png) |
+| Yug Bandhara  | [YugBandhara](https://github.com/YugBandhara) | [<img src="https://github.com/YugBandhara.png" width="60"  />](https://github.com/YugBandhara.png) |
+| Sagun Saluja  | [sagun03](https://github.com/sagun03) | [<img src="https://github.com/sagun03.png" width="60"  />](https://github.com/sagun03.png) 
+
+---

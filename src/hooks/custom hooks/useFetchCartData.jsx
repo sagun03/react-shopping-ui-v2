@@ -4,7 +4,7 @@ import { useCartContext } from "../../context/cartContext";
 
 const useFetchCartData = (user) => {
   const [dataFetched, setDataFetched] = useState(null);
-  const { cartData, setCartData, isCartData, setIsCartData } = useCartContext();
+  const { cartData, setCartData, setIsCartData } = useCartContext();
 
   // Only call useCart if cartData is not available
   const shouldFetchCart = cartData.length === 0;

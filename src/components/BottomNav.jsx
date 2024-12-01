@@ -13,7 +13,6 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation, useNavigate } from "react-router";
 import styled from "styled-components";
-import { styled as MuiStyled } from "@mui/system";
 import { ScreenWith670px } from "../responsive";
 import { useSelector } from "react-redux";
 

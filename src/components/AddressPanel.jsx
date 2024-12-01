@@ -9,7 +9,7 @@ import { useUserContext } from "../context/UserContext";
 import { useGetAddress, useUpdateAddress, useDeleteAddress, useAddAddress } from "../hooks/userHooks/useUserAddress";
 
 const modalRoot = document.createElement("div");
-const AddressModal = ({ address, index, setAddress, closeModal, add, update, remove, user, refetch }) => {
+const AddressModal = ({ address, index, setAddress, closeModal, add, update, remove, user }) => {
   useEffect(() => {
     document.body.appendChild(modalRoot);
     return () => {

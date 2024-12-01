@@ -6,9 +6,11 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import PeopleIcon from "@mui/icons-material/People";
 import PropTypes from "prop-types";
 import { useUserContext } from "../context/UserContext";
+import { usePointsContext } from "../context/PointsContext";
 
 const ProfileSideBar = ({ setPanel }) => {
   const { user } = useUserContext();
+  const { points } = usePointsContext();
   return (
     <SideBarContainer>
       <Header>{ (user?.displayName || user?.email || user?.phoneNumber) + " " }</Header>
@@ -16,7 +18,7 @@ const ProfileSideBar = ({ setPanel }) => {
         <Image src="profile-placeholder.png" />
         <PointsContainer>
           <MonetizationOnIcon />
-          <Text>{user?.points || 0}</Text>
+          <Text>{ points }</Text>
         </PointsContainer>
       </ImageContainer>
       <SideBarButtonGroup>

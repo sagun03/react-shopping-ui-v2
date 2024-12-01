@@ -107,3 +107,29 @@ export const getOtherRelatedProducts = (
       product.id !== currentProduct.id
   );
 };
+
+export const truncateDescription = (description, maxLength) => {
+  if (description.length <= maxLength) {
+    return description;
+  }
+  return description.substring(0, maxLength) + "...";
+};
+
+export const flattenOrderProducts = (products) => {
+  return products.flatMap(({ quantity, productDetails, subTotal }) =>
+    productDetails.sizes.map((size) => ({
+      id: productDetails.id,
+      name: productDetails.name,
+      description: productDetails.description,
+      category: productDetails.category,
+      ratingCount: productDetails.ratingCount,
+      averageRating: productDetails.averageRating,
+      images: size.images,
+      size: size.size,
+      price: size.price,
+      quantity,
+      subTotal,
+      discountPercentage: productDetails.discountPercentage || 0 // Add discountPercentage if available
+    }))
+  );
+};

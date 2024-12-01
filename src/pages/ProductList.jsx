@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar"
+import NavBar from "../components/nav/NavBar"
 import ProductsRange from "../components/ProductsRange"
 import Announcement from "../components/Announcement"
 import BottomNav from "../components/BottomNav"
@@ -15,7 +15,7 @@ const ProductList = () => {
       <NavBar />
       <Announcement />
       <ProductsRange />
-      <BottomNav />
+      {/* <BottomNav /> */}
     </>
   )
 }

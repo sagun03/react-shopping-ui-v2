@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { Button, Box, Typography, Card, CardContent, CardActions } from "@mui/material";
 import { CheckCircle, Error, Refresh } from "@mui/icons-material";
-import { useOrder } from "../hooks/useOrder";
-import { useUserAuth } from "../context/UserAuthContext";
-import useFetchOrderData from "../hooks/custom hooks/useFetchOrderData";
 import { useOrderContext } from "../context/orderContext";
 // Styled Components
 const Container = styled("div")({

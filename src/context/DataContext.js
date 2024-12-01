@@ -5,13 +5,14 @@ import React, { createContext, useContext, useState, useEffect } from "react"
 import { useProducts } from "../hooks/useProducts"
 import { useCategories } from "../hooks/useCategories"
 import loaderGif from "../pages/images/loader.gif"
+import { mockProducts } from "../utils/data"
 
 const DataContext = createContext()
 
 export const useDataContext = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
-  const { data: productsData, isLoading: isProductDataLoading } = useProducts()
+  const { data: productsData, isLoading: isProductDataLoading, isError } = useProducts()
   const { data: categoriesData, isLoading: isCategoriesDataLoading } = useCategories()
 
   const [products, setProducts] = useState([])
@@ -37,6 +38,13 @@ export const DataProvider = ({ children }) => {
 
     return () => clearTimeout(loadingTimeout)
   }, [isProductDataLoading, isCategoriesDataLoading])
+
+  useEffect(() => {
+    if (isError) {
+      console.error("Error fetching data:", isError)
+      setProducts(mockProducts)
+    }
+  }, [isError])
 
   if (isLoading) {
     return (

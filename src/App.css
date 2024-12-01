@@ -28,3 +28,14 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.modalOuter {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 10;
+}

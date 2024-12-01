@@ -1,7 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchOrderProducts } from "../services/orderServices";
+import { useQuery } from "@tanstack/react-query";
+import { fetchOrder, fetchOrderProducts } from "../services/orderServices";
 export const useOrder = (user) => {
-  console.log("asnasjaj", user)
   const fetchOrderData = async () => {
     return fetchOrderProducts(user); // Fetch cart data based on user
   };
@@ -14,5 +13,21 @@ export const useOrder = (user) => {
       console.error("Error fetching products:", error);
     },
     enabled: !!user // Only run query if user is available
+  });
+}
+
+export const useOrderByOrderId = (orderId) => {
+  const fetchOrderData = async () => {
+    return fetchOrder(orderId);
+  };
+  return useQuery({
+    queryKey: ["order", orderId],
+    queryFn: fetchOrderData,
+    retry: 3,
+    refetchOnWindowFocus: false,
+    onError: (error) => {
+      console.error("Error fetching products:", error);
+    },
+    enabled: !!orderId
   });
 }

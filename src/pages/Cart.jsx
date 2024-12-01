@@ -1,31 +1,51 @@
-import { Add, Remove } from "@mui/icons-material";
+import { Add, Remove, Close } from "@mui/icons-material";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import { mobile, ScreenWith670px, ScreenWith960px } from "../responsive";
-import { useSelector, useDispatch } from "react-redux";
+import { mobile, ScreenWith670px } from "../responsive";
 import { Fragment, useEffect, useState } from "react";
-import { addProduct, removeProducts } from "../redux/cartRedux";
-import { v4 as uuidv4 } from "uuid";
 import addToCart from "./images/addToCart.png";
 import { Link } from "react-router-dom";
-import OrderSummary from "../components/OrderSummary";
-import { IconButton } from "@mui/material";
+import { IconButton, Typography, Button } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
-import { useUserAuth } from "../context/UserAuthContext";
-import { useCartContext } from "../context/cartContext";
-import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
-import { useUpdateCart, useDeleteCart, useDeleteProductCart } from "../hooks/useCart";
 import { useUserContext } from "../context/UserContext";
+import { useStepperContext } from "../context/StepperContext";
+import { truncateDescription } from "../utils/helper";
+import { useSelector, useDispatch } from "react-redux";
+import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
 
 const Container = styled.div``;
+const Checkbox = styled.input.attrs({ type: "checkbox" })`
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  background-color: #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid #ccc;
+
+  &:checked {
+    background-color: red;
+    border-color: red;
+  }
+
+  &:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    width: 8px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+`;
 
 const Wrapper = styled.div`
-  padding: 2.5rem;
+  padding: 0 2.5rem;
   margin-bottom: 5rem;
-  margin-top: 5rem;
   ${mobile({ padding: "10px" })}
 `;
 
@@ -40,7 +60,9 @@ const Top = styled.div`
   justify-content: space-between;
   padding: 20px;
   background: whitesmoke;
-  margin: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  position: relative; /* Ensure relative positioning for child elements */
   ${mobile({ flexDirection: "column", gap: "2rem" })}
 `;
 
@@ -49,119 +71,21 @@ const TopButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   border: ${(props) => props.type === "filled" && "none"};
-  background-color: ${(props) =>
-    props.type === "filled" ? "black" : "transparent"};
+  background-color: ${(props) => props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
-`;
-
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
-
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0px 10px;
 `;
 
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  ${ScreenWith670px({ flexDirection: "column" })}
+  flex-direction:column;
+  ${ScreenWith670px({ flexDirection: "column" })};
+  width:100%;
 `;
 
 const Info = styled.div`
-  flex: 3;
-`;
-
-const Product = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 200px;
-  ${mobile({ flexDirection: "column", height: "unset" })};
-`;
-
-const ProductDetail = styled.div`
-  flex: 2;
-  display: flex;
-  ${mobile({
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center"
-})}
-`;
-
-const Image = styled.img`
-  width: 180px;
-  object-fit: contain;
-
-  ${ScreenWith960px({ width: "160px" })}
-  ${ScreenWith670px({ width: "120px" })}
-`;
-
-const Details = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const ProductName = styled.span``;
-
-const ProductSize = styled.span``;
-
-const PriceDetail = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ProductAmountContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const ProductAmount = styled.div`
-  font-size: 24px;
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  border: 1px solid teal;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 5px;
-  ${mobile({ margin: "5px 15px", fontSize: "16px" })}
-  ${ScreenWith960px({ fontSize: "20px" })}
-  ${ScreenWith670px({ fontSize: "18px" })}
-`;
-
-const ProductPrice = styled.div`
-  font-size: 30px;
-  font-weight: 200;
-  font-weight: 100;
-  text-decoration: line-through;
-  color: #615f5f;
-  ${mobile({ marginBottom: "20px", fontSize: "20px" })}
-  ${ScreenWith960px({ fontSize: "26px" })}
-  ${ScreenWith670px({ fontSize: "24px" })}
-`;
-
-const ProductPrice2 = styled.div`
-  font-size: 30px;
-  font-weight: 200;
-  ${mobile({ marginBottom: "20px", fontSize: "20px" })}
-  ${ScreenWith960px({ fontSize: "26px" })}
-  ${ScreenWith670px({ fontSize: "24px" })}
-`;
-
-const Hr = styled.hr`
-  background-color: #eee;
-  border: none;
-  height: 1px;
+  position: relative; /* Ensure relative positioning for child elements */;
+  flex:2;
 `;
 
 const CartImageContainer = styled.div`
@@ -173,91 +97,181 @@ const CartImage = styled.img`
   max-width: 100%;
 `;
 
+const SelectAllContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+const CheckboxesWrapper = styled.div`
+  display: flex;
+  gap: 20px; // Adjust the spacing between checkboxes
+  align-items: center;
+`;
+
+const Product = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #ddd;
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+`;
+
+const CloseIcon = styled(Close)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #ff4d4d;
+  &:hover {
+    color: #ff1a1a;
+  }
+`;
+
+const ProductDetail = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 20px;
+`;
+
+const Image = styled.img`
+  width: 100px;
+  height: 160px;
+`;
+
+const Details = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const ProductName = styled(Typography)`
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+`;
+
+const ProductSize = styled(Typography)`
+  font-size: 14px;
+  color: #333;
+`;
+
+const PriceDetail = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const ProductAmountContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+`;
+
+const ProductAmount = styled.div`
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ProductPrice = styled(Typography)`
+  font-size: 18px;
+  font-weight: 800;
+  color: #333;
+`;
+
+const ProductPrice2 = styled(Typography)`
+  font-size: 16px;
+  font-weight: 200;
+  color: #777;
+`;
+
+const Hr = styled.hr`
+  background-color: #eee;
+  border: none;
+  height: 1px;
+  margin: 20px 0;
+`;
+
 const Cart = () => {
-  const cart = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
-  const userAuth = useUserAuth();
+  const [selectAll, setSelectAll] = useState(false);
   const { user } = useUserContext()
-  const { cartData, setCartData } = useCartContext();
-  const [data, setData] = useState({});
-  const [size, setSize] = useState("");
-  const [singleNull, setSingleNull] = useState(false)
-
-  const { mutate: updateCart } = useUpdateCart();
-  const { mutate: deleteCart } = useDeleteCart();
-  const { mutate: deleteProductCart } = useDeleteProductCart()
-
-  const dataFetched = useFetchCartData(user);
-
-  useEffect(() => {
-    console.log(cartData, "cartData")
-    if (cartData) {
-      // setCartData(dataFetched);
-      setData(cartData);
-    }
-  }, [cartData]);
+  const { activeStep } = useStepperContext()
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch()
+  console.log(cart, "cart")
+  // const { mutate: updateCart } = useUpdateCart();
+  // const { mutate: deleteCart } = useDeleteCart();
+  // const { mutate: deleteProductCart } = useDeleteProductCart()
+  const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
     window?.scrollTo(0, 0);
   }, []);
 
+  const handleCheckboxChange = (itemId, itemSize) => {
+    const key = `${itemId}-${itemSize}`;
+    const newCheckedItems = {
+      ...checkedItems,
+      [key]: !checkedItems[key]
+    };
+
+    // Update selectAll if all items are selected
+    const allItemsChecked = cart.products.every((item) => {
+      const key = `${item.productId}-${item.size}`;
+      return newCheckedItems[key];
+    });
+
+    setCheckedItems(newCheckedItems);
+    setSelectAll(allItemsChecked);
+  };
+
+  const handleSelectAllChange = () => {
+    const newSelectAll = !selectAll;
+    const newCheckedItems = cart.products.reduce((acc, item) => {
+      const key = `${item.productId}-${item.size}`;
+      acc[key] = newSelectAll;
+      return acc;
+    }, {});
+
+    setCheckedItems(newCheckedItems);
+    setSelectAll(newSelectAll);
+  };
+
   const handleClick = (type, item, id = "") => {
-    let sampleCartData;
-    let singleNull = false
     if (type === "dec") {
-      sampleCartData = {
-        ...data,
-        products: data.products
-          .map(value => {
-            if (value?.productDetails?.id === id && value.quantity > 1 && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
-              return { ...value, quantity: value.quantity - 1 };
-            } else if (value?.productDetails?.id === id && value.quantity === 1) {
-              singleNull = !singleNull
-              return null;
-            }
-            return value;
-          })
-          .filter(value => value !== null)
-      };
+      dispatch(decreaseQuantity({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     } else {
-      sampleCartData = {
-        ...data,
-        products: data.products.map(value => {
-          if (value?.productDetails?.id === id && value?.productDetails?.sizes[0]?.size === item?.productDetails?.sizes[0]?.size) {
-            return { ...value, quantity: value.quantity + 1 };
-          }
-          return value;
-        })
-      };
+      dispatch(addProducts({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
     }
-    if (singleNull) {
-      deleteProductCart({ CartID: sampleCartData?.CartID, productId: id, userID: user?.uid })
-      singleNull = false
-    } else {
-      if (sampleCartData?.products?.length === 0) {
-        deleteCart({ CartID: sampleCartData?.CartID, userID: user?.uid });
-      } else {
-        const createdObjectForCart = {
-          userId: cartData?.userId,
-          Products: sampleCartData.products.map(value => ({
-            productID: value?.productDetails?.id,
-            quantity: value.quantity,
-            unitPrice: value?.productDetails?.sizes[0]?.price,
-            size: value?.productDetails?.sizes[0]?.size
-          }))
-        };
-        updateCart({ CartID: sampleCartData?.CartID, cartDetails: createdObjectForCart, userID: user?.uid });
+  };
+
+  const handleRemoveItem = (id, size) => {
+    dispatch(removeProducts({ productId: id, size }));
+  };
+
+  const handleRemoveAll = () => {
+    Object.keys(checkedItems).forEach((key) => {
+      if (checkedItems[key]) {
+        const [productId, size] = key.split("-");
+        dispatch(removeProducts({ productId, size }));
       }
-    }
+    });
+    setCheckedItems({});
+    setSelectAll(false);
   };
 
-  const truncateDescription = (description, maxLength) => {
-    if (description.length <= maxLength) {
-      return description;
-    }
-    return description.substring(0, maxLength) + "...";
-  };
-
+  console.log(cart, "cart", checkedItems, checkedItems.length);
   return (
     <>
       <Helmet>
@@ -265,83 +279,106 @@ const Cart = () => {
         <link rel="canonical" href="/cart" />
       </Helmet>
       <Container>
-        <Announcement />
-        <NavBar />
         <Wrapper>
-          {data.length === 0 || data?.products?.length === 0 ? (
+          {cart?.products?.length === 0 || cart.length === 0 ? (
             <Link to="/">
-              <Title>Click Here to Add Product</Title>
+              <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
-            <Title>YOUR BAG</Title>
+            null
           )}
-          {data.length === 0 || data?.products?.length === 0 ? (
+          {cart?.products?.length === 0 || cart.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
           ) : (
             <>
-              <Top>
-                <Link to="/products">
-                  <TopButton>CONTINUE SHOPPING</TopButton>
-                </Link>
-                <TopTexts>
-                  <TopText>Shopping Bag({cart?.quantity})</TopText>
-                </TopTexts>
-              </Top>
               <Bottom>
+                <Top>
+                  <Link to="/products">
+                    <TopButton>Continue Shopping</TopButton>
+                  </Link>
+                  <ProductSize>
+                    <b>Shopping Bag ( {cart?.quantity} )</b>
+                  </ProductSize>
+                </Top>
                 <Info>
-                  {data?.products?.map((item) => (
-                    <Fragment key={uuidv4()}>
-                      <Product>
-                        <ProductDetail>
-                          <Image src={item?.productDetails?.sizes[0]?.images[0]} />
-                          <Details>
-                            <ProductName>
-                              <b>Product:</b> {item?.productDetails?.name}
-                            </ProductName>
-                            <ProductSize>
-                              <b>Description:</b> {truncateDescription(item?.productDetails?.description, 100)}
-                            </ProductSize>
-                          </Details>
-                        </ProductDetail>
-                        <PriceDetail>
-                          <ProductAmountContainer>
-                            <IconButton>
-                              <Remove
-                                onClick={() =>
-                                  handleClick("dec", item, item.productDetails?.id)
-                                }
-                              />
-                            </IconButton>
-                            <ProductAmount>{item?.quantity}</ProductAmount>
-                            <IconButton>
-                              <Add
-                                onClick={() =>
-                                  handleClick("add", item, item.productDetails?.id)
-                                }
-                              />
-                            </IconButton>
-                          </ProductAmountContainer>
-                          <ProductPrice>
-                            Rs. {item?.productDetails?.sizes[0]?.price * item?.quantity}
-                          </ProductPrice>
-                          <ProductPrice2>
-                            Rs.{" "}
-                            {(item?.productDetails?.sizes[0]?.price * item?.quantity + 0.0).toFixed(2)}
-                          </ProductPrice2>
-                        </PriceDetail>
-                      </Product>
-                      <Hr />
-                    </Fragment>
-                  ))}
+                  <Fragment>
+                    <CheckboxesWrapper>
+                      <SelectAllContainer>
+                        <Checkbox
+                          checked={selectAll}
+                          onChange={handleSelectAllChange}
+                        />
+                        <Typography>Select All</Typography>
+                      </SelectAllContainer>
+                      <SelectAllContainer>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={handleRemoveAll}
+                          disabled={Object.values(checkedItems).every((value) => !value)}
+                        >
+                          Remove Selected
+                        </Button>
+                      </SelectAllContainer>
+                    </CheckboxesWrapper>
+                    {cart?.products?.map((item) => {
+                      const itemId = item.productId;
+                      const itemSize = item?.size;
+                      if (!itemId || !itemSize) return null;
+                      const key = `${itemId}-${itemSize}`;
+                      return (
+                        <Product key={key}>
+                          <CloseIcon onClick={() => handleRemoveItem(itemId, itemSize)} />
+                          <Checkbox
+                            checked={checkedItems[key] || false}
+                            onChange={() => handleCheckboxChange(itemId, itemSize)}
+                          />
+                          <ProductDetail>
+                            <Image
+                              src={item?.image}
+                              alt={item?.name}
+                            />
+                            <Details>
+                              <ProductName>
+                                <b>Product:</b> {item?.name}
+                              </ProductName>
+                              <ProductSize>
+                                <b>Description:</b> {truncateDescription(item?.description || "", 100)}
+                              </ProductSize>
+                              <ProductSize>
+                                <b>Size:</b> {item?.size}
+                              </ProductSize>
+                              <ProductPrice>
+                                <b>Rs.</b> {item?.unitPrice * item?.quantity}
+                              </ProductPrice>
+                              <ProductPrice2>
+                                <b>Rs.</b> {((item?.unitPrice * item?.quantity) + 0.0).toFixed(2)}
+                              </ProductPrice2>
+                            </Details>
+                          </ProductDetail>
+                          <PriceDetail>
+                            <ProductAmountContainer>
+                              <IconButton>
+                                <Remove onClick={() => handleClick("dec", item, itemId)} />
+                              </IconButton>
+                              <ProductAmount>{item?.quantity}</ProductAmount>
+                              <IconButton>
+                                <Add onClick={() => handleClick("add", item, itemId)} />
+                              </IconButton>
+                            </ProductAmountContainer>
+                          </PriceDetail>
+                          <Hr />
+                        </Product>
+                      );
+                    })}
+                  </Fragment>
                 </Info>
-                <OrderSummary />
               </Bottom>
             </>
           )}
         </Wrapper>
-        <Footer />
       </Container>
       <BottomNav />
     </>
