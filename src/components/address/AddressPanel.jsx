@@ -86,6 +86,7 @@ const AddressPanel = () => {
             <p>Add Address</p>
           </div>
         </AddressBox>
+        {console.log(defaultIndex)}
         {
           address[defaultIndex] &&
             <>

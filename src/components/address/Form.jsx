@@ -17,12 +17,11 @@ import { SaveButton, CancelButton } from "../EditButtons";
 import { Button, Checkbox } from "@mui/material";
 import propTypes from "prop-types";
 import { useUserContext } from "../../context/UserContext";
-import { useStepperContext } from "../../context/StepperContext";
 import ErrorBox from "./ErrorBox";
 import { performValidations } from "./validations";
+import { useStepperContext } from "../../context/StepperContext";
 
 const Form = ({ index, closeModal }) => {
-  const { setActiveStep } = useStepperContext()
   const {
     state,
     setSubmit,
@@ -38,6 +37,7 @@ const Form = ({ index, closeModal }) => {
   const { user } = useUserContext();
   const [pref, setPref] = useState("HOME");
   const [error, setError] = useState({ state: false, message: "" });
+  const { handleStep } = useStepperContext();
 
   const errorFields = useMemo(() => {
     const fields = {};
@@ -90,7 +90,7 @@ const Form = ({ index, closeModal }) => {
       ...state.contact,
       ...state.address,
       pref,
-      defaultAddress: state.defaultAddress
+      defaultAddress: address.length === 0 ? true : state.defaultAddress
     }
     return data;
   }
@@ -105,18 +105,19 @@ const Form = ({ index, closeModal }) => {
     vRes.data && console.log("data", vRes.data);
 
     if (vRes.isValid) {
-      setActiveStep(2)
       console.log("Validation passed");
       setError({ state: false, message: "" });
       if (eventDesc === "SAVE") {
-        console.log(flattenData());
-        add.mutate({ token: user.accessToken, ...flattenData() });
+        // console.log(flattenData());
+        const data = flattenData();
+        add.mutate({ token: user.accessToken, ...data });
         if (add.error) {
           closeModal();
           return;
         }
-        setAddress([...address, flattenData()]);
+        setAddress([...address, data]);
         console.log("Data submitted", address);
+        handleStep(1)();
       }
       if (eventDesc === "UPDATE") {
         const updatedData = {

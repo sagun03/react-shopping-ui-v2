@@ -48,6 +48,7 @@ const reducer = (state, action) => {
         pref: action.value
       }
     case "UPDATE_DEFAULT":
+      console.log(action.value);
       return {
         ...state,
         defaultAddress: action.value
@@ -76,8 +77,9 @@ const AddressProvider = ({ children }) => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       setAddress([...data.data.addressData]);
-      setDefaultIndex(data.data.addressData.findIndex((element) => element.defaultAddress));
+      setDefaultIndex(data.data.addressData.findIndex((element) => element.defaultAddress === true));
       if (defaultIndex !== null) {
         setSelectedAddress(defaultIndex);
       }
