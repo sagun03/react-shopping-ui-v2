@@ -2,6 +2,7 @@ import apiClient from "../../api/client";
 
 export const addAddress = async (payload) => {
   const { token, ...addressData } = payload;
+  console.log(addressData);
   const response = await apiClient.request({
     method: "POST",
     url: "/user/address/create",

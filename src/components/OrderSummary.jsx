@@ -17,9 +17,12 @@ import {
   CouponBadge,
   CustomButton
 } from "./styles/orderSummary";
+import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const OrderSummary = () => {
   // const { cartData } = useCartContext();
+  const navigate = useNavigate();
   const { points, setPoints, pointsToCash } = usePointsContext();
   const { activeStep, handleStep } = useStepperContext();
   const [pointsDiscount, setPointsDiscount] = useState(0);
@@ -30,6 +33,7 @@ const OrderSummary = () => {
   const [couponCode, setCouponCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
+  const { user } = useUserContext();
   const cartData = useSelector((state) => state.cart);
 
   const banners = useSelector((state) => state.promotions.banners) || [];
@@ -107,6 +111,12 @@ const OrderSummary = () => {
   }, [cartData, appliedCoupon]);
 
   const handlePlaceOrder = (step) => () => {
+    if (step === 0) {
+      if (user === null) {
+        navigate("/login");
+        return;
+      }
+    }
     handleStep(step)();
   };
 

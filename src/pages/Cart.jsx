@@ -206,11 +206,10 @@ const Hr = styled.hr`
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
   const { user } = useUserContext()
-  // const { cartData } = useCartContext();
   const { activeStep } = useStepperContext()
-  const cartData = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch()
-
+  console.log(cart, "cart")
   // const { mutate: updateCart } = useUpdateCart();
   // const { mutate: deleteCart } = useDeleteCart();
   // const { mutate: deleteProductCart } = useDeleteProductCart()
@@ -228,7 +227,7 @@ const Cart = () => {
     };
 
     // Update selectAll if all items are selected
-    const allItemsChecked = cartData.products.every((item) => {
+    const allItemsChecked = cart.products.every((item) => {
       const key = `${item.productId}-${item.size}`;
       return newCheckedItems[key];
     });
@@ -239,7 +238,7 @@ const Cart = () => {
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
-    const newCheckedItems = cartData.products.reduce((acc, item) => {
+    const newCheckedItems = cart.products.reduce((acc, item) => {
       const key = `${item.productId}-${item.size}`;
       acc[key] = newSelectAll;
       return acc;
@@ -272,12 +271,7 @@ const Cart = () => {
     setSelectAll(false);
   };
 
-  useEffect(() => {
-    console.log(activeStep, "activeStepssss");
-    console.log(checkedItems, "checkedItems")
-  }, []);
-
-  console.log(cartData, "cartData", checkedItems, checkedItems.length);
+  console.log(cart, "cart", checkedItems, checkedItems.length);
   return (
     <>
       <Helmet>
@@ -286,14 +280,14 @@ const Cart = () => {
       </Helmet>
       <Container>
         <Wrapper>
-          {cartData?.products?.length === 0 || cartData.length === 0 ? (
+          {cart?.products?.length === 0 || cart.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
             null
           )}
-          {cartData?.products?.length === 0 || cartData.length === 0 ? (
+          {cart?.products?.length === 0 || cart.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
@@ -305,7 +299,7 @@ const Cart = () => {
                     <TopButton>Continue Shopping</TopButton>
                   </Link>
                   <ProductSize>
-                    <b>Shopping Bag ( {cartData?.quantity} )</b>
+                    <b>Shopping Bag ( {cart?.quantity} )</b>
                   </ProductSize>
                 </Top>
                 <Info>
@@ -329,7 +323,7 @@ const Cart = () => {
                         </Button>
                       </SelectAllContainer>
                     </CheckboxesWrapper>
-                    {cartData?.products?.map((item) => {
+                    {cart?.products?.map((item) => {
                       const itemId = item.productId;
                       const itemSize = item?.size;
                       if (!itemId || !itemSize) return null;
