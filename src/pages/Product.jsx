@@ -125,16 +125,12 @@ const Product = () => {
     localStorage.setItem("size", newSize);
   };
 
-  if (!product.id) {
-    return <p>Product not found.</p>;
-  }
-
   const discount = product.discountPercentage || 5;
   return (
     <Container>
       <Announcement />
       <NavBar />
-      {isLoading ? (
+      {isLoading || !product.id ? (
         <Loader />
       ) : (
         <>

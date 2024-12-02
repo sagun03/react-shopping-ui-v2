@@ -18,8 +18,8 @@ const Orders = () => {
         <title>Orders</title>
         <link rel="canonical" href="/orders" />
       </Helmet>
-      <Announcement />
       <NavBar />
+      <Announcement />
       <OrdersComponent />
       <NewsLetter />
       <Footer />

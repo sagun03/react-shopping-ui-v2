@@ -46,20 +46,20 @@ export const DataProvider = ({ children }) => {
     }
   }, [isError])
 
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh"
-        }}
-      >
-        <img src={loaderGif} alt="Loading..." />
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div
+  //       style={{
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         height: "100vh"
+  //       }}
+  //     >
+  //       <img src={loaderGif} alt="Loading..." />
+  //     </div>
+  //   )
+  // }
 
   return (
     <DataContext.Provider value={{ products }}>

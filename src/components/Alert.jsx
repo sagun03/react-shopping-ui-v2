@@ -15,7 +15,7 @@ const Alert = ({ type, message, open, setOpen }) => {
       open={open}
       onClose={handleClose}
       autoHideDuration={2000}
-      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
     >
       <MuiAlert elevation={10} variant="filled" onClose={handleClose} severity={type}>
         {message}
