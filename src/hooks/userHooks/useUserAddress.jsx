@@ -4,7 +4,13 @@ import { addAddress, updateAddress, deleteAddress, getAddress } from "../../serv
 export const useGetAddress = (payload) => {
   return useQuery({
     queryKey: ["address", payload.uid],
-    queryFn: () => getAddress(payload)
+    queryFn: () => {
+      if (!payload?.uid) {
+        return Promise.reject(new Error("Invalid payload"));
+      }
+      return getAddress(payload)
+    },
+    enabled: !!payload?.uid
   });
 };
 

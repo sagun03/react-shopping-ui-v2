@@ -246,13 +246,13 @@ const Form = ({ index, closeModal }) => {
       {
         index >= 0 ? (
           <ButtonGroup>
-            <SaveButton type="submit" name="Update" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
-            <CancelButton onClick={handleDelete} name="Delete" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
+            <SaveButton type="submit" name="Update" styles={{ ...ButtonStyles }}/>
+            <CancelButton onClick={handleDelete} name="Delete" styles={{ ...ButtonStyles }}/>
           </ButtonGroup>
         ) : (
           <ButtonGroup>
-            <SaveButton type="submit" name="Save" styles={{ backgroundColor: "#F44336", ...ButtonStyles }}/>
-            <CancelButton onClick={closeModal} name="Cancel" styles={{ backgroundColor: "#F0C14A", ...ButtonStyles }}/>
+            <SaveButton type="submit" name="Save" styles={{ ...ButtonStyles }}/>
+            <CancelButton onClick={closeModal} name="Cancel" styles={{ ...ButtonStyles }}/>
           </ButtonGroup>
         )
       }

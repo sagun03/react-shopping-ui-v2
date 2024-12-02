@@ -23,7 +23,6 @@ const SearchBox = ({ closeModal }) => {
     setSearchTerm(e.target.value);
   }
   useEffect(() => {
-    console.log("searchTerm", searchTerm);
     if (searchTerm === "") {
       setSearchResults([]);
       return;
@@ -32,8 +31,8 @@ const SearchBox = ({ closeModal }) => {
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
-    console.log("results", results);
   }, [searchTerm]);
+
   return (
     <SearchDetailWrapper ref={cardRef}>
       <SearchBoxWrapper>

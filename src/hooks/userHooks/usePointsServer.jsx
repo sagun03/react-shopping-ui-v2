@@ -4,9 +4,15 @@ import { getUserPoints, createPoints, updatePoints } from "../../services/userSe
 
 export const useGetPoints = (payload) => {
   return useQuery({
-    queryKey: ["user_points"],
-    queryFn: () => getUserPoints(payload)
-  })
+    queryKey: ["user_points", payload?.uid],
+    queryFn: () => {
+      if (!payload?.uid || !payload?.token) {
+        return Promise.reject(new Error("Invalid payload"));
+      }
+      return getUserPoints(payload);
+    },
+    enabled: !!payload?.uid && !!payload?.token
+  });
 };
 
 export const useCreatePoints = () => {

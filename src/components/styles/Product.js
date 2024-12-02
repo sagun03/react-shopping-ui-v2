@@ -84,17 +84,17 @@ const FilterSize = styled.select`
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1.2rem;
-  background-color: rgb(250,142,8);
+  background-color: #3a7bda;
   color: white;
   cursor: pointer;
   transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 
   &:hover {
-    background-color: #D74E00;
+    background-color: #226bd5;
   }
 
   &:focus {
-    border-color: #D74E00;
+    border-color: #226bd5;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
@@ -175,9 +175,9 @@ const CustomButton = styled(Button)`
         ? "blur(0px)"
         : variant === "border"
         ? "transparent"
-        : "#EF5700"};
+        : "#f5554a"};
     border: ${({ variant }) =>
-      variant === "border" ? "4px solid #EF5700" : "none"};
+      variant === "border" ? "4px solid #f5554a" : "none"};
     ${mobile({
       height: "2.5rem",
       flex: "none"
@@ -190,7 +190,7 @@ const CustomButton = styled(Button)`
     box-shadow: none;
     border-radius: 5px;
     background-color: ${({ variant }) =>
-      variant === "border" ? "transparent" : "#D74E00"} !important;
+      variant === "border" ? "transparent" : "#f44336"} !important;
     color: ${({ variant }) => (variant === "border" ? "black" : "white")};
     transform: scale(1.1);
   }
@@ -199,6 +199,7 @@ const CustomButton = styled(Button)`
 const StyledLink = styled(Link)`
   flex: 0.5;
   width: 100%;
+  text-decoration: none;
   ${mobile({ height: "2rem", flex: "none" })}
 `;
 
@@ -259,7 +260,7 @@ const Thumbnail = styled.img`
 `;
 
 const ZoomImage = styled.img`
-  width: 85%;
+  width: 75%;
   height: auto;
   object-fit: contain;
   border-radius: 15px;

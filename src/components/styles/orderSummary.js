@@ -86,17 +86,21 @@ const CouponBadge = styled.div`
 
 const CustomButton = styled(Button)`
   width: 100%;
-  background-color: #f0c14b !important;
+  background-color: #ffcd4c !important;
   color: #111 !important;
   font-weight: 700 !important;
   font-size: 1.1rem !important;
+  border-radius: 5px !important;
   margin-top: 30px;
   padding: 12px !important;
+  transition: all 0.3s ease;
+  border: 1px solid #111 !important;
 
   &:hover {
-    background-color: #e7b32e !important;
+    background-color: #ffbf19 !important;
+    scale: 1.05;
   }
-  
+
   cursor: ${(props) => (props.disabled ? "not-allowed !important" : "pointer")};
 
   @media (max-width: 768px) {
@@ -114,4 +118,4 @@ export {
   DiscountLink,
   CouponBadge,
   CustomButton
-}
+};

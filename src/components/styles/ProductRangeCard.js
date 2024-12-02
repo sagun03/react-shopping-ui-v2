@@ -192,14 +192,13 @@ const CustomButton = styled(Button)`
     })}
     color: white;
     background-color: ${({ isOutOfStock }) =>
-      isOutOfStock ? "blur(0px)" : "rgb(250,142,8)"};
+      isOutOfStock ? "blur(0px)" : "#538cde "};
   }
   &:hover {
     box-shadow: none;
     border-radius: 5px;
-    color: black;
-    background-color: rgb(255, 178, 2) !important;
-    transform: scale(1.1);
+    background-color: #226bd5 !important;
+    transform: scale(1.05);
   }
 `;
 

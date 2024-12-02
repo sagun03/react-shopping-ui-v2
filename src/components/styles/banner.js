@@ -13,6 +13,7 @@ position: relative;
 cursor: pointer;
 display: inline-block;
 margin: 8rem 20rem;
+width: 50%;
 border-radius: 10px;
 overflow: hidden;
 transition: transform 0.3s ease;
