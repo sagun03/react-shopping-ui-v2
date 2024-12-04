@@ -49,14 +49,13 @@ export const StyledTextField = MuiStyled(TextField)(
 );
 
 export const ButtonStyles = {
-  width: "100%",
+  width: "90%",
   height: "clamp(2.8rem, 5vw, 50px)",
   marginTop: "10px",
+  transition: "all 0.3s ease",
   "&:hover": {
-    width: "99%",
-    height: "clamp(28px, 5vw, 50px)",
-    backgroundColor: "transparent",
-    color: "black",
+    scale: "1.05",
+    // color: "black",
     border: "1px solid black"
   }
 }
@@ -124,6 +123,7 @@ export const InnerWrapper = styled.div`
   padding: 0 2rem;
   width: 90%;
   margin-top:1.5rem;
+  gap: 20px;
   ${mobile({
     flexDirection: "column",
     alignItems: "center",
@@ -187,7 +187,7 @@ export const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
-  gap: 5px;
+  gap: 20px;
   justify-content: center;
   align-items: center;
 `;

@@ -24,7 +24,7 @@ export const StepIconRoot = MuiStyled("div")(
     width: "1.5em",
     height: "1.5em",
     padding: "1em",
-    background: ownerState.active || ownerState.completed ? "rgb(240, 193, 75)" : "rgba(0, 0, 0, 0.2)",
+    background: ownerState.active || ownerState.completed ? "#226bd5" : "rgba(0, 0, 0, 0.2)",
     borderRadius: "50%",
     justifyContent: "center",
     zIndex: 99,
@@ -40,7 +40,7 @@ export const StepLabelRoot = MuiStyled("div")(
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    color: ownerState.active ? "rgb(240, 193, 75)" : "rgba(0, 0, 0, 0.5)"
+    color: ownerState.active ? "#226bd5" : "rgba(0, 0, 0, 0.5)"
   })
 )
 
@@ -56,7 +56,7 @@ export const Connector = MuiStyled("div")(
     zIndex: 1,
     display: "block",
     width: "15vw",
-    border: ownerState.completed.has(ownerState.i - 1) ? "1px dashed rgba(240, 193, 75, 0.9)" : "1px dashed rgba(0, 0, 0, 0.2)"
+    border: ownerState.completed.has(ownerState.i - 1) ? "1.5px dashed #226bd5" : "1.5px dashed rgba(0, 0, 0, 0.2)"
   })
 )
 export const LabelRootInner = MuiStyled("div")(

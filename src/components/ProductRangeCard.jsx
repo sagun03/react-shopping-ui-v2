@@ -57,6 +57,7 @@ const ProductRangeCard = ({
       description
     }
     dispatch(addProducts(productObject));
+    setOpenAlert(true);
   };
 
   const handleNavigate = () => {
