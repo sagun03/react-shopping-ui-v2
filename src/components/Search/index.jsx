@@ -16,8 +16,10 @@ const SearchModal = ({ children }) => {
   useEffect(() => {
     const containerElement = modalContainer.current;
     modalRoot.appendChild(containerElement);
+    document.body.style.overflow = "hidden";
     return () => {
       modalRoot.removeChild(containerElement);
+      document.body.style.overflow = "auto";
     };
   }, [modalRoot]);
   return ReactDOM.createPortal(<ModalContainer>
