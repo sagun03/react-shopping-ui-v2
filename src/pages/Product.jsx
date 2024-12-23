@@ -79,6 +79,7 @@ const Product = () => {
     if (product.sizes && product.sizes.length > 0) {
       if (urlSize) {
         const matchedSize = product.sizes.find((s) => s.size === urlSize);
+        console.log("matchedSize", matchedSize);
         setSize(matchedSize ? matchedSize.size : product.sizes[0].size);
         setSelectedImage(matchedSize?.images[0]);
       } else {
