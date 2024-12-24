@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import { mobile, mobileSuperSmall, ScreenWith960px } from "../../responsive";
+import { mobile, mobileSuperSmall, ScreenWith960px, ScreenWith1080px, tablet } from "../../responsive";
 import { styled as MUIStyled } from "@mui/system";
 
 export const SearchContainer = styled.div`
   cursor: pointer;
   display: flex;
+  z-index: 99999;
   justify-content: space-between;
   align-items: center;
   background-color: white;
@@ -33,10 +34,12 @@ export const SearchContainer = styled.div`
   ${mobile({ fontSize: "12px" })}
 `;
 export const ModalContainer = styled.div`
+  z-index: 999999;
   display: flex;
   z-index: 10000;
   position: fixed;
   top: 74px;
+  top: 0px;
   // padding-top: 75px;
   height: 100vh;
   width: 100%;
@@ -56,12 +59,19 @@ export const SearchClose = styled.div`
 `;
 export const ModalChild = styled.div`
   display: flex;
-  width: clamp(300px, 150vw, 600px);
+  width: 40%;
+  margin: 20px auto;
   height: fit-content;
-  padding: 0.5em;
+  padding: 1em;
   border-radius: 10px;
   background-color: rgba(255, 255, 255);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  ${ScreenWith1080px({ width: "60%" })}
+  ${tablet({ width: "85%" })}
+  ${mobile({ width: "80%" })}
+  
+  max-height: 80vh;
+  overflow-y: scroll;
 `;
 export const SearchBoxWrapper = styled.div`
   display: flex;
@@ -149,3 +159,21 @@ export const StarIcon = MUIStyled(StarRateIcon)({
   color: "rgba(255, 215, 0, 0.8)",
   fontSize: "1.2em"
 });
+
+export const EmptyStateWrapper = styled.div`
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  img {
+    width: 300px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 1.2em;
+    color: #555;
+  }
+`;

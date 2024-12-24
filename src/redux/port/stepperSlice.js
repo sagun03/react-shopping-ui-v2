@@ -7,8 +7,7 @@ const initialState = {
     2: { icon: "PaymentIcon", label: "Payment", link: "/checkout/payment" }
   },
   activeStep: 0,
-  completed: new Set(),
-  selectedAddress: null // Placeholder for address integration
+  completed: new Set()
 };
 
 const stepperSlice = createSlice({
@@ -33,10 +32,8 @@ const stepperSlice = createSlice({
           state.activeStep = 1;
           break;
         case 1:
-          if (state.selectedAddress !== null) {
-            state.completed.add(1);
-            state.activeStep = 2;
-          }
+          state.completed.add(1);
+          state.activeStep = 2;
           break;
         default:
           console.error("Invalid step");

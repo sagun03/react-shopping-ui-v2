@@ -4,12 +4,12 @@ import Announcement from "../components/Announcement";
 import { UserProfileContainer, TopContainer } from "../components/styles/UserProfile";
 import ProfilePanelSwitcher from "../components/ProfilePanelSwitcher";
 import ProfileSideBar from "../components/ProfileSideBar";
-import { useUserContext } from "../context/UserContext";
 import BottomNav from "../components/BottomNav";
 import Footer from "../components/Footer";
+import { useSelector } from "react-redux";
 
 const UserProfile = () => {
-  const user = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const [activePanel, setActivePanel] = useState("PROFILE");
 
   return (
@@ -18,7 +18,7 @@ const UserProfile = () => {
       <Announcement />
       <TopContainer>
         {
-          user.user ? (
+          user ? (
             <UserProfileContainer>
               <ProfileSideBar setPanel={setActivePanel}/>
               <ProfilePanelSwitcher state={activePanel}/>

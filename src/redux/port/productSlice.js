@@ -1,6 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import { mockProducts } from "../../utils/data"
-import { set } from "zod"
 
 const dataSlice = createSlice({
   name: "data",

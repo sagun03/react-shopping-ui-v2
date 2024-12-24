@@ -23,12 +23,9 @@ import {
   SingleStar,
   DiscountText
 } from "./styles/ProductRangeCard";
-// import { useUserAuth } from "../context/UserAuthContext";
-// import { useCreateCart } from "../hooks/useCart";
-// import { useUserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addProducts } from "../redux/cartRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, updateCart } from "../redux/port/cartSlice";
 
 const ProductRangeCard = ({
   name,
@@ -45,6 +42,7 @@ const ProductRangeCard = ({
   const [openAlert, setOpenAlert] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cartData);
 
   const handleClick = () => {
     const productObject = {
@@ -56,7 +54,20 @@ const ProductRangeCard = ({
       image: images[0],
       description
     }
-    dispatch(addProducts(productObject));
+    // check if product is already in cart
+    const productInCart = cart.find((item) => item.productId === productObject.productId && item.size === productObject.size);
+
+    if (productInCart) {
+      // if product is already in cart, update the quantity
+      const updatedCart = cart.map((item) =>
+        item.productId === productObject.productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+      dispatch(updateCart(updatedCart));
+    } else {
+      dispatch(addToCart(productObject));
+    }
   };
 
   const handleNavigate = () => {

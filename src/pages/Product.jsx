@@ -9,8 +9,6 @@ import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";
-import { useDataContext } from "../context/DataContext";
-import { useUserContext } from "../context/UserContext";
 import Review from "../components/Review"; // Import Review component
 
 import {
@@ -49,11 +47,9 @@ import {
 import SimilarProducts from "../components/SimilarProducts";
 import { Icon } from "../components/styles/ProductRangeCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addProducts } from "../redux/cartRedux";
 import { addToCart, updateCart } from "../redux/port/cartSlice";
 
 const Product = () => {
-  // const { user } = useUserContext();
   const user = useSelector((state) => state.user.currentUser);
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
@@ -64,7 +60,6 @@ const Product = () => {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  // const { products } = useDataContext();
   const products = useSelector((state) => state.product.products);
   const urlSize = localStorage.getItem("size");
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};

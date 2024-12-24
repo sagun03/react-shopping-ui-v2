@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -6,30 +6,34 @@ import {
   FieldStyles,
   SearchDetailWrapper,
   SearchClose,
-  CardContainer
+  CardContainer,
+  EmptyStateWrapper
 } from "./styles";
-import { useDataContext } from "../../context/DataContext";
 import useContextBlur from "../../hooks/custom hooks/useContextBlur";
+import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import propTypes from "prop-types";
 
 const SearchBox = ({ closeModal }) => {
-  const { products } = useDataContext();
+  const products = useSelector(state => state.product.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const cardRef = useRef(null);
   useContextBlur(cardRef, closeModal);
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
-  }
+  };
   useEffect(() => {
     console.log("searchTerm", searchTerm);
     if (searchTerm === "") {
       setSearchResults([]);
       return;
     }
-    const results = products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const results = products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
     console.log("results", results);
@@ -46,8 +50,8 @@ const SearchBox = ({ closeModal }) => {
           onChange={handleChange}
         />
         <SearchClose onClick={closeModal}>
-          <CloseIcon sx={
-            {
+          <CloseIcon
+            sx={{
               cursor: "pointer",
               fontSize: "1.5em",
               width: "fit-content"
@@ -55,26 +59,38 @@ const SearchBox = ({ closeModal }) => {
           }/>
         </SearchClose>
       </SearchBoxWrapper>
-      {
-        searchTerm && <CardContainer>
-          {searchResults.map(product => (
-            <ProductCard key={product.id} product={product} />
+
+      {searchTerm && searchResults.length > 0 ? (
+        <CardContainer>
+          {searchResults.map((product) => (
+            <ProductCard key={product.id} product={product} closeModal={closeModal} />
           ))}
         </CardContainer>
-      }
-      {
-        searchResults.length === 0 &&
+      ) : (
+        searchTerm && (
+          <EmptyStateWrapper>
+            <img
+              src="https://jkblobstore.blob.core.windows.net/jk-images-new/emptyState.webp"
+              alt="Empty State"
+            />
+            <p>No products found!</p>
+            <p>Try searching for something else.</p>
+          </EmptyStateWrapper>
+        )
+      )}
+
+      {searchResults.length === 0 && !searchTerm && (
         <CardContainer>
           <p>Top Suggestions</p>
-          <p style={{
-            height: "1px !important"
-          }}/>
-          {products.map(product => (
-            product.isPopular &&
-            <ProductCard key={product.id} product={product} />
-          ))}
+          <p style={{ height: "1px !important" }} />
+          {products.map(
+            (product) =>
+              product.isPopular && (
+                <ProductCard key={product.id} product={product} closeModal={closeModal} />
+              )
+          )}
         </CardContainer>
-      }
+      )}
     </SearchDetailWrapper>
   );
 }

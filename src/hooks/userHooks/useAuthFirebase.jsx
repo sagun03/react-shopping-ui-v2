@@ -17,7 +17,7 @@ import {
 
 // import { useUserContext } from "../../context/UserContext";
 import { useDispatch } from "react-redux";
-import { setError } from "../../redux/port/userSlice";
+import { setError, clearUser } from "../../redux/port/userSlice";
 
 const extractUserData = (user) => ({
   email: user.email ? user.email : (user.phoneNumber ? user.phoneNumber : undefined),
@@ -106,6 +106,7 @@ export const useLogOut = () => {
       onSuccess: (data) => {
         // Success actions
         dispatch(setError(null));
+        dispatch(clearUser());
         logout(data.user);
       },
       onError: (error) => {

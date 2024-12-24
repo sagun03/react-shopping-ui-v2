@@ -36,6 +36,7 @@ const OrderSummary = () => {
   const [couponCode, setCouponCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const cartData = useSelector((state) => state.cart.cartData);
+  const selectedAddress = useSelector((state) => state.address.selectedAddress);
   const total = useMemo(() => {
     return cartData.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
   }, [cartData]);
@@ -117,7 +118,12 @@ const OrderSummary = () => {
   }, [cartData, appliedCoupon]);
 
   const handlePlaceOrder = (step) => () => {
-    dispatch(handleStep(step));
+    if (step === 1 && selectedAddress !== null) {
+      dispatch(handleStep(step));
+    }
+    if (step === 0) {
+      dispatch(handleStep(step));
+    }
   };
 
   return (

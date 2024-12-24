@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useUserContext } from "../context/UserContext";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,9 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useGetLog } from "../hooks/useTransaction";
+import { useSelector } from "react-redux";
 
 const Transaction = () => {
-  const { user } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const { data } = useGetLog(user.uid);
   const [logs, setLogs] = useState([]);
 

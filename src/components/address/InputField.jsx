@@ -1,7 +1,7 @@
 import { FormHelperText } from "@mui/material";
 import { StyledTextField, Container } from "./styles";
 import PropTypes from "prop-types";
-import { useAddressContext } from "./DataProvider";
+import { useSelector } from "react-redux";
 
 export const TextInput = ({
   label,
@@ -12,7 +12,7 @@ export const TextInput = ({
   autocomplete,
   disabled
 }) => {
-  const { submit } = useAddressContext();
+  const submit = useSelector(state => state.address.submit);
   return (
     <Container>
       <StyledTextField
@@ -30,7 +30,7 @@ export const TextInput = ({
         sx={
           { color: "red", marginBlock: "-5px 10px" }
         }
-        > {submit ? (value.length >= 1 ? "" : `${label} is required`) : ""}</FormHelperText>
+        > {submit ? (value?.length >= 1 ? "" : `${label} is required`) : ""}</FormHelperText>
       }
     </Container>
   )

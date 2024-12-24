@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper";
 import "./styles.css";
@@ -12,8 +12,6 @@ import PopularProductItem from "./PopularProductItem";
 import { useSelector } from "react-redux";
 
 const PopularProducts = () => {
-  // const { products } = useDataContext();
-
   const products = useSelector((state) => state.product.products);
 
   const popularProducts = products

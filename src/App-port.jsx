@@ -35,6 +35,7 @@ const App = () => {
   const products = useSelector((state) => state.product.products)
   const dispatch = useDispatch();
 
+  // get user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -46,6 +47,7 @@ const App = () => {
     };
   }, [dispatch]);
 
+  // get products and categories
   useEffect(() => {
     if (categoriesData?.length > 0 && categories.length === 0) {
       dispatch(setCategories(categoriesData))

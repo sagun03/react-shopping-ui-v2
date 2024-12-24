@@ -7,12 +7,10 @@ import { Link } from "react-router-dom";
 import { IconButton, Typography, Button } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
-import { useUserContext } from "../context/UserContext";
-import { useStepperContext } from "../context/StepperContext";
 import { truncateDescription } from "../utils/helper";
 import { useSelector, useDispatch } from "react-redux";
-import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
-import { removeFromCart } from "../redux/port/cartSlice";
+import { resetStepper } from "../redux/port/stepperSlice";
+import { removeFromCart, removeExisting, addExisting } from "../redux/port/cartSlice";
 
 const Container = styled.div``;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
@@ -206,17 +204,10 @@ const Hr = styled.hr`
 
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
-  // const { user } = useUserContext()
-  // const { cartData } = useCartContext();
-  // const { activeStep } = useStepperContext()
-  // const user = useSelector((state) => state.user.currentUser);
   const { activeStep } = useSelector((state) => state.stepper);
   const cartData = useSelector((state) => state.cart.cartData);
   const dispatch = useDispatch()
 
-  // const { mutate: updateCart } = useUpdateCart();
-  // const { mutate: deleteCart } = useDeleteCart();
-  // const { mutate: deleteProductCart } = useDeleteProductCart()
   const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
@@ -230,7 +221,6 @@ const Cart = () => {
       [key]: !checkedItems[key]
     };
 
-    // Update selectAll if all items are selected
     const allItemsChecked = cartData.products.every((item) => {
       const key = `${item.productId}-${item.size}`;
       return newCheckedItems[key];
@@ -252,16 +242,21 @@ const Cart = () => {
     setSelectAll(newSelectAll);
   };
 
-  const handleClick = (type, item, id = "") => {
+  const handleClick = (type, item) => {
     if (type === "dec") {
-      dispatch(removeFromCart({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(removeExisting({ item }));
     } else {
-      dispatch(addToCart({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(addExisting({ item }));
     }
   };
 
   const handleRemoveItem = (id, size) => {
     dispatch(removeFromCart({ productId: id, size }));
+    if (cartData.length === 0) {
+      setCheckedItems({});
+      setSelectAll(false);
+      resetStepper();
+    }
   };
 
   const handleRemoveAll = () => {
@@ -273,6 +268,7 @@ const Cart = () => {
     });
     setCheckedItems({});
     setSelectAll(false);
+    resetStepper();
   };
 
   console.log(cartData, "cartData", checkedItems, checkedItems.length);
@@ -365,11 +361,11 @@ const Cart = () => {
                           <PriceDetail>
                             <ProductAmountContainer>
                               <IconButton>
-                                <Remove onClick={() => handleClick("dec", item, itemId)} />
+                                <Remove onClick={() => handleClick("dec", item)} />
                               </IconButton>
                               <ProductAmount>{item?.quantity}</ProductAmount>
                               <IconButton>
-                                <Add onClick={() => handleClick("add", item, itemId)} />
+                                <Add onClick={() => handleClick("add", item)} />
                               </IconButton>
                             </ProductAmountContainer>
                           </PriceDetail>

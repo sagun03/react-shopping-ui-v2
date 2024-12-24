@@ -1,55 +1,35 @@
-import apiClient from "../../api/client";
+import axiosInstance from "../../utils/axiosInstance";
 
 export const addAddress = async (payload) => {
-  const { token, ...addressData } = payload;
-  const response = await apiClient.request({
+  const response = await axiosInstance.request({
     method: "POST",
     url: "/user/address/create",
-    data: addressData,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+    data: payload
   })
   return response;
 };
 
-export const getAddress = async (payload) => {
-  const { token, uid } = payload;
-  const response = await apiClient.request({
+export const getAddress = async (uid) => {
+  const response = await axiosInstance.request({
     method: "GET",
-    url: `/user/address/get/${uid}`,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+    url: `/user/address/get/${uid}`
   })
   return response;
 };
 
 export const deleteAddress = async (payload) => {
-  const { token, uid } = payload;
-  const response = await apiClient.request({
+  const response = await axiosInstance.request({
     method: "DELETE",
-    url: `/user/address/remove/${uid}?id=${payload.id}`,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+    url: `/user/address/remove/${payload.uid}?id=${payload.id}`
   })
   return response;
 };
 
 export const updateAddress = async (payload) => {
-  const { token, ...addressData } = payload;
-  const response = await apiClient.request({
+  const response = await axiosInstance.request({
     method: "PUT",
     url: "/user/address/update",
-    data: addressData,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+    data: payload
   })
   return response;
 }

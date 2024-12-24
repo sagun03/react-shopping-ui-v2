@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   AddressForm,
   InputContainer,
@@ -19,28 +19,35 @@ import { useSelector, useDispatch } from "react-redux";
 import ErrorBox from "./ErrorBox";
 import { performValidations } from "./validations";
 import {
-  updateContact,
-  updateAddressField,
-  updatePref,
-  updateDefaultAddress,
-  resetState,
   setSubmit,
-  addNewAddress,
   updateExistingAddress,
-  removeAddress,
   setAddressList,
   setDefaultIndex
 } from "../../redux/port/addressSlice";
 
-const Form = ({ index, closeModal }) => {
+import { addAddress, updateAddress, deleteAddress } from "../../services/userServices.js/Address";
+
+const Form = ({ refetch, index, closeModal }) => {
   const dispatch = useDispatch();
 
-  const { contact, address, pref, defaultAddress, submit, addressList, selectedAddress } = useSelector(
+  const { emptyAddress, addressList, selectedAddress } = useSelector(
     (state) => state.address
   );
-  const { user } = useSelector((state) => state.user);
 
-  const [localPref, setLocalPref] = useState("HOME");
+  const addressState = useSelector((state) => state.address);
+
+  const [address, setAddress] = useState(null);
+
+  useEffect(() => {
+    if (index >= 0) {
+      setAddress(addressList[index]);
+    } else {
+      setAddress(emptyAddress);
+    }
+  }, [addressState]);
+
+  const user = useSelector((state) => state.user.currentUser);
+
   const [error, setError] = useState({ state: false, message: "" });
 
   const errorFields = useMemo(() => {
@@ -53,109 +60,58 @@ const Form = ({ index, closeModal }) => {
     return fields;
   }, [error]);
 
-  const handleChange = (type, field) => (e) => {
+  const handleChange = (field) => (e) => {
     dispatch(setSubmit(false));
-    if (type === "contact") {
-      dispatch(updateContact({ field, value: e.target.value }));
-    } else {
-      dispatch(updateAddressField({ field, value: e.target.value }));
-    }
-  };
-
-  useEffect(() => {
-    if (index >= 0) {
-      const currentAddress = addressList[index];
-      for (const key in currentAddress) {
-        dispatch(updateContact({ field: key, value: currentAddress[key] }));
-        dispatch(updateAddressField({ field: key, value: currentAddress[key] }));
-        dispatch(updatePref(currentAddress.pref));
-        dispatch(updateDefaultAddress(currentAddress.defaultAddress));
-      }
-    } else {
-      dispatch(resetState());
-    }
-  }, [selectedAddress, index, addressList, dispatch]);
-
-  const flattenData = () => {
-    return {
-      ...contact,
-      ...address,
-      pref: localPref,
-      defaultAddress
-    };
+    setAddress({ ...address, [field]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setSubmit(true));
     const eventDesc = e.nativeEvent.submitter.innerText;
-    const vRes = performValidations({ contact, address, pref, defaultAddress });
+    const vRes = performValidations(address);
 
     if (vRes.isValid) {
       console.log("Validation passed");
       setError({ state: false, message: "" });
 
       if (eventDesc === "SAVE") {
-        const data = flattenData();
-        dispatch(
-          addNewAddress({
-            address: data,
-            uid: user.uid,
-            token: user.accessToken
-          })
-        ).then(() => {
-          dispatch(setAddressList([...addressList, data]));
+        addAddress(address).then(() => {
+          dispatch(setAddressList([...addressList, address]));
           closeModal();
+        }).catch((err) => {
+          console.log(err);
         });
       }
 
       if (eventDesc === "UPDATE") {
-        const updatedData = {
-          token: user.accessToken,
-          uid: user.uid,
-          _id: addressList[index]._id,
-          ...flattenData()
-        };
-        dispatch(updateExistingAddress(updatedData)).then(() => {
-          if (updatedData.defaultAddress) {
-            dispatch(setDefaultIndex(index));
-            dispatch(
-              setAddressList(
-                addressList.map((element, i) =>
-                  i === index ? updatedData : { ...element, defaultAddress: false }
-                )
-              )
-            );
-          } else {
-            dispatch(
-              setAddressList(
-                addressList.map((element, i) => (i === index ? updatedData : element))
-              )
-            );
-          }
+        updateAddress(address).then(() => {
+          dispatch(updateExistingAddress({ index, address }));
           closeModal();
+        }).catch((err) => {
+          console.log(err);
         });
       }
+      refetch();
     } else {
       console.log("Validation failed");
+      console.log(address)
       setError({ state: true, message: vRes.errors });
     }
   };
 
   const handleDelete = () => {
-    dispatch(
-      removeAddress({
-        uid: user.uid,
-        token: user.accessToken,
-        id: addressList[index]._id
-      })
-    ).then(() => {
-      dispatch(setAddressList(addressList.filter((_, i) => i !== index)));
-      closeModal();
-    });
+    deleteAddress({ uid: user.uid, id: addressList[index]._id })
+      .then(() => {
+        dispatch(setAddressList(addressList.filter((_, i) => i !== index)));
+        closeModal();
+      }).catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
+    address && (
     <AddressForm onSubmit={handleSubmit} noValidate>
       {error.state && <ErrorBox errors={errorFields} />}
       <InputContainer>
@@ -163,18 +119,18 @@ const Form = ({ index, closeModal }) => {
         <TextInput
           label="Name"
           name="name"
-          value={contact.name}
+          value={address.name}
           required
           autocomplete="name"
-          onChange={handleChange("contact", "name")}
+          onChange={handleChange("name")}
         />
         <TextInput
           label="Mobile"
           name="mobile"
-          value={contact.mobile}
+          value={String(address.mobile)}
           required
           autocomplete="tel"
-          onChange={handleChange("contact", "mobile")}
+          onChange={handleChange("mobile")}
         />
       </InputContainer>
 
@@ -186,7 +142,7 @@ const Form = ({ index, closeModal }) => {
           value={address.street}
           required
           autocomplete="street-address"
-          onChange={handleChange("address", "street")}
+          onChange={handleChange("street")}
         />
         <TextInput
           label="City"
@@ -194,7 +150,7 @@ const Form = ({ index, closeModal }) => {
           value={address.city}
           required
           autocomplete="address-level2"
-          onChange={handleChange("address", "city")}
+          onChange={handleChange("city")}
         />
         <SmallButtonGroup>
           <TextInput
@@ -203,7 +159,7 @@ const Form = ({ index, closeModal }) => {
             value={address.state}
             required
             autocomplete="address-level1"
-            onChange={handleChange("address", "state")}
+            onChange={handleChange("state")}
           />
           <TextInput
             label="Pincode"
@@ -211,7 +167,7 @@ const Form = ({ index, closeModal }) => {
             value={address.pincode}
             required
             autocomplete="postal-code"
-            onChange={handleChange("address", "pincode")}
+            onChange={handleChange("pincode")}
           />
         </SmallButtonGroup>
       </InputContainer>
@@ -222,7 +178,7 @@ const Form = ({ index, closeModal }) => {
           <Button
             variant="outlined"
             sx={
-              localPref === "HOME"
+              address.pref === "HOME"
                 ? {
                     ...ChipStyles,
                     color: "white",
@@ -232,8 +188,7 @@ const Form = ({ index, closeModal }) => {
                 : ChipStyles
             }
             onClick={() => {
-              setLocalPref("HOME");
-              dispatch(updatePref("HOME"));
+              setAddress({ ...address, pref: "HOME" });
             }}
           >
             Home
@@ -241,7 +196,7 @@ const Form = ({ index, closeModal }) => {
           <Button
             variant="outlined"
             sx={
-              localPref === "WORK"
+              address.pref === "WORK"
                 ? {
                     ...ChipStyles,
                     color: "white",
@@ -251,8 +206,7 @@ const Form = ({ index, closeModal }) => {
                 : ChipStyles
             }
             onClick={() => {
-              setLocalPref("WORK");
-              dispatch(updatePref("WORK"));
+              setAddress({ ...address, pref: "WORK" });
             }}
           >
             Work
@@ -263,9 +217,10 @@ const Form = ({ index, closeModal }) => {
       <InputContainer>
         <CheckBoxContainer>
           <Checkbox
-            checked={defaultAddress}
+            checked={address.defaultAddress}
             onChange={(e) => {
-              dispatch(updateDefaultAddress(e.target.checked));
+              setAddress({ ...address, defaultAddress: e.target.checked });
+              dispatch(setDefaultIndex(index));
             }}
             sx={{ color: "#F44336 !important" }}
           />
@@ -301,10 +256,12 @@ const Form = ({ index, closeModal }) => {
         </ButtonGroup>
       )}
     </AddressForm>
+    )
   );
 };
 
 Form.propTypes = {
+  refetch: propTypes.func,
   index: propTypes.number,
   closeModal: propTypes.func
 };

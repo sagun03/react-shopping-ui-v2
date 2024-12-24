@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import { PanelContainer, AddressBox } from "./styles";
 import Form from "./Form";
-import { useAddressContext } from "./DataProvider";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import AddressCard from "./AddressCard";
-import { fetchAddress } from "../../redux/port/addressSlice";
+import { getAddress } from "../../services/userServices.js/Address";
+import { setAddressList, setDefaultIndex, setSelectedAddress } from "../../redux/port/addressSlice";
+import { useQuery } from "@tanstack/react-query";
 
 const modalRoot = document.createElement("div");
 const AddressModal = ({ children }) => {
@@ -28,24 +29,14 @@ AddressModal.propTypes = {
 }
 
 const AddressPanel = () => {
-  // const { address, defaultIndex, setSelectedAddress, isLoading, error } = useAddressContext();
-  const address = useSelector((state) => state.address.addresList);
+  const address = useSelector((state) => state.address.addressList);
   const defaultIndex = useSelector((state) => state.address.defaultIndex);
-  const setSelectedAddress = useSelector((state) => state.address.setSelectedAddress);
-  const status = useSelector((state) => state.address.status);
-  const error = useSelector((state) => state.address.error);
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
   const [index, setIndex] = useState(0);
   const [newAddress, setNewAddress] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchAddress({ token: user.accessToken, uid: user.uid }));
-    }
-  }, [dispatch, user]);
 
   useEffect(() => {
     if (address && address.length === 0) {
@@ -55,8 +46,42 @@ const AddressPanel = () => {
     }
   }, [address]);
 
-  if (status === "loading") return <p>Loading...</p>
-  if (error) return <p>Error: {error}</p>
+  const { refetch, status: getStatus, data } = useQuery({
+    queryKey: ["address"],
+    queryFn: async () => {
+      const response = await getAddress(user.uid);
+      return response.data.addressData;
+    }
+  })
+
+  if (getStatus === "pending") return <p>Loading...</p>
+  if (getStatus === "error") return <p>Error: {data.message}</p>
+  if (getStatus === "success") {
+    dispatch(setAddressList(data));
+    if (data.length > 0) {
+      data.forEach((element, index) => {
+        if (element.defaultAddress === true) {
+          dispatch(setDefaultIndex(index));
+          dispatch(setSelectedAddress(index));
+        }
+      });
+    }
+  }
+
+  const refetchData = () => {
+    refetch().then((responseObject) => {
+      const newData = responseObject.data;
+      dispatch(setAddressList(newData));
+      if (newData.length > 0) {
+        newData.forEach((element, index) => {
+          if (element.defaultAddress === true) {
+            dispatch(setDefaultIndex(index));
+            dispatch(setSelectedAddress(index));
+          }
+        });
+      }
+    });
+  }
 
   const openModal = (index) => () => {
     setIndex(index);
@@ -75,61 +100,59 @@ const AddressPanel = () => {
 
   return (
     <PanelContainer>
-    <AddressBox onClick={() => {
-      setSelectedAddress(0);
-      closeShowModal();
-      setNewAddress(true);
-    }}
-    style={{
-      backgroundColor: "transparent",
-      border: "none",
-      alignItems: "start",
-      justifyContent: "space-between",
-      textAlign: "left",
-      flexDirection: "row"
-    }}
-    >
-      <h2>Select Delivery Address</h2>
-      <div style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        border: "1px solid #000",
-        borderRadius: "5px",
-        padding: "5px"
-      }}>
-        <AddBoxIcon />
-        <p>Add Address</p>
-      </div>
-    </AddressBox>
-    {
-      address[defaultIndex] &&
-        <>
-          <p style={{
-            textAlign: "left",
-            width: "100%",
-            color: "rgba(0, 0, 0, 0.6)",
-            fontSize: "0.9rem",
-            marginBlock: "-0.5em -1em"
-          }}>Default Address</p>
-          <AddressBox key={address[defaultIndex]._id} onClick={openModal(defaultIndex)}>
-            <AddressCard index={defaultIndex} />
-          </AddressBox>
-        </>
-    }
-
-    {
-      address.map((element, index) => (
-        element.defaultAddress === false &&
-        <AddressBox key={element._id} onClick={openModal(index)}>
-          <AddressCard index={index} />
-        </AddressBox>
-      )
-      )
-    }
-  {newAddress && <Form closeModal={closeNewModal}/>}
-  {showModal && <Form index={index} closeModal={closeShowModal} />}
-</PanelContainer>
+      <AddressBox onClick={() => {
+        setSelectedAddress(0);
+        closeShowModal();
+        setNewAddress(true);
+      }}
+      style={{
+        backgroundColor: "transparent",
+        border: "none",
+        alignItems: "start",
+        justifyContent: "space-between",
+        textAlign: "left",
+        flexDirection: "row"
+      }}
+      >
+        <h2>Select Delivery Address</h2>
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          border: "1px solid #000",
+          borderRadius: "5px",
+          padding: "5px"
+        }}>
+          <AddBoxIcon />
+          <p>Add Address</p>
+        </div>
+      </AddressBox>
+      {
+        address.length >= 1 && address.map((element, index) => (
+          element?.defaultAddress === false ? (
+            <AddressBox key={element._id} onClick={openModal(index)}>
+            <AddressCard index={index} />
+            </AddressBox>
+          ) : (
+            <>
+              <p style={{
+                textAlign: "left",
+                width: "100%",
+                color: "rgba(0, 0, 0, 0.6)",
+                fontSize: "0.9rem",
+                marginBlock: "-0.5em -1em"
+              }}>Default Address</p>
+              <AddressBox onClick={openModal(defaultIndex)}>
+                <AddressCard index={defaultIndex} />
+              </AddressBox>
+            </>
+          )
+        )
+        )
+      }
+    {newAddress && <Form refetch={refetchData} closeModal={closeNewModal}/>}
+    {showModal && <Form refetch={refetchData} index={index} closeModal={closeShowModal} />}
+  </PanelContainer>
   )
 }
 
