@@ -24,7 +24,6 @@ const SearchBox = ({ closeModal }) => {
     setSearchTerm(e.target.value);
   };
   useEffect(() => {
-    console.log("searchTerm", searchTerm);
     if (searchTerm === "") {
       setSearchResults([]);
       return;
@@ -36,8 +35,8 @@ const SearchBox = ({ closeModal }) => {
         product.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(results);
-    console.log("results", results);
   }, [searchTerm]);
+
   return (
     <SearchDetailWrapper ref={cardRef}>
       <SearchBoxWrapper>
@@ -55,8 +54,8 @@ const SearchBox = ({ closeModal }) => {
               cursor: "pointer",
               fontSize: "1.5em",
               width: "fit-content"
-            }
-          }/>
+            }}
+          />
         </SearchClose>
       </SearchBoxWrapper>
 
@@ -93,10 +92,10 @@ const SearchBox = ({ closeModal }) => {
       )}
     </SearchDetailWrapper>
   );
-}
+};
 
 SearchBox.propTypes = {
   closeModal: propTypes.func
-}
+};
 
 export default SearchBox;

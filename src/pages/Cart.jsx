@@ -232,7 +232,7 @@ const Cart = () => {
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
-    const newCheckedItems = cartData.products.reduce((acc, item) => {
+    const newCheckedItems = cart.products.reduce((acc, item) => {
       const key = `${item.productId}-${item.size}`;
       acc[key] = newSelectAll;
       return acc;
@@ -299,7 +299,7 @@ const Cart = () => {
                     <TopButton>Continue Shopping</TopButton>
                   </Link>
                   <ProductSize>
-                    <b>Shopping Bag ( {cartData?.quantity} )</b>
+                    <b>Shopping Bag ( {cart?.quantity} )</b>
                   </ProductSize>
                 </Top>
                 <Info>

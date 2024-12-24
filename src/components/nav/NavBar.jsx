@@ -40,7 +40,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import CustomDrawer from "./CustomeDrawer";
 
-const menu = ["Home", "Products", "About Us", "Contact Us"];
+const menu = ["Home", "Products", "About"];
 
 export const MenuItemMyUser = styled.div`
   font-size: 14px;
@@ -132,7 +132,7 @@ const AccountBox = ({
         </MenuItem>
         <MenuItem>
           <Link
-            to="#"
+            to="/orders"
             style={{
               display: "flex",
               justifyContent: "center",

@@ -14,8 +14,10 @@ const ProductCard = ({ product, closeModal }) => {
   console.log("product", product);
   const imageBlob = product.sizes[0].images[0];
   const price = product.sizes[0].price;
-  const shortDescription = product.sizes[0].subTitle || product.description.substring(0, 50);
+  const shortDescription =
+    product.sizes[0].subTitle || product.description.substring(0, 50);
   const pathName = `/product/${product.id}`;
+
   return (
     <Link
       to={pathName}
@@ -46,7 +48,7 @@ const ProductCard = ({ product, closeModal }) => {
       </CardWrapper>
     </Link>
   );
-}
+};
 
 ProductCard.propTypes = {
   product: PropTypes.shape({

@@ -49,6 +49,7 @@ const Form = ({ refetch, index, closeModal }) => {
   const user = useSelector((state) => state.user.currentUser);
 
   const [error, setError] = useState({ state: false, message: "" });
+  const { handleStep } = useStepperContext();
 
   const errorFields = useMemo(() => {
     const fields = {};

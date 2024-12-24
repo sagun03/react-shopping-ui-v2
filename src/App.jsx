@@ -32,6 +32,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBanners } from "./redux/bannerRedux";
 import UserLogin from "./pages/UserLogin";
 import Home from "./pages/Homepage";
+import AboutUs from "./pages/AboutUs";
+import { OrderProvider } from "./context/orderContext";
 // const Home = React.lazy(() => import("./pages/Homepage"));
 const queryClient = new QueryClient();
 
@@ -69,10 +71,11 @@ const App = () => {
                         />
                         <Route path="/product/:id" element={<Product />} />
                         <Route path="/cart" element={<Cart />} />
-                        {/* <Route path="/login" element={<Login />} /> */}
+                        <Route path="/orders" element={<OrderProvider><Orders /></OrderProvider>} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/phonesignup" element={<PhoneSignUp />} />
                         <Route path="/orders" element={<Orders />} />
+                        <Route path="/about" element={<AboutUs />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/products" element={<ProductList />} />
                         <Route path="/admin" element={<Admin />} />

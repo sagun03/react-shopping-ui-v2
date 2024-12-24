@@ -16,6 +16,7 @@ export const SearchContainer = styled.div`
   padding: 5px 10px;
   fontsize: 14px;
   transition: all 0.3s ease;
+  z-index: 99999;
   &:hover {
     color: white;
     cursor: pointer;
@@ -36,7 +37,7 @@ export const SearchContainer = styled.div`
 export const ModalContainer = styled.div`
   z-index: 999999;
   display: flex;
-  z-index: 10000;
+  z-index: 999999;
   position: fixed;
   top: 74px;
   top: 0px;

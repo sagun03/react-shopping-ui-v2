@@ -80,6 +80,7 @@ const Product = () => {
     if (product.sizes && product.sizes.length > 0) {
       if (urlSize) {
         const matchedSize = product.sizes.find((s) => s.size === urlSize);
+        console.log("matchedSize", matchedSize);
         setSize(matchedSize ? matchedSize.size : product.sizes[0].size);
         setSelectedImage(matchedSize?.images[0]);
       } else {
@@ -140,16 +141,12 @@ const Product = () => {
     localStorage.setItem("size", newSize);
   };
 
-  if (!product.id) {
-    return <p>Product not found.</p>;
-  }
-
   const discount = product.discountPercentage || 5;
   return (
     <Container>
       <Announcement />
       <NavBar />
-      {isLoading ? (
+      {isLoading || !product.id ? (
         <Loader />
       ) : (
         <>

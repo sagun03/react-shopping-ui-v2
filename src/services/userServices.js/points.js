@@ -2,6 +2,7 @@ import apiClient from "../../api/client";
 
 export const getUserPoints = async (payload) => {
   const { token, uid } = payload;
+
   const response = await apiClient.request({
     method: "GET",
     url: `/user/points/get/${uid}`,

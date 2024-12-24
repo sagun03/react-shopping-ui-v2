@@ -14,10 +14,9 @@ const cartSlice = createSlice({
     },
     addProducts: (state, action) => {
       const { productId, quantity, unitPrice, size, name, image, description } = action.payload;
-      const existingProduct = state.products.find(
+      const existingProduct = state?.products?.find(
         (item) => item.productId === productId && item.size === size
       );
-      console.log(existingProduct, "existingProduct", action.payload);
       if (existingProduct) {
         existingProduct.quantity += quantity;
       } else {
@@ -31,7 +30,6 @@ const cartSlice = createSlice({
           description
         });
       }
-      console.log(action.payload, "action.payload");
       state.quantity += quantity;
       state.total += unitPrice * quantity;
     },
