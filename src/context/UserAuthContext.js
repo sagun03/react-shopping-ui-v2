@@ -50,7 +50,6 @@ export const UserAuthContextProvider = ({ children }) => {
         logOut,
         googleSignIn,
         setUpRecaptcha,
-        signOut,
         auth
       }}
     >

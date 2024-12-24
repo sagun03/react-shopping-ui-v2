@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../useCart";
-import { useCartContext } from "../../context/cartContext";
+import { useDispatch, useSelector } from "react-redux";
+// import { useCartContext } from "../../context/cartContext";
 
 const useFetchCartData = (user) => {
   const [dataFetched, setDataFetched] = useState(null);
-  const { cartData, setCartData, setIsCartData } = useCartContext();
+  // const { cartData, setCartData, setIsCartData } = useCartContext();
+  const dispatch = useDispatch();
+  const cartData = useSelector((state) => state.cart.cartData);
+  const setIsCartData = (value) => dispatch(setCartData(value));
+  const setCartData = (value) => dispatch(setCartData(value));
 
   // Only call useCart if cartData is not available
-  const shouldFetchCart = cartData.length === 0;
+  const shouldFetchCart = cartData && cartData.length === 0;
 
   // Conditionally call useCart if cartData is empty
   const { data: cartItemsData, isLoading } = useCart(user, shouldFetchCart);

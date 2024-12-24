@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { ProfilePanelContainer, InputField, ButtonGroup, InnerHeading, StyledBox } from "./styles/ProfilePanel";
 import { SaveButton, CancelButton, EditButton } from "./EditButtons";
-import { useUserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
 
 const ProfilePanel = () => {
-  const { user: userData } = useUserContext();
+  const userData = useSelector((state) => state.user.currentUser);
   const [user, setUser] = useState({
     Username: userData.displayName,
     Email: userData.email,

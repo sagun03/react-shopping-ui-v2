@@ -9,13 +9,13 @@ import {
   CardContainer,
   EmptyStateWrapper
 } from "./styles";
-import { useDataContext } from "../../context/DataContext";
 import useContextBlur from "../../hooks/custom hooks/useContextBlur";
+import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import propTypes from "prop-types";
 
 const SearchBox = ({ closeModal }) => {
-  const { products } = useDataContext();
+  const products = useSelector(state => state.product.products);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const cardRef = useRef(null);

@@ -7,11 +7,10 @@ import { Link } from "react-router-dom";
 import { IconButton, Typography, Button } from "@mui/material";
 import BottomNav from "../components/BottomNav";
 import { Helmet } from "react-helmet-async";
-import { useUserContext } from "../context/UserContext";
-import { useStepperContext } from "../context/StepperContext";
 import { truncateDescription } from "../utils/helper";
 import { useSelector, useDispatch } from "react-redux";
-import { addProducts, decreaseQuantity, removeProducts } from "../redux/cartRedux";
+import { resetStepper } from "../redux/port/stepperSlice";
+import { removeFromCart, removeExisting, addExisting } from "../redux/port/cartSlice";
 
 const Container = styled.div``;
 const Checkbox = styled.input.attrs({ type: "checkbox" })`
@@ -205,14 +204,9 @@ const Hr = styled.hr`
 
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
-  const { user } = useUserContext()
-  const { activeStep } = useStepperContext()
-  const cart = useSelector((state) => state.cart);
+  const cartData = useSelector((state) => state.cart.cartData);
   const dispatch = useDispatch()
-  console.log(cart, "cart")
-  // const { mutate: updateCart } = useUpdateCart();
-  // const { mutate: deleteCart } = useDeleteCart();
-  // const { mutate: deleteProductCart } = useDeleteProductCart()
+
   const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
@@ -226,8 +220,7 @@ const Cart = () => {
       [key]: !checkedItems[key]
     };
 
-    // Update selectAll if all items are selected
-    const allItemsChecked = cart.products.every((item) => {
+    const allItemsChecked = cartData.products.every((item) => {
       const key = `${item.productId}-${item.size}`;
       return newCheckedItems[key];
     });
@@ -238,7 +231,7 @@ const Cart = () => {
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
-    const newCheckedItems = cart.products.reduce((acc, item) => {
+    const newCheckedItems = cartData.products.reduce((acc, item) => {
       const key = `${item.productId}-${item.size}`;
       acc[key] = newSelectAll;
       return acc;
@@ -248,30 +241,36 @@ const Cart = () => {
     setSelectAll(newSelectAll);
   };
 
-  const handleClick = (type, item, id = "") => {
+  const handleClick = (type, item) => {
     if (type === "dec") {
-      dispatch(decreaseQuantity({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(removeExisting({ item }));
     } else {
-      dispatch(addProducts({ productId: id, size: item?.size, quantity: 1, unitPrice: item?.unitPrice }));
+      dispatch(addExisting({ item }));
     }
   };
 
   const handleRemoveItem = (id, size) => {
-    dispatch(removeProducts({ productId: id, size }));
+    dispatch(removeFromCart({ productId: id, size }));
+    if (cartData.length === 0) {
+      setCheckedItems({});
+      setSelectAll(false);
+      resetStepper();
+    }
   };
 
   const handleRemoveAll = () => {
     Object.keys(checkedItems).forEach((key) => {
       if (checkedItems[key]) {
         const [productId, size] = key.split("-");
-        dispatch(removeProducts({ productId, size }));
+        dispatch(removeFromCart({ productId, size }));
       }
     });
     setCheckedItems({});
     setSelectAll(false);
+    resetStepper();
   };
 
-  console.log(cart, "cart", checkedItems, checkedItems.length);
+  console.log(cartData, "cartData", checkedItems, checkedItems.length);
   return (
     <>
       <Helmet>
@@ -280,14 +279,14 @@ const Cart = () => {
       </Helmet>
       <Container>
         <Wrapper>
-          {cart?.products?.length === 0 || cart.length === 0 ? (
+          {cartData?.length === 0 || cartData.length === 0 ? (
             <Link to="/">
               <Title>Click Here to Add Products</Title>
             </Link>
           ) : (
             null
           )}
-          {cart?.products?.length === 0 || cart.length === 0 ? (
+          {cartData?.length === 0 || cartData.length === 0 ? (
             <CartImageContainer>
               <CartImage src={addToCart} alt="add to cart" />
             </CartImageContainer>
@@ -299,7 +298,7 @@ const Cart = () => {
                     <TopButton>Continue Shopping</TopButton>
                   </Link>
                   <ProductSize>
-                    <b>Shopping Bag ( {cart?.quantity} )</b>
+                    <b>Shopping Bag ( {cartData?.quantity} )</b>
                   </ProductSize>
                 </Top>
                 <Info>
@@ -323,7 +322,7 @@ const Cart = () => {
                         </Button>
                       </SelectAllContainer>
                     </CheckboxesWrapper>
-                    {cart?.products?.map((item) => {
+                    {cartData?.map((item) => {
                       const itemId = item.productId;
                       const itemSize = item?.size;
                       if (!itemId || !itemSize) return null;
@@ -361,11 +360,11 @@ const Cart = () => {
                           <PriceDetail>
                             <ProductAmountContainer>
                               <IconButton>
-                                <Remove onClick={() => handleClick("dec", item, itemId)} />
+                                <Remove onClick={() => handleClick("dec", item)} />
                               </IconButton>
                               <ProductAmount>{item?.quantity}</ProductAmount>
                               <IconButton>
-                                <Add onClick={() => handleClick("add", item, itemId)} />
+                                <Add onClick={() => handleClick("add", item)} />
                               </IconButton>
                             </ProductAmountContainer>
                           </PriceDetail>

@@ -14,13 +14,16 @@ import { useUserAuth } from "../../context/UserAuthContext";
 import { useNavigate } from "react-router-dom";
 import { ErrorBoxContainer } from "../address/styles";
 import { useUserContext } from "../../context/UserContext";
+import { useSelector } from "react-redux";
 
 const Signin = () => {
   const [toggle, setToggle] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [expandedXL, setExpandedXL] = useState(false);
   const { googleSignIn } = useUserAuth();
-  const { user, error: loginError, setError: setLoginError } = useUserContext();
+  // const { user, error: loginError, setError: setLoginError } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
+
   const navigate = useNavigate();
 
   const handleGoogleSignIn = (e) => {

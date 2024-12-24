@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import { mobile, mobileSuperSmall, ScreenWith1080px, ScreenWith960px, tablet } from "../../responsive";
+import { mobile, mobileSuperSmall, ScreenWith960px, ScreenWith1080px, tablet } from "../../responsive";
 import { styled as MUIStyled } from "@mui/system";
 
 export const SearchContainer = styled.div`
   cursor: pointer;
   display: flex;
+  z-index: 99999;
   justify-content: space-between;
   align-items: center;
   background-color: white;
@@ -34,9 +35,11 @@ export const SearchContainer = styled.div`
   ${mobile({ fontSize: "12px" })}
 `;
 export const ModalContainer = styled.div`
+  z-index: 999999;
   display: flex;
   z-index: 999999;
   position: fixed;
+  top: 74px;
   top: 0px;
   // padding-top: 75px;
   height: 100vh;
@@ -170,7 +173,6 @@ export const EmptyStateWrapper = styled.div`
     height: 200px;
     margin-bottom: 20px;
   }
-
   p {
     font-size: 1.2em;
     color: #555;

@@ -1,11 +1,17 @@
-import React, { useState } from "react";
-import { useAddressContext } from "./DataProvider";
+import React from "react";
+// import { useAddressContext } from "./DataProvider";
 import { AddCard, InnerHeading, StyledRadio } from "./styles";
 
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedAddress } from "../../redux/port/addressSlice";
 
 const AddressCard = ({ index }) => {
-  const { address, selectedAddress, setSelectedAddress } = useAddressContext();
+  // const { address, selectedAddress, setSelectedAddress } = useAddressContext();
+  const address = useSelector((state) => state.address.addressList);
+  const selectedAddress = useSelector((state) => state.address.selectedAddress);
+  const dispatch = useDispatch();
+
   return (
     <AddCard>
       <InnerHeading>
@@ -16,7 +22,7 @@ const AddressCard = ({ index }) => {
         }}>
           <StyledRadio
             checked={selectedAddress === index}
-            onChange={() => setSelectedAddress(index)}
+            onChange={() => dispatch(setSelectedAddress(index))}
             value={index}
             name="select-address"
             inputProps={{ "aria-label": index }}

@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Backdrop,
   Badge,
   CircularProgress,
   Divider,
   IconButton,
-  Menu,
-  SwipeableDrawer
+  Menu
 } from "@mui/material";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import { Link, useLocation } from "react-router-dom";
 import { useUserAuth } from "../../context/UserAuthContext";
-import { useUserContext } from "../../context/UserContext";
 import Alert from "../Alert";
 import { mobile, ScreenWith960px } from "../../responsive";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
@@ -34,7 +32,6 @@ import {
 import logo from "../../assets/logo.png";
 import PropTypes from "prop-types";
 import Search from "../Search";
-import { usePointsContext } from "../../context/PointsContext";
 import { useSelector } from "react-redux";
 import LoginIcon from "@mui/icons-material/Login";
 import styled from "styled-components";
@@ -85,7 +82,7 @@ const AccountBox = ({
   onClickHandler,
   user
 }) => {
-  const { points } = usePointsContext();
+  const points = useSelector((state) => state.point.points);
   return (
     <>
       <MenuItemMyUser selected={Boolean(anchorEl)} onClick={handleClick}>
@@ -179,30 +176,33 @@ AccountBox.propTypes = {
 };
 
 const NavBar = () => {
-  const { user } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const [error, setError] = useState(false);
   const { logOut } = useUserAuth();
   const [loading, setLoading] = useState(false);
-  // const { quantity } = useSelector((state) => state.cart);
   const [anchor, setAnchor] = useState(false);
-  const { quantity, ...rest } = useSelector((state) => state.cart);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const location = useLocation();
   const theme = useTheme();
+  const cartData = useSelector((state) => state.cart.cartData);
+
+  const bannerQuantity = useMemo(() => {
+    return cartData.reduce((acc, item) => acc + item.quantity, 0);
+  }, [cartData]);
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const onClickHandler = async (e) => {
+  const onClickHandler = (e) => {
     try {
       setAnchorEl(null);
       setLoading(true);
       e.preventDefault();
-      await logOut();
+      logOut();
       setTimeout(() => {
         setLoading(false);
         window.location.href = "/";
@@ -283,7 +283,7 @@ const NavBar = () => {
           <CartWrapper>
             <Link to="/checkout/cart">
               <Badge
-                badgeContent={quantity}
+                badgeContent={bannerQuantity}
                 color="primary"
                 sx={{
                   marginRight: "10px",

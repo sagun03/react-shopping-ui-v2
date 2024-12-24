@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useDataContext } from "../context/DataContext";
 import ProductRangeCard from "./ProductRangeCard";
 import SearchIcon from "@mui/icons-material/Search";
 import { v4 as uuidv4 } from "uuid";
@@ -29,9 +28,10 @@ import {
   CustomButton
 } from "./styles/Products";
 import { CATEGORY_MENU, flattenProductSizes } from "../utils/helper";
+import { useSelector } from "react-redux";
 
 const ProductsRange = () => {
-  const { products } = useDataContext();
+  const products = useSelector((state) => state.product.products);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");

@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchCartProducts, updateCartProducts, createCartProducts, deleteCart, deleteProductCart } from "../services/cartService";
 import { useCartContext } from "../context/cartContext";
+import { useSelector } from "react-redux";
 
 let isUpdate = false;
 // Fetch Cart Data Hook
 export const useCart = (user) => {
-  const { isCartData } = useCartContext();
+  const isCartData = useSelector((state) => state.cart.isCartData);
   const fetchCartData = async () => {
     return fetchCartProducts(user); // Fetch cart data based on user
   };

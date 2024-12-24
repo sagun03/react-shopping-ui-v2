@@ -42,7 +42,8 @@ const bottomNavigationValues = {
 };
 
 const BottomNav = () => {
-  const { user } = useUserAuth();
+  // const { user } = useUserAuth();
+  const user = useSelector((state) => state.user.currentUser);
   const [value, setValue] = React.useState(0);
   const { quantity } = useSelector((state) => state.cart);
   const navigate = useNavigate();

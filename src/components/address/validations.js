@@ -12,12 +12,12 @@ const addressSchema = z.object({
 export const performValidations = (state) => {
   try {
     const result = addressSchema.parse({
-      name: state.contact.name,
-      mobile: state.contact.mobile,
-      pincode: state.address.pincode,
-      street: state.address.street,
-      city: state.address.city,
-      state: state.address.state
+      name: state.name,
+      mobile: String(state.mobile),
+      pincode: state.pincode,
+      street: state.street,
+      city: state.city,
+      state: state.state
     })
     return {
       isValid: true,

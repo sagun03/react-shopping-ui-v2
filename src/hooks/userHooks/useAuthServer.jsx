@@ -2,48 +2,49 @@
 import { useMutation } from "@tanstack/react-query";
 import { login, register, logout } from "../../services/authServices";
 import { useUserContext } from "../../context/UserContext";
-import { set } from "zod";
+import { useDispatch } from "react-redux";
+import { setError, setIsNewUser } from "../../redux/port/userSlice";
 
 export const useLogin = () => {
-  const { setError, setIsNewUser } = useUserContext();
+  // const { setError, setIsNewUser } = useUserContext();
+  const dispatch = useDispatch();
   return useMutation({
     mutationFn: (userData) => login(userData),
     onSuccess: (data) => {
-      setError(null);
-      setIsNewUser(data.data.newUser);
+      dispatch(setError(null));
+      dispatch(setIsNewUser(data.data.newUser));
     },
     onError: (error) => {
-      setError(error.message);
+      dispatch(setError(error.message));
     }
   })
 };
 
 export const useRegister = () => {
-  const { setError, setIsNewUser } = useUserContext();
+  // const { setError, setIsNewUser } = useUserContext();
+  const dispatch = useDispatch();
   return useMutation({
     mutationFn: (userData) => register(userData),
     onSuccess: (data) => {
-      setError(null);
-      setIsNewUser(data.data.newUser);
+      dispatch(setError(null));
+      dispatch(setIsNewUser(data.data.newUser));
     },
     onError: (error) => {
-      setError(error.message);
-      console.log(error);
+      dispatch(setError(error.message));
     }
   })
 };
 
 export const useSignOut = () => {
-  const { setError } = useUserContext();
+  // const { setError } = useUserContext();
+  const dispatch = useDispatch();
   return useMutation({
     mutationFn: (uid) => logout(uid),
     onSuccess: () => {
-      setError(null);
-      console.log("Logged out");
+      dispatch(setError(null));
     },
     onError: (error) => {
-      setError(error.message);
-      console.log(error);
+      dispatch(setError(error.message));
     }
   })
 }

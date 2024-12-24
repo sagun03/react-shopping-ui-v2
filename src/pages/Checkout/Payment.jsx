@@ -12,27 +12,26 @@ import {
 } from "../../components/styles/Payment";
 import { usePayment } from "../../hooks/usePayment";
 import { useSelector } from "react-redux";
-import { useUserContext } from "../../context/UserContext";
 import { useAddressContext } from "../../components/address/DataProvider";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 const PaymentComponent = () => {
-  const { total: amount, products } = useSelector((state) => state.cart);
-  const { user } = useUserContext();
-  const { selectedAddress = 0, address } = useAddressContext();
+  const { cartData } = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user.currentUser);
+  const { addressList, selectedAddress } = useSelector((state) => state.address);
   const pointsUsed = 0; // need to take care when points are implemented
-  console.log("user", user, "total", amount, selectedAddress, address);
   const [emailInput, setEmailInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const elements = useElements();
-  const addresId = address[selectedAddress]?._id;
-  const formattedProducts = products.map((product) => ({
+  const addresId = addressList[selectedAddress]?._id;
+  const formattedProducts = cartData.map((product) => ({
     productID: product.productId,
     Quantity: product.quantity,
     UnitPrice: product.unitPrice,
     subTotal: (product.unitPrice * product.quantity).toFixed(2),
     size: product.size
   }));
+  const amount = cartData.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
   const {
     createPaymentIntent,
     isInitializingPayment,

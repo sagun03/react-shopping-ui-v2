@@ -13,6 +13,7 @@ import {
   getOtherRelatedProducts,
   getSimilarProducts
 } from "../utils/helper";
+import { useSelector } from "react-redux";
 
 const SimilarProducts = ({ currentProduct }) => {
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -20,7 +21,8 @@ const SimilarProducts = ({ currentProduct }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { products } = useDataContext();
+  // const { products } = useDataContext();
+  const products = useSelector((state) => state.product.products);
 
   useEffect(() => {
     const fetchSimilarAndRelatedProducts = () => {

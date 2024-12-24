@@ -9,8 +9,6 @@ import NavBar from "../components/nav/NavBar";
 import NewsLetter from "../components/NewsLetter";
 import Alert from "../components/Alert";
 import BottomNav from "../components/BottomNav";
-import { useDataContext } from "../context/DataContext";
-import { useUserContext } from "../context/UserContext";
 import Review from "../components/Review"; // Import Review component
 
 import {
@@ -48,11 +46,11 @@ import {
 } from "../components/styles/Product";
 import SimilarProducts from "../components/SimilarProducts";
 import { Icon } from "../components/styles/ProductRangeCard";
-import { useDispatch } from "react-redux";
-import { addProducts } from "../redux/cartRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, updateCart } from "../redux/port/cartSlice";
 
 const Product = () => {
-  const { user } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState("");
@@ -62,10 +60,11 @@ const Product = () => {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const { products } = useDataContext();
+  const products = useSelector((state) => state.product.products);
   const urlSize = localStorage.getItem("size");
   const selectedSize = product.sizes?.find((s) => s.size === size) || {};
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cartData);
 
   useEffect(() => {
     if (id) {
@@ -108,7 +107,21 @@ const Product = () => {
       description: product?.description
     };
 
-    dispatch(addProducts(productObject));
+    // check if product is already in cart
+    const productInCart = cart.find((item) => item.productId === productObject.productId);
+
+    if (productInCart) {
+      // if product is already in cart, update the quantity
+      const newQuantity = productInCart.quantity + quantity;
+      const updatedCart = cart.map((item) =>
+        item.productId === productObject.productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      );
+      dispatch(updateCart(updatedCart));
+    } else {
+      dispatch(addToCart(productObject));
+    }
   };
 
   const handleQuantity = (type) => {

@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import React, { useState, useEffect } from "react";
 import { SaveButton, CancelButton, EditButton } from "./EditButtons";
 import PropTypes from "prop-types";
-import { useUserContext } from "../context/UserContext";
+import { useSelector } from "react-redux";
 import { useGetAddress, useUpdateAddress, useDeleteAddress, useAddAddress } from "../hooks/userHooks/useUserAddress";
 
 const modalRoot = document.createElement("div");
@@ -138,7 +138,7 @@ AddressModal.propTypes = {
 }
 
 const AddressPanel = () => {
-  const { user } = useUserContext();
+  const user = useSelector((state) => state.user.currentUser);
   const [showModal, setShowModal] = useState(false);
   const { data, error, isLoading, refetch } = useGetAddress({
     uid: user.uid,
