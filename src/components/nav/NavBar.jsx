@@ -182,7 +182,6 @@ const NavBar = () => {
   const { logOut } = useUserAuth();
   const [loading, setLoading] = useState(false);
   const [anchor, setAnchor] = useState(false);
-  const { quantity, ...rest } = useSelector((state) => state.cart);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

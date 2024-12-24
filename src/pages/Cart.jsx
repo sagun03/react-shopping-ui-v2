@@ -204,7 +204,6 @@ const Hr = styled.hr`
 
 const Cart = () => {
   const [selectAll, setSelectAll] = useState(false);
-  const { activeStep } = useSelector((state) => state.stepper);
   const cartData = useSelector((state) => state.cart.cartData);
   const dispatch = useDispatch()
 
@@ -232,7 +231,7 @@ const Cart = () => {
 
   const handleSelectAllChange = () => {
     const newSelectAll = !selectAll;
-    const newCheckedItems = cart.products.reduce((acc, item) => {
+    const newCheckedItems = cartData.products.reduce((acc, item) => {
       const key = `${item.productId}-${item.size}`;
       acc[key] = newSelectAll;
       return acc;
@@ -299,7 +298,7 @@ const Cart = () => {
                     <TopButton>Continue Shopping</TopButton>
                   </Link>
                   <ProductSize>
-                    <b>Shopping Bag ( {cart?.quantity} )</b>
+                    <b>Shopping Bag ( {cartData?.quantity} )</b>
                   </ProductSize>
                 </Top>
                 <Info>

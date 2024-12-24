@@ -1,8 +1,5 @@
-import React, { Suspense, useEffect } from "react";
-// import Product from "./pages/Product";
+import React, { useEffect } from "react";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import "./App.css";
 import PhoneSignUp from "./pages/PhoneSignUp";
@@ -11,35 +8,55 @@ import Checkout from "./pages/Checkout";
 import ProductList from "./pages/ProductList";
 import Admin from "./pages/Admin";
 import Product from "./pages/Product";
-import { DataProvider } from "./context/DataContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { UserAuthContextProvider } from "./context/UserAuthContext";
-import { CartProvider } from "./context/cartContext";
-// import { OrderProvider } from "./context/orderContext";
-import { UserContextProvider } from "./context/UserContext";
 import UserProfile from "./pages/UserProfile";
-import Loader from "./components/Loader";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AddressSwitch from "./pages/Checkout/AddressSwitch";
 import PaymentSwitch from "./pages/Checkout/PaymentSwitch";
 import CartSwitch from "./pages/Checkout/CartSwitch";
-import { StepperProvider } from "./context/StepperContext";
 import OrderConfirmation from "./pages/OrderConfirmation";
-import { AddressProvider } from "./components/address/DataProvider";
-import { PointsContextProvider } from "./context/PointsContext";
 import { fetchPromotionalBanner } from "./services/bannerService";
 import { useDispatch, useSelector } from "react-redux";
 import { setBanners } from "./redux/bannerRedux";
 import UserLogin from "./pages/UserLogin";
 import Home from "./pages/Homepage";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import { setUser } from "./redux/port/userSlice";
+import { useProducts } from "./hooks/useProducts";
+import { useCategories } from "./hooks/useCategories";
+import { setProducts, setCategories } from "./redux/port/productSlice"
 import AboutUs from "./pages/AboutUs";
-import { OrderProvider } from "./context/orderContext";
-// const Home = React.lazy(() => import("./pages/Homepage"));
-const queryClient = new QueryClient();
 
 const App = () => {
+  console.log("App.js");
   const banners = useSelector((state) => state.promotions.banners) || [];
+  const { data: productsData } = useProducts()
+  const { data: categoriesData } = useCategories()
+  const categories = useSelector((state) => state.product.categories)
+  const products = useSelector((state) => state.product.products)
   const dispatch = useDispatch();
+
+  // get user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser(user));
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [dispatch]);
+
+  // get products and categories
+  useEffect(() => {
+    if (categoriesData?.length > 0 && categories.length === 0) {
+      dispatch(setCategories(categoriesData))
+    }
+    if (productsData?.length > 0 && products.length === 0) {
+      dispatch(setProducts(productsData))
+    }
+  }, [dispatch, categoriesData, productsData])
 
   useEffect(() => {
     const getBanners = async () => {
@@ -49,54 +66,29 @@ const App = () => {
     };
     if (banners.length === 0) getBanners();
   }, [dispatch, banners.length]);
-  console.log("banners", banners)
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ErrorBoundary>
-        <UserContextProvider>
-          <UserAuthContextProvider>
-            <AddressProvider>
-            <DataProvider>
-              <CartProvider>
-                <StepperProvider>
-                  <PointsContextProvider>
-                    <Router>
-                      <Routes>
-                        <Route
-                          path="/"
-                          element={
-                            <Home />
-                          }
-                        />
-                        <Route path="/product/:id" element={<Product />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/orders" element={<OrderProvider><Orders /></OrderProvider>} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/phonesignup" element={<PhoneSignUp />} />
-                        <Route path="/orders" element={<Orders />} />
-                        <Route path="/about" element={<AboutUs />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/products" element={<ProductList />} />
-                        <Route path="/admin" element={<Admin />} />
-                        <Route path="/profile" element={<UserProfile />} />
-                        <Route path="/checkout/address" element={<AddressSwitch />} />
-                        <Route path="/checkout/payment" element={<PaymentSwitch />} />
-                        <Route path="/checkout/cart" element={<CartSwitch />} />
-                        <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
-                        <Route path="/login" element={<UserLogin />} />
-                        {/* <Route path="/PaymentWithElements" element={<PaymentWithElements />} /> */}
-                      </Routes>
-                    </Router>
-                  </PointsContextProvider>
-                </StepperProvider>
-              </CartProvider>
-            </DataProvider>
-            </AddressProvider>
-          </UserAuthContextProvider>
-        </UserContextProvider>
-      </ErrorBoundary>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <Router>
+          <Routes>
+            <Route path="/" element={ <Home />}/>
+            <Route path="/product/:id" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/phonesignup" element={<PhoneSignUp />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/products" element={<ProductList />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/checkout/address" element={<AddressSwitch />} />
+            <Route path="/checkout/payment" element={<PaymentSwitch />} />
+            <Route path="/checkout/cart" element={<CartSwitch />} />
+            <Route path="/orderconfirmation/:orderid" element={<OrderConfirmation />} />
+            <Route path="/login" element={<UserLogin />} />
+            <Route path="/about" element={<AboutUs />} />
+          </Routes>
+        </Router>
+    </ErrorBoundary>
   );
 };
 

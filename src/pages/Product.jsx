@@ -66,8 +66,6 @@ const Product = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cartData);
 
-  console.log("cart", cart);
-
   useEffect(() => {
     if (id) {
       const product = products.find((product) => product.id === id);

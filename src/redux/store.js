@@ -1,5 +1,4 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-// import cartReducer from "./cartRedux"
 import cartReducer from "./port/cartSlice"
 import userReducer from "./port/userSlice"
 import orderReducer from "./port/orderSlice"

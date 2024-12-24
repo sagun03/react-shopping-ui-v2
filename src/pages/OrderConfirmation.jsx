@@ -32,7 +32,7 @@ import {
 import { useOrderByOrderId } from "../hooks/useOrder";
 import { SkeletonLoader } from "../components";
 import { useDispatch } from "react-redux";
-import { clearCart } from "../redux/cartRedux";
+import { clearCart } from "../redux/port/cartSlice";
 
 const OrderConfirmationPage = () => {
   const { orderid: orderId } = useParams();
