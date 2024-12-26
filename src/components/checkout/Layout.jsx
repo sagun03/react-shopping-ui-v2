@@ -1,9 +1,9 @@
 import { Wrapper, InnerWrapper, CartDetail, CartDetailMobile, LeftPanel } from "../address/styles";
 import { Divider } from "@mui/material";
-import { DividerStyles } from "./styles";
-import StepperBox from "./StepperBox";
+import { DividerStyles } from "./stepper/styles";
+import StepperBox from "./stepper/StepperBox";
 import Announcement from "../Announcement";
-import NewsLetter from "../NewsLetter";
+import NewsLetter from "../common/newsletter/NewsLetter";
 import Footer from "../Footer";
 import BottomNav from "../BottomNav";
 import PropTypes from "prop-types";

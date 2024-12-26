@@ -2,19 +2,19 @@ import React, { useEffect } from "react";
 import PopularProducts from "../components/PopularProducts";
 import Footer from "../components/Footer";
 import NavBar from "../components/nav/NavBar";
-import NewsLetter from "../components/NewsLetter";
-import FeaturedCategories from "../components/FeaturedCategories";
-import Virtual from "../components/Virtual";
+import NewsLetter from "../components/common/newsletter/NewsLetter";
+import FeaturedCategories from "../components/home/featured-categories/styles";
+import Virtual from "../components/home/try-on/Virtual";
 import Crousel from "../components/Crousel";
-import SimpleMap from "../components/Map";
+import SimpleMap from "../components/home/Map";
 import Announcement from "../components/Announcement";
 import { Helmet } from "react-helmet-async"
 // import { useCartContext } from "../context/cartContext";
-import useFetchCartData from "../hooks/custom hooks/useFetchCartData";
+import useFetchCartData from "../hooks/custom/useFetchCartData";
 // import { useUserContext } from "../context/UserContext";
-import Banner from "../components/Banner";
+import Banner from "../components/home/banner/Index";
 import { useSelector, useDispatch } from "react-redux";
-import { setCartData } from "../redux/port/cartSlice";
+import { setCartData } from "../store/slices/cartSlice";
 
 const Homepage = () => {
   const dispatch = useDispatch();

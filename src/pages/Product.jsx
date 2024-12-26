@@ -47,7 +47,7 @@ import {
 import SimilarProducts from "../components/SimilarProducts";
 import { Icon } from "../components/styles/ProductRangeCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, updateCart } from "../redux/port/cartSlice";
+import { addToCart, updateCart } from "../store/slices/cartSlice";
 
 const Product = () => {
   const user = useSelector((state) => state.user.currentUser);

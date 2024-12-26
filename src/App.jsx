@@ -16,15 +16,15 @@ import CartSwitch from "./pages/Checkout/CartSwitch";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import { fetchPromotionalBanner } from "./services/bannerService";
 import { useDispatch, useSelector } from "react-redux";
-import { setBanners } from "./redux/bannerRedux";
-import UserLogin from "./pages/UserLogin";
+import { setBanners } from "./store/slices/promotionBannerSlice";
+import UserLogin from "./pages/Auth";
 import Home from "./pages/Homepage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import { setUser } from "./redux/port/userSlice";
+import { setUser } from "./store/slices/userSlice";
 import { useProducts } from "./hooks/useProducts";
 import { useCategories } from "./hooks/useCategories";
-import { setProducts, setCategories } from "./redux/port/productSlice"
+import { setProducts, setCategories } from "./store/slices/productSlice"
 import AboutUs from "./pages/AboutUs";
 
 const App = () => {
