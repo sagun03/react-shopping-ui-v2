@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { classes } from "mui-tel-input";
-import { mobile, ScreenWith1200px, ScreenWith1470px, ScreenWith670px } from "../../responsive";
+import { mobile, ScreenWith1200px, ScreenWith1470px, ScreenWith670px } from "@/responsive";
 
 export const OverlayWrapper = styled.div`
   width: 100vw;

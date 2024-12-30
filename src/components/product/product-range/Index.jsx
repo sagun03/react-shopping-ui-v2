@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import ProductRangeCard from "./card/ProductRangeCard";
+import ProductRangeCard from "./card/Index";
 import SearchIcon from "@mui/icons-material/Search";
 import { v4 as uuidv4 } from "uuid";
 import Menu from "@mui/material/Menu";
@@ -26,8 +26,8 @@ import {
   HeaderLeftSearch,
   Wrapper,
   CustomButton
-} from "../../styles/Products";
-import { CATEGORY_MENU, flattenProductSizes } from "../../../utils/helper";
+} from "./styles";
+import { CATEGORY_MENU, flattenProductSizes } from "@/utils/helper";
 import { useSelector } from "react-redux";
 
 const ProductsRange = () => {

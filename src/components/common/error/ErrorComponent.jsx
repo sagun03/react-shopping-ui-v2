@@ -9,7 +9,7 @@ import {
   ErrorActions,
   ActionLink,
   ContactLink
-} from "./ErrorComponent";
+} from "./styles";
 
 const ErrorPage = ({ error }) => (
   <ErrorPageContainer>

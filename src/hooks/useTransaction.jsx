@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addLog, getLogs } from "../services/transactionServices";
+import { addLog, getLogs } from "@/services/user/transaction";
 
 export const useGetLog = (uid) => {
   return useQuery({

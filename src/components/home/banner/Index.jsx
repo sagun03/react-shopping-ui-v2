@@ -10,9 +10,9 @@ import {
   DialogOverlay,
   DialogBox,
   ShopNowButton
-} from "./Index";
+} from "./styles";
 import { useInView } from "react-intersection-observer";
-import useCoupenConfetti from "../../../hooks/useCoupenConfetti";
+import useCoupenConfetti from "@/hooks/useCoupenConfetti";
 import { useNavigate } from "react-router-dom";
 
 const Banner = () => {

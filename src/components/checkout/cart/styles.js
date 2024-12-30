@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile, ScreenWith670px } from "../../responsive";
+import { mobile, ScreenWith670px } from "@/responsive";
 import { Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -34,9 +34,8 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })`
 `;
 
 const Wrapper = styled.div`
-  padding: 2.5rem;
+  padding: 1rem;
   margin-bottom: 5rem;
-  margin-top: 5rem;
   ${mobile({ padding: "10px" })}
 `;
 
@@ -68,6 +67,7 @@ const TopButton = styled.button`
 
 const Bottom = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   ${ScreenWith670px({ flexDirection: "column" })}
 `;

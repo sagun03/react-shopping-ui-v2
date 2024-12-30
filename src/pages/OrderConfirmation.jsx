@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import NavBar from "../components/nav/NavBar";
-import Announcement from "../components/Announcement";
-import { flattenOrderProducts, truncateDescription } from "../utils/helper";
+import NavBar from "@/components/common/navigation/Top/Index";
+import Announcement from "@/components/common/annoucements/Index";
+import { flattenOrderProducts, truncateDescription } from "@/utils/helper";
 import {
   Details,
   Image,
@@ -11,7 +11,7 @@ import {
   ProductName,
   ProductPrice,
   ProductPrice2
-} from "../components/styles/Cart";
+} from "@/components/checkout/cart/styles";
 import {
   Container,
   Title,
@@ -28,11 +28,11 @@ import {
   Info,
   OrderSummaryTitle,
   SectionButtonContainer
-} from "../components/styles/OrderConfirmation";
-import { useOrderByOrderId } from "../hooks/useOrder";
-import { SkeletonLoader } from "../components";
+} from "@/components/checkout/confirmation/styles";
+import { useOrderByOrderId } from "@/hooks/useOrder";
+import SkeletonLoader from "@/components/common/loaders/Skeleton/Index";
 import { useDispatch } from "react-redux";
-import { clearCart } from "../store/slices/cartSlice";
+import { clearCart } from "@/store/slices/cartSlice";
 
 const OrderConfirmationPage = () => {
   const { orderid: orderId } = useParams();

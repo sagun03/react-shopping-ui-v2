@@ -10,9 +10,9 @@ import {
   CheckBoxContainer,
   CommonText,
   ButtonGroup
-} from "./styles";
+} from "@/components/checkout/address/styles";
 import { TextInput } from "./InputField";
-import { SaveButton, CancelButton } from "../EditButtons";
+import { SaveButton, CancelButton } from "./EditButtons";
 import { Button, Checkbox } from "@mui/material";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
@@ -23,9 +23,9 @@ import {
   updateExistingAddress,
   setAddressList,
   setDefaultIndex
-} from "../../redux/port/addressSlice";
+} from "@/store/slices/addressSlice";
 
-import { addAddress, updateAddress, deleteAddress } from "../../services/userServices.js/Address";
+import { addAddress, updateAddress, deleteAddress } from "@/services/user/address";
 
 const Form = ({ refetch, index, closeModal }) => {
   const dispatch = useDispatch();

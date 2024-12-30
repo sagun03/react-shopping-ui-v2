@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { lScreen } from "../../responsive";
+import { lScreen } from "@/responsive";
 import { styled as muiStyled } from "@mui/material";
 import { Box } from "@mui/system";
 

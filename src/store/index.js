@@ -1,9 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit"
-import storage from "redux-persist/lib/storage"
-import rootReducer from "./rootReducer"
+import { configureStore } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+import rootReducer from "./rootReducer";
+import setTransform from "./transforms";
 import {
   persistStore,
-  persistReducer,
+  persistReducer
   // FLUSH,
   // REHYDRATE,
   // PAUSE,

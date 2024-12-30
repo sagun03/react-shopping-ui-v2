@@ -3,10 +3,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 import PropTypes from "prop-types";
 import "swiper/swiper-bundle.min.css";
-import ProductRangeCard from "./ProductRangeCard";
-import { SwiperCustomPagination, SwiperCustomNavigation } from "./styles/SimilarProductsStyles";
+import ProductRangeCard from "@/components/product/product-range/card/Index";
+import { SwiperCustomPagination, SwiperCustomNavigation } from "@/components/product/page/similar-products/styles";
 import { v4 as uuidv4 } from "uuid";
-import "./styles/similarProductSwiper.css";
+import "./styles.css";
 
 const SimilarProductsSwiper = ({ products, type }) => (
   <Swiper

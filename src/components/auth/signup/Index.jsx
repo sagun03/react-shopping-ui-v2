@@ -3,17 +3,16 @@ import {
   ButtonWrapper,
   LinkWrappper,
   FormWrapper
-} from "./styles";
+} from "@/components/auth/styles";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
-import ErrorModal from "./ErrorModal";
+import ErrorModal from "../ErrorModal";
+import { registerUser } from "@/utils/firebaseAuthCallers";
 
 const Register = ({ setToggle }) => {
   const [userInfo, setUserInfo] = useState({})
   const [error, setError] = useState(null)
-  const { signUp } = useUserAuth()
   const navigate = useNavigate()
 
   const handleOnChange = (key, value) => {
@@ -36,11 +35,10 @@ const Register = ({ setToggle }) => {
         alert("please resolve error first")
         return
       }
-      await signUp(email, password)
+      await registerUser(email, password)
       navigate("/")
     } catch (err) {
       setUserInfo({})
-      setError(err.message)
     }
   }
 

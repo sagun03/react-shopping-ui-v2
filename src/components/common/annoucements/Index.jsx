@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobileS, mobileSuperSmall } from "../responsive";
+import { mobileS, mobileSuperSmall } from "@/responsive";
 
 const Container = styled.div`
   height: fit-content;

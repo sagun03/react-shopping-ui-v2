@@ -2,8 +2,7 @@
 import styled from "styled-components";
 import { styled as MuiStyled } from "@mui/system";
 import { TextField, Radio } from "@mui/material";
-import { mobile, ScreenWith670px } from "../../responsive";
-import "../checkout/vars.css";
+import { mobile, ScreenWith670px } from "@/responsive";
 
 export const AddressForm = styled.form`
   display: flex;

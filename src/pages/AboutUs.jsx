@@ -10,12 +10,12 @@ import {
   Grid,
   Avatar
 } from "@mui/material";
-import NavBar from "../components/nav/NavBar";
-import SimpleMap from "../components/Map";
-import Footer from "../components/Footer";
-import Announcement from "../components/Announcement";
-import pawan from "../assets/pawan.png";
-import sp from "../assets/sp.png";
+import NavBar from "@/components/common/navigation/Top/Index";
+import SimpleMap from "@/components/home/map/Index";
+import Footer from "@/components/common/layouts/Footer";
+import Announcement from "@/components/common/annoucements/Index";
+import pawan from "@/assets/images/pawan.png";
+import sp from "@/assets/images/sp.png";
 
 const Header = styled.div`
   background: linear-gradient(135deg, #2196f3, #1565c0);

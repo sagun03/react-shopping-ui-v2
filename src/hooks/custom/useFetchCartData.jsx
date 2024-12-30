@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCart } from "../useCart";
+import { useCart } from "@/hooks/useCart";
 import { useDispatch, useSelector } from "react-redux";
 // import { useCartContext } from "../../context/cartContext";
 

@@ -1,7 +1,7 @@
-import { Divider, styled as muiStyled } from "@mui/material";
+import { styled as muiStyled } from "@mui/material";
 import List from "@mui/material/List";
 import styled from "styled-components";
-import { mobile, ScreenWith670px, ScreenWith960px } from "../../responsive";
+import { mobile, ScreenWith670px, ScreenWith960px } from "@/responsive";
 
 // Container for the review section
 export const ReviewContainer = muiStyled("div")(({ theme }) => ({

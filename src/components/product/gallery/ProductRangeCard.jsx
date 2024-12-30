@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 // import { useDispatch } from "react-redux";
-import Alert from "./Alert";
+import Alert from "@/components/common/alerts/Index";
 import {
   WrapperContainer,
   Container,
@@ -22,10 +22,10 @@ import {
   RatingText,
   SingleStar,
   DiscountText
-} from "../../styles/ProductRangeCard";
+} from "@/components/product/product-range/styles";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, updateCart } from "../../../store/slices/cartSlice";
+import { addToCart, updateCart } from "@/store/slices/cartSlice";
 
 const ProductRangeCard = ({
   name,

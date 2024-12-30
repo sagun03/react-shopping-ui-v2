@@ -1,5 +1,5 @@
 import { FormHelperText } from "@mui/material";
-import { StyledTextField, Container } from "./styles";
+import { StyledTextField, Container } from "@/components/checkout/address/styles";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 

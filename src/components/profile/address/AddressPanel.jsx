@@ -1,12 +1,12 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { AddAdressBox, AddressPanelContainer, ModalContainer, InnerWrapper } from "./AddressPanel";
-import { InnerHeading, InputField, ButtonGroup } from "../../styles/ProfilePanel";
+import { AddAdressBox, AddressPanelContainer, ModalContainer, InnerWrapper } from "./styles";
+import { InnerHeading, InputField, ButtonGroup } from "@/components/profile/info/styles";
 import ReactDOM from "react-dom";
 import React, { useState, useEffect } from "react";
-import { SaveButton, CancelButton, EditButton } from "../EditButtons";
+import { SaveButton, CancelButton, EditButton } from "@/components/checkout/address/form/EditButtons";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import { useGetAddress, useUpdateAddress, useDeleteAddress, useAddAddress } from "../../../hooks/user/useUserAddress";
+import { useAddAddress, useDeleteAddress, useGetAddress, useUpdateAddress } from "@/hooks/user/useUserAddress";
 
 const modalRoot = document.createElement("div");
 const AddressModal = ({ address, index, setAddress, closeModal, add, update, remove, user }) => {

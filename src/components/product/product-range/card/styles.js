@@ -1,4 +1,4 @@
-import { ScreenWith1080px, ScreenWith670px, ScreenWith960px, mobile } from "../../responsive";
+import { ScreenWith1080px, ScreenWith670px, ScreenWith960px, mobile } from "@/responsive";
 import styled from "styled-components";
 import { Button } from "@mui/material";
 import { AddShoppingCart, SearchOutlined } from "@mui/icons-material";

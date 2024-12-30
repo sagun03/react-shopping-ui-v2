@@ -1,8 +1,8 @@
-import { ContentPanel } from "../../styles/UserProfile";
-import ProfilePanel from "./ProfilePanel";
+import { ContentPanel } from "@/components/profile/styles";
+import ProfilePanel from "@/components/profile/info/Index";
 import PropTypes from "prop-types";
-import AddressPanel from "./AddressPanel";
-import Transaction from "../transaction/Transaction";
+import AddressPanel from "@/components/profile/address/AddressPanel";
+import Transaction from "@/components/profile/transaction/Index";
 
 const ProfilePanelSwitcher = ({ state }) => {
   return (

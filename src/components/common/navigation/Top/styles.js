@@ -2,10 +2,42 @@ import styled from "styled-components";
 import {
   ScreenWith1080px,
   ScreenWith960px,
-  mobile,
-  mobileSuperSmall,
-  tablet
-} from "./../../responsive";
+  tablet,
+  mobile
+} from "@/responsive";
+
+export const MenuItemMyUser = styled.div`
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: white;
+  background-color: ${({ selected }) => (selected ? "#e74c3c" : "transparent")};
+  border-radius: 10px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e74c3c;
+    color: white;
+    transform: scale(1.05);
+    border-radius: 10px;
+  }
+  svg {
+    margin-right: 4px;
+    font-size: 1.5rem;
+    ${ScreenWith960px({ fontSize: "1.25rem" })}
+    ${mobile({
+      margin: "0"
+    })}
+  }
+  ${ScreenWith960px({ fontSize: "13px" })}
+  ${mobile({
+    fontSize: "12px",
+    padding: "0"
+  })}
+`;
 
 export const NavText = styled.p`
   cursor: pointer;
@@ -196,7 +228,7 @@ export const MenuActions = styled.div`
   ${tablet({ display: "none" })}
 `;
 
-export const DrawerContaienr = styled.div`
+export const DrawerContainer = styled.div`
   display: none;
   ${tablet({ display: "flex" })}
 `;

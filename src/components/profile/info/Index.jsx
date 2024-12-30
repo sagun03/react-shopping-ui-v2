@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { ProfilePanelContainer, InputField, ButtonGroup, InnerHeading, StyledBox } from "./styles/ProfilePanel";
-import { SaveButton, CancelButton, EditButton } from "./EditButtons";
+import {
+  ProfilePanelContainer,
+  InputField,
+  ButtonGroup,
+  InnerHeading,
+  StyledBox
+} from "./styles";
+import { SaveButton, CancelButton, EditButton } from "@/components/checkout/address/form/EditButtons";
 import { useSelector } from "react-redux";
 
 const ProfilePanel = () => {

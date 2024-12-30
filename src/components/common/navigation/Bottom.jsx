@@ -10,10 +10,9 @@ import LineWeightIcon from "@mui/icons-material/LineWeight";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CallIcon from "@mui/icons-material/Call";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
-import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation, useNavigate } from "react-router";
 import styled from "styled-components";
-import { ScreenWith670px } from "../responsive";
+import { ScreenWith670px } from "@/responsive";
 import { useSelector } from "react-redux";
 
 const PaperUi = styled(Paper)`

@@ -1,4 +1,4 @@
-import loaderGif from "../pages/images/loader.gif";
+import loaderGif from "@/assets/images/products/loader.gif";
 import React from "react";
 import styled from "styled-components";
 

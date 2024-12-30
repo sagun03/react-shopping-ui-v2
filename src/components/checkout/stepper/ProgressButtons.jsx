@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ProgressButtonContainer, ProgressButton } from "./styles";
-import { setActiveStep } from "../../redux/stepperSlice";
+import { setActiveStep } from "@/store/slices/stepperSlice";
 
 const ProgressButtons = () => {
   const dispatch = useDispatch();

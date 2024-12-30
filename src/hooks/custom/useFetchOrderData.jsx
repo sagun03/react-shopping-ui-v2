@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOrder } from "../useOrder";
+import { useOrder } from "@/hooks/useOrder";
 
 const useFetchOrderData = (user) => {
   console.log("innnnnn")

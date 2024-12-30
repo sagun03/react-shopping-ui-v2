@@ -1,6 +1,6 @@
 // queries for accessing user endpoints
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUserPoints, createPoints, updatePoints } from "../../services/userServices.js/points";
+import { getUserPoints, createPoints, updatePoints } from "@/services/user/points";
 
 export const useGetPoints = (payload) => {
   return useQuery({

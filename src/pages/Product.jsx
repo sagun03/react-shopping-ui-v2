@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { Divider, IconButton } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
-import Loader from "../components/Loader";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import NavBar from "../components/nav/NavBar";
-import NewsLetter from "../components/NewsLetter";
-import Alert from "../components/Alert";
-import BottomNav from "../components/BottomNav";
-import Review from "../components/Review"; // Import Review component
+import Loader from "@/components/common/loaders/Intial/Index";
+import Announcement from "@/components/common/annoucements/Index";
+import Footer from "@/components/common/layouts/Footer";
+import NavBar from "@/components/common/navigation/Top/Index";
+import NewsLetter from "@/components/common/newsletter/Index";
+import Alert from "@/components/common/alerts/Index";
+// import BottomNav from "../components/BottomNav";
+import Review from "@/components/product/page/review/Index"; // Import Review component
 
 import {
   Container,
@@ -43,11 +43,11 @@ import {
   LeftInfoContainer,
   DiscountPercentageContainer,
   StyledLink
-} from "../components/styles/Product";
-import SimilarProducts from "../components/SimilarProducts";
-import { Icon } from "../components/styles/ProductRangeCard";
+} from "@/components/product/page/styles";
+import SimilarProducts from "@/components/product/page/similar-products/Index";
+import { Icon } from "@/components/product/product-range/card/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, updateCart } from "../store/slices/cartSlice";
+import { addToCart, updateCart } from "@/store/slices/cartSlice";
 
 const Product = () => {
   const user = useSelector((state) => state.user.currentUser);

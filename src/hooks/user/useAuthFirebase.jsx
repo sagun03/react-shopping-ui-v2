@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   signInWithPhoneNumber
 } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth } from "@/firebase";
 
 import {
   useRegister,

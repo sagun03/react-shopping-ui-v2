@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ConnectorLabel from "./ConnectorLabel";
 import IconLabel from "./IconLabel";
 import { StepCompContainer, Connector, InnerStepper } from "./styles";
-import { setActiveStep } from "../../redux/port/stepperSlice";
+import { setActiveStep } from "@/store/slices/stepperSlice";
 
 const StepComp = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,12 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
+  settings : {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
   extends: [
     "standard",
     "plugin:react/recommended",

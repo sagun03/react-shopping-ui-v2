@@ -1,13 +1,13 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
-import { PanelContainer, AddressBox } from "./styles";
-import Form from "./Form";
+import { AddressBox } from "./styles";
+import Form from "./form/Index";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import AddressCard from "./AddressCard";
-import { getAddress } from "../../services/userServices.js/Address";
-import { setAddressList, setDefaultIndex, setSelectedAddress } from "../../redux/port/addressSlice";
+import AddressCard from "./Card";
+import { getAddress } from "@/services/user/address";
+import { setAddressList, setDefaultIndex, setSelectedAddress } from "@/store/slices/addressSlice";
 import { useQuery } from "@tanstack/react-query";
 
 const modalRoot = document.createElement("div");
@@ -99,7 +99,7 @@ const AddressPanel = () => {
   }
 
   return (
-    <PanelContainer>
+    <>
       <AddressBox onClick={() => {
         setSelectedAddress(0);
         closeShowModal();
@@ -152,7 +152,7 @@ const AddressPanel = () => {
       }
     {newAddress && <Form refetch={refetchData} closeModal={closeNewModal}/>}
     {showModal && <Form refetch={refetchData} index={index} closeModal={closeShowModal} />}
-  </PanelContainer>
+    </>
   )
 }
 

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { styled as MuiStyled } from "@mui/system";
-import "./vars.css";
 
 export const StepperContainer = styled.div`
   width: clamp(300px, 40%, 500px);

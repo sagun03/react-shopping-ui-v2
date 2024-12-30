@@ -6,7 +6,7 @@ import {
   ScreenWith1470px,
   ScreenWith670px,
   ScreenWith960px
-} from "../../../responsive";
+} from "@/responsive";
 
 const BannerContainer = styled.div`
 position: relative;

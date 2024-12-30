@@ -1,37 +1,17 @@
-import React, { useEffect } from "react";
-import PopularProducts from "../components/PopularProducts";
-import Footer from "../components/Footer";
-import NavBar from "../components/nav/NavBar";
-import NewsLetter from "../components/common/newsletter/NewsLetter";
-import FeaturedCategories from "../components/home/featured-categories/styles";
-import Virtual from "../components/home/try-on/Virtual";
-import Crousel from "../components/Crousel";
-import SimpleMap from "../components/home/Map";
-import Announcement from "../components/Announcement";
-import { Helmet } from "react-helmet-async"
-// import { useCartContext } from "../context/cartContext";
-import useFetchCartData from "../hooks/custom/useFetchCartData";
-// import { useUserContext } from "../context/UserContext";
-import Banner from "../components/home/banner/Index";
-import { useSelector, useDispatch } from "react-redux";
-import { setCartData } from "../store/slices/cartSlice";
+import React from "react";
+import PopularProducts from "@/components/home/popularProducts/Index";
+import Footer from "@/components/common/layouts/Footer";
+import NavBar from "@/components/common/navigation/Top/Index";
+import NewsLetter from "@/components/common/newsletter/Index";
+import FeaturedCategories from "@/components/home/featuredCategories/Layout";
+import Virtual from "@/components/home/try-on/Virtual";
+import Crousel from "@/components/home/crousel/Index";
+import SimpleMap from "@/components/home/map/Index";
+import Announcement from "@/components/common/annoucements/Index";
+import { Helmet } from "react-helmet-async";
+import Banner from "@/components/home/banner/Index";
 
 const Homepage = () => {
-  const dispatch = useDispatch();
-  // const { user } = useUserContext()
-  const user = useSelector((state) => state.user.currentUser);
-  console.log("user", user)
-  // const { setCartData, cartData } = useCartContext();
-
-  const cartData = useSelector((state) => state.cart.cartData);
-  // const dataFetched = useFetchCartData(user);
-
-  // useEffect(() => {
-  //   if (cartData.length === 0 && dataFetched && user) {
-  //     dispatch(setCartData(dataFetched));
-  //   }
-  // }, [cartData, dataFetched, setCartData]);
-
   return (
     <>
       <Helmet>

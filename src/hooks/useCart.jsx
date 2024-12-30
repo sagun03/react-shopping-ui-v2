@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchCartProducts, updateCartProducts, createCartProducts, deleteCart, deleteProductCart } from "../services/cartService";
-import { useCartContext } from "../context/cartContext";
+import { fetchCartProducts, updateCartProducts, createCartProducts, deleteCart, deleteProductCart } from "@/services/cart/index";
 import { useSelector } from "react-redux";
 
 let isUpdate = false;

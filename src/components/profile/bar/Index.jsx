@@ -1,4 +1,13 @@
-import { Text, Header, SideBarContainer, ImageContainer, Image, SideBarButtonGroup, SideBarButton, PointsContainer } from "./styles/UserProfile";
+import {
+  Text,
+  Header,
+  SideBarContainer,
+  ImageContainer,
+  Image,
+  SideBarButtonGroup,
+  SideBarButton,
+  PointsContainer
+} from "@/components/profile/styles";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import BadgeIcon from "@mui/icons-material/Badge";

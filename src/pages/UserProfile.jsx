@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Navbar from "../components/nav/NavBar";
-import Announcement from "../components/Announcement";
-import { UserProfileContainer, TopContainer } from "../components/styles/UserProfile";
-import ProfilePanelSwitcher from "../components/ProfilePanelSwitcher";
-import ProfileSideBar from "../components/ProfileSideBar";
-import BottomNav from "../components/BottomNav";
-import Footer from "../components/Footer";
+import Navbar from "@/components/common/navigation/Top/Index";
+import Announcement from "@/components/common/annoucements/Index";
+import { UserProfileContainer, TopContainer } from "@/components/profile/styles";
+import ProfilePanelSwitcher from "@/components/profile/switcher/Index";
+import ProfileSideBar from "@/components/profile/bar/Index";
+import BottomNav from "@/components/common/navigation/Bottom";
+import Footer from "@/components/common/layouts/Footer";
 import { useSelector } from "react-redux";
 
 const UserProfile = () => {

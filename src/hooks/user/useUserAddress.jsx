@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addAddress, updateAddress, deleteAddress, getAddress } from "../../services/userServices.js/Address";
+import { addAddress, updateAddress, deleteAddress, getAddress } from "@/services/user/address";
 
 export const useGetAddress = (payload) => {
   return useQuery({

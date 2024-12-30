@@ -1,13 +1,10 @@
 import React from "react";
-// import { useAddressContext } from "./DataProvider";
 import { AddCard, InnerHeading, StyledRadio } from "./styles";
-
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { setSelectedAddress } from "../../redux/port/addressSlice";
+import { setSelectedAddress } from "@/store/slices/addressSlice";
 
 const AddressCard = ({ index }) => {
-  // const { address, selectedAddress, setSelectedAddress } = useAddressContext();
   const address = useSelector((state) => state.address.addressList);
   const selectedAddress = useSelector((state) => state.address.selectedAddress);
   const dispatch = useDispatch();

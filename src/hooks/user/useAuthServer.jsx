@@ -1,12 +1,10 @@
 // queries for accessing user endpoints
 import { useMutation } from "@tanstack/react-query";
-import { login, register, logout } from "../../services/authServices";
-import { useUserContext } from "../../context/UserContext";
+import { login, register, logout } from "@/services/auth/index";
 import { useDispatch } from "react-redux";
-import { setError, setIsNewUser } from "../../store/slices/userSlice";
+import { setError, setIsNewUser } from "@/store/slices/userSlice";
 
 export const useLogin = () => {
-  // const { setError, setIsNewUser } = useUserContext();
   const dispatch = useDispatch();
   return useMutation({
     mutationFn: (userData) => login(userData),
@@ -21,7 +19,6 @@ export const useLogin = () => {
 };
 
 export const useRegister = () => {
-  // const { setError, setIsNewUser } = useUserContext();
   const dispatch = useDispatch();
   return useMutation({
     mutationFn: (userData) => register(userData),
@@ -36,7 +33,6 @@ export const useRegister = () => {
 };
 
 export const useSignOut = () => {
-  // const { setError } = useUserContext();
   const dispatch = useDispatch();
   return useMutation({
     mutationFn: (uid) => logout(uid),

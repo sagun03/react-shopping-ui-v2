@@ -1,14 +1,14 @@
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import NavBar from "../components/nav/NavBar";
+import Announcement from "@/components/common/annoucements/Index";
+import Footer from "@/components/common/layouts/Footer";
+import NavBar from "@/components/common/navigation/Top/Index";
 import { useEffect, useCallback, useState } from "react";
-import { db } from "../firebase";
+import { db } from "@/firebase";
 import { Button, TextField } from "@mui/material";
-import { useUserAuth } from "../context/UserAuthContext";
-import { mobile } from "../responsive";
-import AdminReview from "../components/AdminReview";
+import { mobile } from "@/responsive";
+import AdminReview from "@/components/admin/Review";
+import { useSelector } from "react-redux";
 
 const Title = styled.h1`
   font-weight: 300;
@@ -63,7 +63,7 @@ const OrderWrapper = styled.div`
 const Admin = () => {
   const ordersCollectionRef = collection(db, "order");
   const [userId, setUserId] = useState("");
-  const { user } = useUserAuth();
+  const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     window?.scrollTo(0, 0);

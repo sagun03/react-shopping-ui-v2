@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useDataContext } from "../context/DataContext";
 import {
   SimilarProductsWrapper,
   SimilarProductsHeading,
   SimilarProductsContainer
-} from "./styles/SimilarProductsStyles";
-import SimilarProductsSwiper from "./SimilarProductsSwiper";
-import LoadingSwiper from "./LoadingSwiper";
+} from "./styles";
+import SimilarProductsSwiper from "./swiper/Index";
+import LoadingSwiper from "@/components/common/loaders/LoadingSwiper";
 import {
   flattenProductSizes,
   getOtherRelatedProducts,
   getSimilarProducts
-} from "../utils/helper";
+} from "@/utils/helper";
 import { useSelector } from "react-redux";
 
 const SimilarProducts = ({ currentProduct }) => {

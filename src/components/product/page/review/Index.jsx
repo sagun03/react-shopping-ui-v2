@@ -19,9 +19,8 @@ import {
   CustomDivider,
   Wrapper,
   RatingContainer
-} from "../components/styles/Review";
-import { useReviews } from "../hooks/useReview";
-import StarIcon from "@mui/icons-material/Star";
+} from "./styles";
+import { useReviews } from "@/hooks/useReview";
 
 const Review = ({ productId }) => {
   const [reviews, setReviews] = useState([]);

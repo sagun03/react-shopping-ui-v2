@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile, lScreen } from "../../responsive";
+import { mobile, lScreen } from "@/responsive";
 import { styled as muiStyled } from "@mui/material";
 import Button from "@mui/material/Button";
 

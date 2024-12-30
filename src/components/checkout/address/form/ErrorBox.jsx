@@ -1,8 +1,7 @@
 import React from "react";
-import { ErrorBoxContainer } from "./styles";
+import { ErrorBoxContainer } from "@/components/checkout/address/styles";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import PropTypes from "prop-types";
-import { useAddressContext } from "./DataProvider";
 import { useSelector } from "react-redux";
 
 const ErrorBox = ({ errors }) => {
