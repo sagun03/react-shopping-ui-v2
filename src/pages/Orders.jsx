@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import NavBar from "../components/nav/NavBar";
-import NewsLetter from "../components/NewsLetter";
-import OrdersComponent from "../components/OrdersComponent";
-import BottomNav from "../components/BottomNav";
+import Announcement from "@/components/common/annoucements/Index";
+import Footer from "@/components/common/layouts/Footer";
+import NavBar from "@/components/common/navigation/Top/Index";
+import NewsLetter from "@/components/common/newsletter/Index";
+import OrdersComponent from "@/components/profile/orders/LookUp";
+import BottomNav from "@/components/common/navigation/Bottom";
 import { Helmet } from "react-helmet-async";
 
 const Orders = () => {

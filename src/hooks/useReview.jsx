@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchReviews } from "../services/ReviewService";
+import { fetchReviews } from "@/services/reviews/index";
 
 export const useReviews = (productId) => {
   return useQuery({

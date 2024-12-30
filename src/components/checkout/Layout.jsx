@@ -1,14 +1,14 @@
-import { Wrapper, InnerWrapper, CartDetail, CartDetailMobile, LeftPanel } from "../address/styles";
+import { Wrapper, InnerWrapper, CartDetail, CartDetailMobile, LeftPanel } from "@/components/checkout/address/styles";
 import { Divider } from "@mui/material";
-import { DividerStyles } from "./styles";
-import StepperBox from "./StepperBox";
-import Announcement from "../Announcement";
-import NewsLetter from "../NewsLetter";
-import Footer from "../Footer";
-import BottomNav from "../BottomNav";
+import { DividerStyles } from "./stepper/styles";
+import StepperBox from "./stepper/Index";
+import Announcement from "@/components/common/annoucements/Index";
+import NewsLetter from "@/components/common/newsletter/Index";
+import Footer from "@/components/common/layouts/Footer";
+// import BottomNav from "@/components/common/navigation/Bottom";
 import PropTypes from "prop-types";
-import OrderSummary from "../OrderSummary";
-import NavBar from "../nav/NavBar";
+import OrderSummary from "@/components/checkout/summary/Index";
+import NavBar from "@/components/common/navigation/Top/Index";
 
 const Layout = ({ children }) => {
   return (

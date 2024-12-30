@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useState } from "react";
-import { initializePayment } from "../services/paymentService";
+import { initializePayment } from "@/services/payment/index";
 
 export const usePayment = (amount, user, formattedProducts, pointsUsed, addresId) => {
   const { uid: userId, email = "", phoneNumber = "" } = user || {};

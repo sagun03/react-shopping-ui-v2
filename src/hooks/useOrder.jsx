@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchOrder, fetchOrderProducts } from "../services/orderServices";
+import { fetchOrder, fetchOrderProducts } from "@/services/order/index";
 export const useOrder = (user) => {
   const fetchOrderData = async () => {
     return fetchOrderProducts(user); // Fetch cart data based on user

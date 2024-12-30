@@ -1,7 +1,7 @@
-import FrontLoadCollection1 from "../pages/images/frontLoadCollection1.png"
-import HandwashColection3 from "../pages/images/handwashCollection3.png"
-import ToiletColection3 from "../pages/images/ToiletCollection3.png"
-import Colin from "../pages/images/colin.png"
+import FrontLoadCollection1 from "@/assets/images/products/frontLoadCollection1.png";
+import HandwashColection3 from "@/assets/images/products/handwashCollection3.png"
+import ToiletColection3 from "@/assets/images/products/ToiletCollection3.png"
+import Colin from "@/assets/images/products/colin.png"
 
 export const ClouserItems = [
   {

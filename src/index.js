@@ -1,17 +1,14 @@
 import React from "react";
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom/client";
-import store, { persistor } from "./redux/store";
-// import App from "./App"
+import store, { persistor } from "./store/index";
 import App from "./App";
 import { PersistGate } from "redux-persist/integration/react";
 import { HelmetProvider } from "react-helmet-async";
-import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { enableMapSet } from "immer";
 
 enableMapSet();
-
 const queryClient = new QueryClient();
 
 const rootElement = document.getElementById("root");
@@ -24,9 +21,7 @@ if (rootElement) {
       <PersistGate loading={null} persistor={persistor}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
-            <UserAuthContextProvider>
               <App />
-            </UserAuthContextProvider>
           </QueryClientProvider>
         </HelmetProvider>
       </PersistGate>
